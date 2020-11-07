@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_dvr"
+    style="@style/PopWindowContainerLayoutStyle"
+    android:layout_width="match_parent">
+
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:text="@string/dvr_setting_record_time" />
+
+        <RadioButton
+            android:id="@+id/rb_record_time_1"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/rb_time_1min" />
+
+        <RadioButton
+            android:id="@+id/rb_record_time_3"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/rb_time_3min" />
+
+        <RadioButton
+            android:id="@+id/rb_record_time_5"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/rb_time_5min" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_g_sensor_row"
+        style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="@string/dvr_setting_gsensos_value" />
+
+        <RadioButton
+            android:id="@+id/rb_collision_value_low"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_low" />
+
+        <RadioButton
+            android:id="@+id/rb_collision_value_middle"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_middle" />
+
+        <RadioButton
+            android:id="@+id/rb_collision_value_high"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_high" />
+
+        <RadioButton
+            android:id="@+id/rb_collision_value_close"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_close" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_adas_row"
+        style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_alignParentStart="true"
+            android:text="@string/dvr_setting_adas_value" />
+
+        <RadioButton
+            android:id="@+id/rb_adas_value_low"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_low" />
+
+        <RadioButton
+            android:id="@+id/rb_adas_value_middle"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_middle" />
+
+        <RadioButton
+            android:id="@+id/rb_adas_value_high"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_high" />
+    </LinearLayout>
+
+</LinearLayout>

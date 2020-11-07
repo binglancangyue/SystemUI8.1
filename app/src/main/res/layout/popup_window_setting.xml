@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="@dimen/settingContainerWidth"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@drawable/iv_qs_left_bg"
+        android:divider="@drawable/iv_qs_left_button_split"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <LinearLayout
+            android:id="@+id/ll_left_wifi"
+            style="@style/PopWindowLeftBtnLayoutStyle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iv_wireless_selected" />
+
+            <TextView
+                style="@style/PopWindowLeftBtnTextStyle"
+                android:text="@string/pop_wireless" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_left_screen_control"
+            style="@style/PopWindowLeftBtnLayoutStyle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iv_screen_selected" />
+
+            <TextView
+                style="@style/PopWindowLeftBtnTextStyle"
+                android:text="@string/pop_screen_control" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_left_other"
+            style="@style/PopWindowLeftBtnLayoutStyle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iv_volume_selected" />
+
+            <TextView
+                style="@style/PopWindowLeftBtnTextStyle"
+                android:text="@string/pop_other" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_left_dvr"
+            style="@style/PopWindowLeftBtnLayoutStyle">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_camera_3in" />
+
+            <TextView
+                style="@style/PopWindowLeftBtnTextStyle"
+                android:text="@string/accessibility_camera" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/item_home_wireless"
+        android:visibility="visible" />
+
+    <include
+        layout="@layout/item_home_brightness"
+        android:visibility="gone" />
+
+    <include
+        layout="@layout/item_home_other"
+        android:visibility="gone" />
+    <include
+        layout="@layout/item_home_dvr"
+        android:visibility="gone" />
+</LinearLayout>

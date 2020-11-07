@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_other"
+    style="@style/PopWindowContainerLayoutStyle"
+    android:layout_width="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_fm_row"
+        style="@style/PopWindowContainerItemLayoutStyle"
+        android:gravity="center_vertical">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_alignParentStart="true"
+            android:text="@string/setting_fm_switch" />
+
+        <ImageView
+            android:id="@+id/iv_switch_fm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/selector_switch" />
+    </RelativeLayout>
+
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0"
+            android:src="@drawable/selector_setting_mobile_data"
+            android:text="@string/adjust_volume" />
+
+        <SeekBar
+            android:id="@+id/sb_volume"
+            style="@style/PopupWindowSeekBarStyle"
+            android:max="15" />
+
+        <TextView
+            android:id="@+id/tv_volume_value"
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="0dp"
+            android:layout_weight="0"
+            android:src="@drawable/selector_setting_mobile_data" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+
+        <RelativeLayout
+            android:id="@+id/btn_dvr_bt"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                style="@style/PopWindowDVRButtonStyle"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:text="@string/dvr_bt_pairing" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_dvr_format"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                style="@style/PopWindowDVRButtonStyle"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:text="@string/dvr_format_sd_card" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_dvr_settings"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                style="@style/PopWindowDVRButtonStyle"
+                android:gravity="center"
+                android:text="@string/dvr_system_settings" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:systemui="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:gravity="center_vertical|right">
+
+    <com.android.systemui.statusbar.policy.KeyButtonView
+        android:id="@+id/dvr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/accessibility_camera"
+        android:minWidth="30dp"
+        android:padding="@dimen/homeButtonPadding"
+        android:scaleType="fitCenter" />
+</RelativeLayout>
+
+

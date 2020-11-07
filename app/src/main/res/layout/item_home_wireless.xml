@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_wireless_data"
+    style="@style/PopWindowContainerLayoutStyle"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_wireless_data_row"
+        style="@style/PopWindowContainerItemLayoutStyle">
+
+        <LinearLayout
+            android:id="@+id/ll_btn_wifi"
+            style="@style/PopWindowContainerItemLayoutStyle"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_wifi"
+                style="@style/PopWindowContainerTileTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:text="@string/setting_wifi" />
+
+            <TextView
+                android:id="@+id/tv_wifi_status"
+                style="@style/PopWindowContainerTextStyle"
+                android:text="@string/setting_closed" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_btn_hotspot"
+            style="@style/PopWindowContainerItemLayoutStyle"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_hotspot"
+                style="@style/PopWindowContainerImageViewStyle"
+                android:src="@drawable/selector_setting_hotspot" />
+
+            <TextView
+                android:id="@+id/tv_hotspot_status"
+                style="@style/PopWindowContainerTextStyle"
+                android:text="@string/setting_closed" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_mobile_data_row"
+        style="@style/PopWindowContainerItemLayoutStyle">
+
+        <LinearLayout
+            android:id="@+id/ll_btn_mobile_data"
+            style="@style/PopWindowContainerItemLayoutStyle"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_mobile_data"
+                style="@style/PopWindowContainerImageViewStyle"
+                android:src="@drawable/selector_setting_mobile_data" />
+
+            <TextView
+                android:id="@+id/tv_mobile_data_status"
+                style="@style/PopWindowContainerTextStyle"
+                android:text="@string/setting_closed" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_mobile_data_status"
+            style="@style/PopWindowContainerItemLayoutStyle"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/PopWindowContainerTileTextStyle"
+                android:layout_marginEnd="0dp"
+                android:text="@string/setting_mobile_data_status" />
+
+            <TextView
+                android:id="@+id/tv_4g_status"
+                style="@style/PopWindowContainerTextStyle"
+                android:text="@string/mobile_data_status_unconnected" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/PopWindowContainerItemLayoutStyle"
+            android:orientation="vertical"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+
+        <LinearLayout
+            android:id="@+id/ll_btn_bluetooth"
+            style="@style/PopWindowContainerItemLayoutStyle"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_bluetooth"
+                style="@style/PopWindowContainerImageViewStyle"
+                android:src="@drawable/selector_setting_bt" />
+
+            <TextView
+                android:id="@+id/tv_bluetooth_status"
+                style="@style/PopWindowContainerTextStyle"
+                android:text="@string/setting_closed" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_btn_gps"
+            style="@style/PopWindowContainerItemLayoutStyle"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/iv_gps"
+                style="@style/PopWindowContainerImageViewStyle"
+                android:src="@drawable/selector_setting_gps" />
+
+            <TextView
+                android:id="@+id/tv_gps_status"
+                style="@style/PopWindowContainerTextStyle"
+                android:text="@string/setting_closed" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

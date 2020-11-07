@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_brightness"
+    style="@style/PopWindowContainerLayoutStyle"
+    android:layout_width="match_parent">
+
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:text="@string/tv_screen_auto_close" />
+
+        <RadioButton
+            android:id="@+id/rb_close_screen"
+            style="@style/PopWindowContainerRadioButtonStyle"
+            android:text="@string/rb_close_screen"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:id="@+id/rb_screen_saver"
+            style="@style/PopWindowContainerRadioButtonStyle"
+            android:text="@string/rb_screen_saver" />
+
+        <RadioButton
+            android:id="@+id/rb_bright"
+            style="@style/PopWindowContainerRadioButtonStyle"
+            android:text="@string/rb_always_bright" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_screen_saver" />
+
+        <RadioButton
+            android:id="@+id/rb_time_1"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/rb_time_1min" />
+
+        <RadioButton
+            android:id="@+id/rb_time_5"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/rb_time_5min" />
+
+        <RadioButton
+            android:id="@+id/rb_time_30"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/rb_time_30min" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/selector_setting_mobile_data"
+            android:text="@string/adjust_brightness" />
+
+        <SeekBar
+            android:id="@+id/sb_brightness"
+            style="@style/PopupWindowSeekBarStyle" />
+
+        <TextView
+            android:id="@+id/tv_brightness_value"
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="0dp"
+            android:layout_weight="0"
+            android:src="@drawable/selector_setting_mobile_data" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:text="@string/setting_day_and_night" />
+
+        <RadioButton
+            android:id="@+id/rb_screen_control_day"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/setting_day" />
+
+        <RadioButton
+            android:id="@+id/rb_screen_control_night"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/setting_night" />
+
+        <RadioButton
+            android:id="@+id/rb_screen_control_auto"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/setting_screen_auto" />
+    </LinearLayout>
+</LinearLayout>

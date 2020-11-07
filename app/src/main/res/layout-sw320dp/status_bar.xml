@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+**
+** Copyright 2006, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<!--    android:background="@drawable/status_bar_closed_default_background" -->
+<com.android.systemui.statusbar.phone.PhoneStatusBarView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:systemui="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/status_bar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="afterDescendants"
+    android:focusable="false"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/notification_lights_out"
+        android:layout_width="@dimen/status_bar_icon_size"
+        android:layout_height="match_parent"
+        android:paddingStart="6dip"
+        android:paddingBottom="2dip"
+        android:scaleType="center"
+        android:src="@drawable/ic_sysbar_lights_out_dot_small"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/status_bar_contents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingStart="6dp"
+        android:paddingEnd="8dp">
+
+        <!-- The alpha of this area is controlled from both PhoneStatusBarTransitions and
+             PhoneStatusBar (DISABLE_NOTIFICATION_ICONS). -->
+        <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
+            android:id="@+id/notification_icon_area"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" />
+
+        <com.android.keyguard.AlphaOptimizedLinearLayout
+            android:id="@+id/system_icon_area"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal">
+
+            <include layout="@layout/system_icons" />
+
+        </com.android.keyguard.AlphaOptimizedLinearLayout>
+    </LinearLayout>
+
+    <com.android.systemui.statusbar.policy.Clock
+        android:id="@+id/clock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.StatusBar.Clock"
+        android:textSize="21sp" />
+
+    <ViewStub
+        android:id="@+id/emergency_cryptkeeper_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout="@layout/emergency_cryptkeeper_text" />
+
+    <LinearLayout
+        android:id="@+id/ll_right"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/icon_bx_bg_left"
+        android:orientation="vertical"
+        android:paddingStart="8dp"
+        android:paddingBottom="15dp">
+
+        <TextClock
+            android:id="@+id/tc_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="70dp"
+            android:fontFamily="sans-serif-light"
+            android:format12Hour="HH:mm"
+            android:format24Hour="HH:mm"
+            android:gravity="start"
+            android:textColor="#ffffff"
+            android:textSize="39sp" />
+
+        <TextClock
+            android:id="@+id/tc_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="yyyy/MM/dd\nEEEE"
+            android:format24Hour="yyyy/MM/dd\nEEEE"
+            android:gravity="start"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_weather_sunny_day"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp" />
+
+        <TextView
+            android:id="@+id/tv_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="多云转晴 25°"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp" />
+    </LinearLayout>
+</com.android.systemui.statusbar.phone.PhoneStatusBarView>
