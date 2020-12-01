@@ -55,7 +55,6 @@ import android.support.annotation.VisibleForTesting;
 import android.telecom.TelecomManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.IRotationWatcher.Stub;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -76,7 +75,6 @@ import com.android.keyguard.LatencyTracker;
 import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.SysUiServiceProvider;
-import com.android.systemui.SystemUI;
 import com.android.systemui.SystemUIApplication;
 import com.android.systemui.assist.AssistManager;
 import com.android.systemui.fragments.FragmentHostManager;
@@ -146,12 +144,20 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     public final static String ACTION_OPEN_OR_CLOSE_TXZ = "com.bixin.launcher_t20.action.txz.openOrClose";
     public static final String ACTION_DVR_PREVIEW = "com.bx.carDVR";
     private SharedPreferencesTool mPreferencesTool;
-
+    private ButtonDispatcher dvrButton;
+    private ButtonDispatcher voiceButton;
+    private ButtonDispatcher dvrBackButton;
+    private ButtonDispatcher settingsButton;
+    private ButtonDispatcher backButton;
+    public final static String ACTION_SEND_MESSAGE_T0_DVR = "com.android.systemui.action.send_to_dvr";
+    private boolean isHandle4Btn = false;
+    private MyHandle myHandle;
     // ----- Fragment Lifecycle Callbacks -----
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myHandle = new MyHandle();
         mCommandQueue = SysUiServiceProvider.getComponent(getContext(), CommandQueue.class);
         mCommandQueue.addCallbacks(this);
         mStatusBar = SysUiServiceProvider.getComponent(getContext(), StatusBar.class);
@@ -181,6 +187,7 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         }
         //by lym start
         NotifyMessageManager.getInstance().setOnShowSettingsWindowListener(this);
+        registerDVRContentObserver();
         //end
     }
 
@@ -197,6 +204,11 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+        if (myHandle != null) {
+            myHandle.removeCallbacksAndMessages(null);
+            myHandle = null;
+        }
+        unRegisterContentObserver();
     }
 
     @Override
@@ -416,7 +428,7 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         recentsButton.setLongClickable(true);
         recentsButton.setOnLongClickListener(this::onLongPressBackRecents);
 
-        ButtonDispatcher backButton = mNavigationBarView.getBackButton();
+        backButton = mNavigationBarView.getBackButton();
         backButton.setLongClickable(true);
         backButton.setOnLongClickListener(this::onLongPressBackRecents);
 
@@ -424,18 +436,23 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         homeButton.setOnTouchListener(this::onHomeTouch);
         homeButton.setOnLongClickListener(this::onHomeLongClick);
         //by lym start
-        ButtonDispatcher voiceButton = mNavigationBarView.getVoiceButton();
+        voiceButton = mNavigationBarView.getVoiceButton();
         voiceButton.setOnClickListener(this::startVoiceUi);
         voiceButton.setOnLongClickListener(this::stopTXZ);
 //        voiceButton.setOnTouchListener(this::onVoiceTouch);
-        ButtonDispatcher dvrButton = mNavigationBarView.getDRVButton();
+        dvrButton = mNavigationBarView.getDRVButton();
         dvrButton.setOnClickListener(this::startDVRPreview);
 
-        ButtonDispatcher dvrBackButton = mNavigationBarView.getDVRBackButton();
+        dvrBackButton = mNavigationBarView.getDVRBackButton();
         dvrBackButton.setOnClickListener(this::startBackDVRPreview);
 
-        ButtonDispatcher settingsButton = mNavigationBarView.getSettingsButton();
-        settingsButton.setOnClickListener(this::startQuickSettingsView);
+        settingsButton = mNavigationBarView.getSettingsButton();
+
+        if (CustomValue.SCREEN_3IN_KD003) {
+            settingsButton.setOnClickListener(this::startRecording);
+        } else {
+            settingsButton.setOnClickListener(this::startQuickSettingsView);
+        }
 
 //        backButton.setOnTouchListener(this::onBackTouch);
 
@@ -565,29 +582,42 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     }
 
     private void startDVRPreview(View view) {
-        mPreferencesTool.saveCameraFront(false);
-        mNavigationBarView.showIndicatorBar(3);
-        Context context = getContext();
-        Intent launchIntent =
-                context.getPackageManager().getLaunchIntentForPackage(ACTION_DVR_PREVIEW);
-        if (launchIntent == null) {
-            Toast.makeText(context, R.string.app_not_installed, Toast.LENGTH_SHORT).show();
-        } else {
-            context.startActivity(launchIntent);
+        if (CustomValue.SCREEN_3IN_KD003){
+            sendToDVR("KEY_TAKE_PICTURE");
+        }else{
+            mPreferencesTool.saveCameraFront(false);
+            mNavigationBarView.showIndicatorBar(3);
+            Context context = getContext();
+            Intent launchIntent =
+                    context.getPackageManager().getLaunchIntentForPackage(ACTION_DVR_PREVIEW);
+            if (launchIntent == null) {
+                Toast.makeText(context, R.string.app_not_installed, Toast.LENGTH_SHORT).show();
+            } else {
+                context.startActivity(launchIntent);
+            }
         }
     }
 
     private void startBackDVRPreview(View view) {
-        mPreferencesTool.saveCameraFront(false);
-        mNavigationBarView.showIndicatorBar(3);
-        Context context = getContext();
-        Intent launchIntent =
-                context.getPackageManager().getLaunchIntentForPackage(ACTION_DVR_PREVIEW);
-        if (launchIntent == null) {
-            Toast.makeText(context, R.string.app_not_installed, Toast.LENGTH_SHORT).show();
-        } else {
-            context.startActivity(launchIntent);
+        if (CustomValue.SCREEN_3IN_KD003){
+            sendToDVR("KEY_BACK_CAMERA");
+        }else{
+            mPreferencesTool.saveCameraFront(false);
+            mNavigationBarView.showIndicatorBar(3);
+            Context context = getContext();
+            Intent launchIntent =
+                    context.getPackageManager().getLaunchIntentForPackage(ACTION_DVR_PREVIEW);
+            if (launchIntent == null) {
+                Toast.makeText(context, R.string.app_not_installed, Toast.LENGTH_SHORT).show();
+            } else {
+                context.startActivity(launchIntent);
+            }
         }
+
+    }
+
+    private void startRecording(View view){
+        sendToDVR("KEY_RECORD");
     }
 
     private void startQuickSettingsView(View view) {
@@ -606,12 +636,19 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     }
 
     private void startVoiceUi(View view) {
-        mNavigationBarView.showIndicatorBar(2);
-        Intent intent = new Intent(ACTION_OPEN_TXZ_VIEW);
-        SystemUIApplication.getInstance().sendBroadcast(intent);
+        if (CustomValue.SCREEN_3IN_KD003) {
+            sendToDVR("KEY_UPLOAD");
+        } else {
+            mNavigationBarView.showIndicatorBar(2);
+            Intent intent = new Intent(ACTION_OPEN_TXZ_VIEW);
+            SystemUIApplication.getInstance().sendBroadcast(intent);
+        }
     }
 
     private boolean stopTXZ(View view) {
+        if (CustomValue.SCREEN_3IN_KD003) {
+            return false;
+        }
         Log.d(TAG, "stopTXZ: ");
         Intent intent = new Intent(ACTION_OPEN_TXZ_VIEW);
         if (view.isSelected()) {
@@ -882,4 +919,114 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         Log.d(TAG, "ShowSettingsWindow: ");
         startQuickSettingsView(null);
     }
+
+    private void hideNavigationBtn() {
+        Log.d(TAG, "hideNavigation isHide: "+isHandle4Btn);
+        int show;
+        if (isHandle4Btn) {
+            show = View.INVISIBLE;
+        } else {
+            show = View.VISIBLE;
+        }
+        settingsButton.setVisibility(show);
+        voiceButton.setVisibility(show);
+        dvrBackButton.setVisibility(show);
+        dvrButton.setVisibility(show);
+    }
+
+    @Override
+    public void hideNavigationBar(boolean isHide) {
+        isHandle4Btn = isHide;
+        myHandle.sendEmptyMessage(1);
+    }
+
+    private void sendToDVR(String type){
+        Intent intent = new Intent(ACTION_SEND_MESSAGE_T0_DVR);
+        intent.putExtra("key_type",type);
+        SystemUIApplication.getInstance().sendBroadcast(intent);
+    }
+
+    private class MyHandle extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                hideNavigationBtn();
+            }
+            if (msg.what == 2) {
+                int state = 1;
+                try {
+                    state = Settings.Global.getInt(getContext().getContentResolver(), CAMERA_RECORD_STATUS);
+                } catch (Settings.SettingNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Log.d(TAG, "dvr state: " + state);
+                if (state == 1) {
+//                    settingsButton.setImageDrawable();
+                    settingsButton.setSelected(true);
+                } else {
+                    settingsButton.setSelected(false);
+                }
+            }
+            if (msg.what == 3) {
+                int state = 1;
+                try {
+                    state = Settings.Global.getInt(getContext().getContentResolver(), CLIP_VIDEO_STATUS);
+                } catch (Settings.SettingNotFoundException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "handleMessage: upload state error " + e.getMessage());
+                }
+                Log.d(TAG, "upload state: " + state);
+                if (state == 1) {
+//                    settingsButton.setImageDrawable();
+                    voiceButton.setSelected(true);
+                } else {
+                    voiceButton.setSelected(false);
+                }
+            }
+        }
+    }
+
+    private static final String CAMERA_RECORD_STATUS = "camera_record_status";
+    private static final String CLIP_VIDEO_STATUS = "clip_video_status";
+    /**
+     * dvr record state
+     */
+    private void registerDVRContentObserver() {
+        Log.d(TAG, "registerGPSContentObserver: ");
+        getContext().getContentResolver().registerContentObserver(
+                Settings.Global.getUriFor(CAMERA_RECORD_STATUS),
+                false, mDVRContentObserver);
+        getContext().getContentResolver().registerContentObserver(
+                Settings.Global.getUriFor(CLIP_VIDEO_STATUS),
+                false, mUploadContentObserver);
+    }
+
+
+    private final ContentObserver mDVRContentObserver = new ContentObserver(null) {
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            myHandle.sendEmptyMessage(2);
+        }
+    };
+
+    private final ContentObserver mUploadContentObserver = new ContentObserver(null) {
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            Log.d(TAG, "onChange: upload");
+            myHandle.sendEmptyMessage(3);
+        }
+    };
+
+    private void unRegisterContentObserver() {
+        if (mDVRContentObserver != null) {
+            getContext().getContentResolver().unregisterContentObserver(mDVRContentObserver);
+        }
+        if (mUploadContentObserver != null) {
+            getContext().getContentResolver().unregisterContentObserver(mUploadContentObserver);
+        }
+    }
+
 }

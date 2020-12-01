@@ -91,7 +91,10 @@
     <dimen name="fab_margin">24dp</dimen>
 
     <dimen name="navigation_key_width">128dp</dimen>
+<!--
     <dimen name="navigation_key_padding">25dp</dimen>
+-->
+    <dimen name="navigation_key_padding">0dp</dimen>
 
     <!-- Keyboard shortcuts helper -->
     <dimen name="ksh_layout_width">488dp</dimen>
@@ -117,7 +120,7 @@
     <dimen name="seekBarPadding">24dp</dimen>
     <dimen name="seekBarMaxHeight">6dp</dimen>
     <dimen name="navigationBarPadding">6dp</dimen>
-    <dimen name="home_padding">5dp</dimen>
+    <dimen name="home_padding">2dp</dimen>
     <dimen name="settingWindowTitleMargin">15dp</dimen>
 
     <!--add by lym-->

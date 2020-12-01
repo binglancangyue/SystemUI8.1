@@ -845,5 +845,7 @@
     <string name="shutdown_confirm_time_out_desc"> %1$s 秒后将会关机.</string>
     <string name="sleep_confirm_time_out_desc"> %1$s 秒后将会进入休眠.</string>
     <string name="is_sleep">您要进入休眠吗？</string>
+    <string name="kd003_shut_down">關機</string>
+    <string name="kd003_restart">重新開機</string>
     <!--add end-->
 </resources>

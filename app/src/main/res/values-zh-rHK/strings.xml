@@ -785,5 +785,7 @@
     <string name="reboot">重啓</string>
     <string name="shutdown">關機</string>
     <string name="shutdown_confirm_time_out_desc"> %1$s 秒後將會關機.</string>
+    <string name="kd003_shut_down">關機</string>
+    <string name="kd003_restart">重新開機</string>
     <!--add end-->
 </resources>

@@ -31,12 +31,13 @@ public class CustomValue {
     public final static String ACTION_GET_WEATHER = "com.bixin.speechrecognitiontool.action_get_weather";
     public final static String ACTION_UPDATE_WEATHER = "com.bixin.speechrecognitiontool.action_update_weather";
     public static final String ACTION_GO_TO_SLEEP = "com.android.systemui.action_go_to_sleep";
-
+    public final static String ACTION_HIDE_NAVIGATION = "com.bixin.launcher.action.hide_navigation";
+    public final static String ACTION_SETTINGS_FUNCTION="com.bixin.launcher.action.settings_function";
 
     /***平台***/
     public static final boolean SCREEN_3 = false;//kd002 3寸屏  不需要语音识别
     public static final boolean SCREEN_3_BX = false;//比心3寸屏
-    public static final boolean SCREEN_3IN_KD003 = false;//3寸屏 多了个后摄像头按钮
+    public static final boolean SCREEN_3IN_KD003 = true;//3寸屏 多了个后摄像头按钮
     public static final boolean SCREEN_439IN = false;//4.39寸屏
     public static final boolean IS_966 = false;//9.66寸 车镜
 
@@ -53,7 +54,7 @@ public class CustomValue {
      * STATUS_BAR_ICON_TYPE: 状态栏图标样式
      * 0:默认(系统原样式) 1:7in
      */
-    public static final int ICON_TYPE = 2;
+    public static final int ICON_TYPE = 1;
     public static final int STATUS_BAR_ICON_TYPE = 1;
 
     public static final int[] HOME_ICONS = {
@@ -62,27 +63,27 @@ public class CustomValue {
             R.drawable.ic_bx_btn_home_3in};
 
     public static final int[] BACK_ICONS = {
-            R.drawable.icon_back_3in, R.drawable.ic_back_3in_kd003,
+            R.drawable.icon_back_3in, R.drawable.selector_kd003_back,
             R.drawable.icon_back_7in, R.drawable.ic_bx_btn_back,
             R.drawable.ic_bx_btn_back_3in};
 
     public static final int[] FRONT_CAMERA_ICONS = {
-            R.drawable.icon_camera_3in, R.drawable.ic_front_3in_kd003,
+            R.drawable.icon_camera_3in, R.drawable.selector_kd003_camera,
             R.drawable.icon_camera_7in, R.drawable.ic_bx_btn_streaming,
             R.drawable.ic_bx_btn_streaming};
 
     public static final int[] BACK_CAMERA_ICONS = {
-            R.drawable.ic_back_facing_3in_kd003, R.drawable.ic_back_facing_3in_kd003,
+            R.drawable.ic_back_facing_3in_kd003, R.drawable.selector_kd003_back_camera,
             R.drawable.ic_back_facing_3in_kd003, R.drawable.ic_back_facing_3in_kd003,
             R.drawable.ic_back_facing_3in_kd003};
 
     public static final int[] VOICE_ICONS = {
-            R.drawable.icon_voice, R.drawable.icon_voice_7in,
+            R.drawable.icon_voice, R.drawable.selector_kd003_cloud,
             R.drawable.icon_voice_7in, R.drawable.home_voice_selector,
             R.drawable.selector_home_voice};
 
     public static final int[] SETTINGS_ICONS = {
-            R.drawable.icon_settings, R.drawable.icon_settings,
+            R.drawable.icon_settings, R.drawable.selector_kd003_recording,
             R.drawable.icon_setttings_7in, R.drawable.icon_setttings_7in,
             R.drawable.ic_bx_btn_settings_3in};
 

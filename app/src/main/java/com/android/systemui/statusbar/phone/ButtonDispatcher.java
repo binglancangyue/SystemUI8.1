@@ -106,6 +106,13 @@ public class ButtonDispatcher {
         }
     }
 
+    public void setSelected(boolean selected) {
+        final int N = mViews.size();
+        for (int i = 0; i < N; i++) {
+            mViews.get(i).setSelected(selected);
+        }
+    }
+
     public void abortCurrentGesture() {
         // This seems to be an instantaneous thing, so not going to persist it.
         final int N = mViews.size();

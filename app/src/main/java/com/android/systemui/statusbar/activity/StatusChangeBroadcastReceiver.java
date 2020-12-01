@@ -177,6 +177,26 @@ public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
                 String weather = intent.getStringExtra("weatherInfo");
                 NotifyMessageManager.getInstance().updateWeather(weather);
                 break;
+            case CustomValue.ACTION_HIDE_NAVIGATION:
+                boolean isHide = intent.getBooleanExtra("KEY_HIDE", false);
+                NotifyMessageManager.getInstance().hideNavigationBar(isHide);
+                break;
+            case CustomValue.ACTION_SETTINGS_FUNCTION:
+                String keyType = intent.getStringExtra("key_type");
+                switch (keyType) {
+//                    case "CLOSE_GPS":
+//                        boolean isClose = intent.getBooleanExtra("CLOSE_GPS", false);
+//                        settingsFunctionTool.openGPS(isClose);
+//                        break;
+                    case "FORMAT_SD":
+                        settingsFunctionTool.startFormatting();
+                        break;
+//                    case "CLOSE_4G":
+//                        boolean isClose4G = intent.getBooleanExtra("CLOSE_4G", false);
+//                        settingsFunctionTool.setDataEnabled(isClose4G);
+//                        break;
+                }
+                break;
         }
 
     }
