@@ -417,7 +417,7 @@ public class PowerUI extends SystemUI {
                     WindowManager.LayoutParams.PRIVATE_FLAG_SHOW_FOR_ALL_USERS;
 
             dialog.show();
-            View view = View.inflate(mContext, R.layout.bx_usbchanger, null);
+            View view = View.inflate(mContext, R.layout.dialog_layout_kd003, null);
             TextView guanji = (TextView) view.findViewById(R.id.btn_downnow);
             TextView chongqi = (TextView) view.findViewById(R.id.btn_dontdow);
             outtime = (TextView) view.findViewById(R.id.tv_downtime);
