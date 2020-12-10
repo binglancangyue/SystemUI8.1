@@ -220,6 +220,7 @@
     <!--new feature of SubsidyLock -->
     <protected-broadcast android:name = "com.slc.action.ACTION_USER_UNLOCK"/>
     <!-- @} -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <application
         android:name=".SystemUIApplication"
         android:persistent="true"

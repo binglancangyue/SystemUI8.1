@@ -17,8 +17,7 @@
     xmlns:systemui="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_navigation_bar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/icon_bg_7in">
+    android:layout_height="match_parent">
 
     <com.android.systemui.statusbar.phone.NearestTouchFrame
         android:id="@+id/nav_buttons"
@@ -33,15 +32,15 @@
             android:orientation="horizontal" />
 
         <LinearLayout
+            android:paddingVertical="45dp"
             android:id="@+id/center_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/icon_bg_7in"
+            android:background="@drawable/icon_t10_nav_bg"
             android:clipChildren="false"
-            android:divider="@drawable/icon_item_divider_7in"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:showDividers="middle" />
+            android:orientation="vertical"
+            />
 
     </com.android.systemui.statusbar.phone.NearestTouchFrame>
 

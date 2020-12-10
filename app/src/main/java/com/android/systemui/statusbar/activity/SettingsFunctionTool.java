@@ -61,7 +61,7 @@ public class SettingsFunctionTool {
     private PowerManager mPowerManager;
     public static final String fm_power_path = "/sys/class/QN8027/QN8027/power_state";
     public static final String fm_tunetoch_path = "/sys/class/QN8027/QN8027/tunetoch";
-    public static final int STREAM_TYPE = AudioManager.STREAM_VOICE_CALL;
+    public static final int STREAM_TYPE = AudioManager.STREAM_MUSIC;
     public static final String EXTRA_FORMAT_PRIVATE = "format_private";
     public static final String EXTRA_FORGET_UUID = "forget_uuid";
 

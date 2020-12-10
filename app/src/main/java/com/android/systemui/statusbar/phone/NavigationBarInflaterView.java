@@ -150,7 +150,7 @@ public class NavigationBarInflaterView extends FrameLayout
     private void inflateChildren() {
         removeAllViews();
         mRot0 = (FrameLayout) mLayoutInflater.inflate(R.layout.navigation_layout, this, false);
-        setBackGround();
+//        setBackGround();
         mRot0.setId(R.id.rot0);
         addView(mRot0);
         mRot90 = (FrameLayout) mLayoutInflater.inflate(R.layout.navigation_layout_rot90, this,
@@ -165,23 +165,12 @@ public class NavigationBarInflaterView extends FrameLayout
 
     protected String getDefaultLayout() {
         /* SPRD: Bug 692453 new feature of dynamic navigationbar @{ */
-        if (mSupportDynamicBar) {
-            return readLNavigationLayoutSettings();
-        }
+//        if (mSupportDynamicBar) {
+//            return readLNavigationLayoutSettings();
+//        }
         /* @} */
-        if (CustomValue.SCREEN_3IN_KD003) {
-            return mContext.getString(R.string.config_navBarLayout_kd003);
-        } else if (CustomValue.SCREEN_3) {
-            return mContext.getString(R.string.config_navBarLayout_kd002);
-        } else if (CustomValue.ENGLISH_VERSION) {
-            if (CustomValue.NOT_DVR) {
-                return mContext.getString(R.string.config_navBarLayout_not_dvr);
-            } else {
-                return mContext.getString(R.string.config_navBarLayout_english);
-            }
-        } else {
-            return mContext.getString(R.string.config_navBarLayout);
-        }
+            return mContext.getString(R.string.config_navBarLayout_t10);
+
     }
 
     /* SPRD: Bug 692453 new feature of dynamic navigationbar @{ */

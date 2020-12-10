@@ -40,6 +40,7 @@ import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.inputmethodservice.InputMethodService;
+import android.media.AudioManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
@@ -146,7 +147,7 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     public final static String ACTION_OPEN_OR_CLOSE_TXZ = "com.bixin.launcher_t20.action.txz.openOrClose";
     public static final String ACTION_DVR_PREVIEW = "com.bx.carDVR";
     private SharedPreferencesTool mPreferencesTool;
-
+    private AudioManager audioManager;
     // ----- Fragment Lifecycle Callbacks -----
 
     @Override
@@ -181,6 +182,7 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         }
         //by lym start
         NotifyMessageManager.getInstance().setOnShowSettingsWindowListener(this);
+        audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
         //end
     }
 
@@ -426,7 +428,8 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         //by lym start
         ButtonDispatcher voiceButton = mNavigationBarView.getVoiceButton();
         voiceButton.setOnClickListener(this::startVoiceUi);
-        voiceButton.setOnLongClickListener(this::stopTXZ);
+        voiceButton.getCurrentView().setSelected(isMicrophoneMute());
+//        voiceButton.setOnLongClickListener(this::stopTXZ);
 //        voiceButton.setOnTouchListener(this::onVoiceTouch);
         ButtonDispatcher dvrButton = mNavigationBarView.getDRVButton();
         dvrButton.setOnClickListener(this::startDVRPreview);
@@ -606,10 +609,32 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     }
 
     private void startVoiceUi(View view) {
-        mNavigationBarView.showIndicatorBar(2);
-        Intent intent = new Intent(ACTION_OPEN_TXZ_VIEW);
-        SystemUIApplication.getInstance().sendBroadcast(intent);
+        if (isMicrophoneMute()) {
+            setMicrophoneMute(false);
+            view.setSelected(false);
+            Log.d(TAG, "startVoiceUi: false");
+        } else {
+            setMicrophoneMute(true);
+            view.setSelected(true);
+            Log.d(TAG, "startVoiceUi: true");
+        }
+//        mNavigationBarView.showIndicatorBar(2);
+//        Intent intent = new Intent(ACTION_OPEN_TXZ_VIEW);
+//        SystemUIApplication.getInstance().sendBroadcast(intent);
     }
+
+    public void setMicrophoneMute(boolean b) {
+        if (audioManager != null) {
+            audioManager.setMode(AudioManager.MODE_NORMAL);
+            Log.d("test", "closeOrOpen: " + b);
+            audioManager.setMicrophoneMute(b);
+        }
+    }
+
+    public boolean isMicrophoneMute() {
+        return audioManager.isMicrophoneMute();
+    }
+
 
     private boolean stopTXZ(View view) {
         Log.d(TAG, "stopTXZ: ");

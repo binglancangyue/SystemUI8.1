@@ -73,61 +73,32 @@ public class WifiIcons {
     static int WIFI_NO_NETWORK;
 
     static {
-        if (CustomValue.SCREEN_3) {
-            WIFI_SIGNAL_STRENGTH = new int[][]{
-                    {R.drawable.stat_sys_wifi_signal_0,
-                            R.drawable.stat_sys_wifi_signal_1,
-                            R.drawable.stat_sys_wifi_signal_2,
-                            R.drawable.stat_sys_wifi_signal_3,
-                            R.drawable.stat_sys_wifi_signal_4},
-                    {R.drawable.stat_sys_wifi_signal_0_fully,
-                            R.drawable.stat_sys_wifi_signal_1_fully,
-                            R.drawable.stat_sys_wifi_signal_2_fully,
-                            R.drawable.stat_sys_wifi_signal_3_fully,
-                            R.drawable.stat_sys_wifi_signal_4_fully}
-            };
-            QS_WIFI_SIGNAL_STRENGTH = new int[][]{
-                    {R.drawable.ic_qs_wifi_0,
-                            R.drawable.ic_qs_wifi_1,
-                            R.drawable.ic_qs_wifi_2,
-                            R.drawable.ic_qs_wifi_3,
-                            R.drawable.ic_qs_wifi_4},
-                    {R.drawable.ic_qs_wifi_full_0,
-                            R.drawable.ic_qs_wifi_full_1,
-                            R.drawable.ic_qs_wifi_full_2,
-                            R.drawable.ic_qs_wifi_full_3,
-                            R.drawable.ic_qs_wifi_full_4}
-            };
-            QS_WIFI_NO_NETWORK = R.drawable.ic_qs_wifi_no_network;
-            WIFI_NO_NETWORK = R.drawable.stat_sys_wifi_signal_null;
-        } else {
-            WIFI_SIGNAL_STRENGTH = new int[][]{
-                    {R.drawable.ic_bx_wifi_0,
-                            R.drawable.ic_bx_wifi_1,
-                            R.drawable.ic_bx_wifi_2,
-                            R.drawable.ic_bx_wifi_3,
-                            R.drawable.ic_bx_wifi_4},
-                    {R.drawable.ic_bx_wifi_full_0,
-                            R.drawable.ic_bx_wifi_full_1,
-                            R.drawable.ic_bx_wifi_full_2,
-                            R.drawable.ic_bx_wifi_full_3,
-                            R.drawable.ic_bx_wifi_full_4}
-            };
-            QS_WIFI_SIGNAL_STRENGTH = new int[][]{
-                    {R.drawable.stat_bx_sys_wifi_signal_0,
-                            R.drawable.stat_bx_sys_wifi_signal_1,
-                            R.drawable.stat_bx_sys_wifi_signal_3,
-                            R.drawable.stat_bx_sys_wifi_signal_4,
-                            R.drawable.stat_bx_sys_wifi_signal_4},
-                    {R.drawable.stat_bx_sys_wifi_signal_0_fully,
-                            R.drawable.stat_bx_sys_wifi_signal_1_fully,
-                            R.drawable.stat_bx_sys_wifi_signal_2_fully,
-                            R.drawable.stat_bx_sys_wifi_signal_3_fully,
-                            R.drawable.stat_bx_sys_wifi_signal_4_fully}
-            };
-            QS_WIFI_NO_NETWORK = R.drawable.stat_bx_sys_wifi_signal_null;
-            WIFI_NO_NETWORK = R.drawable.ic_bx_wifi_no_network;
-        }
+        WIFI_SIGNAL_STRENGTH = new int[][]{
+                {R.drawable.stat_sys_wifi_signal_0,
+                        R.drawable.stat_sys_wifi_signal_1,
+                        R.drawable.stat_sys_wifi_signal_2,
+                        R.drawable.stat_sys_wifi_signal_3,
+                        R.drawable.stat_sys_wifi_signal_4},
+                {R.drawable.stat_sys_wifi_signal_0_fully,
+                        R.drawable.stat_sys_wifi_signal_1_fully,
+                        R.drawable.stat_sys_wifi_signal_2_fully,
+                        R.drawable.stat_sys_wifi_signal_3_fully,
+                        R.drawable.stat_sys_wifi_signal_4_fully}
+        };
+        QS_WIFI_SIGNAL_STRENGTH = new int[][]{
+                {R.drawable.ic_qs_wifi_0,
+                        R.drawable.ic_qs_wifi_1,
+                        R.drawable.ic_qs_wifi_2,
+                        R.drawable.ic_qs_wifi_3,
+                        R.drawable.ic_qs_wifi_4},
+                {R.drawable.ic_qs_wifi_full_0,
+                        R.drawable.ic_qs_wifi_full_1,
+                        R.drawable.ic_qs_wifi_full_2,
+                        R.drawable.ic_qs_wifi_full_3,
+                        R.drawable.ic_qs_wifi_full_4}
+        };
+        QS_WIFI_NO_NETWORK = R.drawable.ic_qs_wifi_no_network;
+        WIFI_NO_NETWORK = R.drawable.stat_sys_wifi_signal_null;
     }
 
 //        static final int QS_WIFI_NO_NETWORK = R.drawable.ic_qs_wifi_no_network;

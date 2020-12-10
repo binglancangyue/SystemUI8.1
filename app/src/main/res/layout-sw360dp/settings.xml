@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.android.systemui.statusbar.policy.KeyButtonView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<com.android.systemui.statusbar.policy.KeyButtonView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:systemui="http://schemas.android.com/apk/res-auto"
     android:id="@+id/settings"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:contentDescription="@string/accessibility_settings"
-    android:scaleType="fitCenter" />
+    android:layout_height="50dp"
 
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:contentDescription="@string/accessibility_settings"
+    android:scaleType="fitCenter" />-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:systemui="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1">
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:gravity="center">
 
     <com.android.systemui.statusbar.policy.KeyButtonView
         android:id="@+id/settings"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/accessibility_settings"
         android:scaleType="fitCenter" />
-
-    <ImageView
-        android:id="@+id/iv_settings_indicator_bar"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_gravity="bottom"
-        android:src="@drawable/icon_btn_bg_7in"
-        android:visibility="gone" />
-</FrameLayout>-->
+</RelativeLayout>
 

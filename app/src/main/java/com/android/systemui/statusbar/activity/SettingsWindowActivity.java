@@ -161,7 +161,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
             heightPixels = (int) (metric.heightPixels * 0.62f);
         }
         if (CustomValue.SCREEN_439IN) {
-            widthPixels = (int) (metric.widthPixels * 0.95f);
+            widthPixels = (int) (metric.widthPixels * 0.98f);
             heightPixels = (int) (metric.heightPixels * 0.8f);
         }
         if (CustomValue.IS_966) {
@@ -171,7 +171,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         }
         lp.width = widthPixels;
         lp.height = heightPixels;
-        lp.gravity= Gravity.CENTER_HORIZONTAL;
+        lp.gravity = Gravity.CENTER_HORIZONTAL;
         window.setAttributes(lp);
     }
 
@@ -198,9 +198,8 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         if (CustomValue.NOT_MOBILE_WIFI) {
             llWirelessDataRow.setVisibility(View.GONE);
         }
-        if (CustomValue.NOT_DVR) {
-            llBtnDVR.setVisibility(View.GONE);
-        }
+        llBtnDVR.setVisibility(View.GONE);
+
         //Brightness
         updateBrightness();
         //Volume
@@ -335,6 +334,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         rbADASHigh = findViewById(R.id.rb_adas_value_high);
 
         RelativeLayout btnDvrFormat = findViewById(R.id.btn_dvr_format);
+        btnDvrFormat.setVisibility(View.GONE);
         RelativeLayout btnDvrBT = findViewById(R.id.btn_dvr_bt);
         RelativeLayout btnDvrSystemSettings = findViewById(R.id.btn_dvr_settings);
 
@@ -952,7 +952,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         tvBrightnessValue.setText(String.valueOf(brightness));
     }
 
-    private void setMaxScreenOffTimeOut(){
+    private void setMaxScreenOffTimeOut() {
         cleanFunctionRBCheck();
         cleanTimeRBCheck();
         rbBright.setChecked(true);

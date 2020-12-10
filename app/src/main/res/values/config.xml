@@ -331,6 +331,7 @@
     <string name="config_navBarLayout_kd002" translatable="false">left;camera,home,back;right</string>
     <string name="config_navBarLayout_english" translatable="false">left;camera,home,back,settings;right</string>
     <string name="config_navBarLayout_not_dvr" translatable="false">left;home,back,settings;right</string>
+    <string name="config_navBarLayout_t10" translatable="false">left;voice,settings,home,back;right</string>
     <bool name="quick_settings_show_full_alarm">false</bool>
 
     <!-- Whether to show a warning notification when the device reaches a certain temperature. -->

@@ -37,7 +37,7 @@ public class CustomValue {
     public static final boolean SCREEN_3 = false;//kd002 3寸屏  不需要语音识别
     public static final boolean SCREEN_3_BX = false;//比心3寸屏
     public static final boolean SCREEN_3IN_KD003 = false;//3寸屏 多了个后摄像头按钮
-    public static final boolean SCREEN_439IN = false;//4.39寸屏
+    public static final boolean SCREEN_439IN = true;//4.39寸屏
     public static final boolean IS_966 = false;//9.66寸 车镜
 
     /***特殊需求***/
@@ -53,38 +53,26 @@ public class CustomValue {
      * STATUS_BAR_ICON_TYPE: 状态栏图标样式
      * 0:默认(系统原样式) 1:7in
      */
-    public static final int ICON_TYPE = 2;
-    public static final int STATUS_BAR_ICON_TYPE = 1;
+    public static final int ICON_TYPE = 0;
+    public static final int STATUS_BAR_ICON_TYPE = 0;
 
     public static final int[] HOME_ICONS = {
-            R.drawable.icon_home_3in, R.drawable.ic_home_3in_kd003,
-            R.drawable.icon_home_7in, R.drawable.icon_home_7in,
-            R.drawable.ic_bx_btn_home_3in};
+            R.drawable.selector_home_home};
 
     public static final int[] BACK_ICONS = {
-            R.drawable.icon_back_3in, R.drawable.ic_back_3in_kd003,
-            R.drawable.icon_back_7in, R.drawable.ic_bx_btn_back,
-            R.drawable.ic_bx_btn_back_3in};
+            R.drawable.selector_home_back};
 
     public static final int[] FRONT_CAMERA_ICONS = {
-            R.drawable.icon_camera_3in, R.drawable.ic_front_3in_kd003,
-            R.drawable.icon_camera_7in, R.drawable.ic_bx_btn_streaming,
-            R.drawable.ic_bx_btn_streaming};
+            R.drawable.icon_camera_3in};
 
     public static final int[] BACK_CAMERA_ICONS = {
-            R.drawable.ic_back_facing_3in_kd003, R.drawable.ic_back_facing_3in_kd003,
-            R.drawable.ic_back_facing_3in_kd003, R.drawable.ic_back_facing_3in_kd003,
-            R.drawable.ic_back_facing_3in_kd003};
+            R.drawable.selector_home_settings};
 
     public static final int[] VOICE_ICONS = {
-            R.drawable.icon_voice, R.drawable.icon_voice_7in,
-            R.drawable.icon_voice_7in, R.drawable.home_voice_selector,
             R.drawable.selector_home_voice};
 
     public static final int[] SETTINGS_ICONS = {
-            R.drawable.icon_settings, R.drawable.icon_settings,
-            R.drawable.icon_setttings_7in, R.drawable.icon_setttings_7in,
-            R.drawable.ic_bx_btn_settings_3in};
+            R.drawable.icon_t10_settings};
 
     public static final int[] LOCATION_STATUS_ICON = {
             R.drawable.stat_sys_location, R.drawable.stat_sys_location_bx_7in};

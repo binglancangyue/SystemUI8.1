@@ -2126,7 +2126,7 @@
     <string name="mobile_data_status_unconnected">Not connected</string>
     <string name="rb_close_screen">Screen out</string>
     <string name="rb_screen_saver">Screen saver</string>
-    <string name="tv_screen_saver">Screen saver time</string>
+    <string name="tv_screen_saver">Saver time</string>
     <string name="rb_always_bright">Light</string>
     <string name="adjust_brightness">Brightness</string>
     <string name="rb_time_1min">1min</string>
