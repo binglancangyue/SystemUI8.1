@@ -490,7 +490,7 @@ public class PowerUI extends SystemUI {
      * by lym kd003 shot down style
      */
     void kd003ShotDown() {
-        if (kd003Dialog == null) {
+/*        if (kd003Dialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             View view = View.inflate(mContext, R.layout.dialog_layout_kd003, null);
             builder.setView(view);
@@ -514,7 +514,7 @@ public class PowerUI extends SystemUI {
             kd003Dialog.getWindow().getAttributes().privateFlags |=
                     WindowManager.LayoutParams.PRIVATE_FLAG_SHOW_FOR_ALL_USERS;
         }
-        showAlertDialog(kd003Dialog);
+        showAlertDialog(kd003Dialog);*/
     }
 
     private void showAlertDialog(AlertDialog alertDialog) {

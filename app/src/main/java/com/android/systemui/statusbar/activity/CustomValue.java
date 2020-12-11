@@ -55,7 +55,7 @@ public class CustomValue {
      * 0:默认(系统原样式) 1:7in
      */
     public static final int ICON_TYPE = 1;
-    public static final int STATUS_BAR_ICON_TYPE = 1;
+    public static final int STATUS_BAR_ICON_TYPE = 0;
 
     public static final int[] HOME_ICONS = {
             R.drawable.icon_home_3in, R.drawable.ic_home_3in_kd003,
