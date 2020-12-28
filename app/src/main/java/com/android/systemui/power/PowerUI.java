@@ -47,6 +47,8 @@ import com.android.systemui.statusbar.phone.StatusBar;
 import com.sprd.systemui.power.SprdPowerUI;
 
 import java.io.FileDescriptor;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 //add by lidf
@@ -106,6 +108,7 @@ public class PowerUI extends SystemUI {
     private SprdPowerUI mSprdPowerUI = null;
     private static final boolean SPRD_DEBUG =true;
     /* @} */
+
     private AlertDialog kd003Dialog;
 
     public void start() {
@@ -138,6 +141,16 @@ public class PowerUI extends SystemUI {
         /* SPRD: Modified for bug 505221/692451, add voltage high warning @{ */
         mSprdPowerUI = new SprdPowerUI(mContext);
         /* @} */
+
+        if (CustomValue.IS_SUPPORT_ACC) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mCheckAcc.start();
+                }
+            }, 10 * 1000);
+        }
+
     }
 
     @Override
@@ -754,5 +767,72 @@ public class PowerUI extends SystemUI {
         void dump(PrintWriter pw);
         void userSwitched();
     }
+
+    //ACC start
+    private static final String ACC_STATE = "bx_acc_state";
+    private boolean isCheckAcc = true;
+    private static final int STATE_ACC_OFF = 0;
+    private static final int STATE_ACC_ON = 1;
+    private int mAccState = -1;
+    private char accValue = '0';
+    private char[] accBuf = new char[5];
+    private static final int TIME_CHECK_ACC_DURATION = 1 * 1000;
+
+    private Thread mCheckAcc = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            Log.i(TAG, "start to check acc...");
+            while (isCheckAcc) {
+                readAcc();
+                accValue = accBuf[2];
+                Log.d(TAG, "run() accValue = " + accValue);
+                if (accValue == '1' && mAccState != STATE_ACC_ON) {
+                    mAccState = STATE_ACC_ON;
+                    Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_ON);
+                    sendStateCode(0);
+                } else if (accValue == '0' && mAccState != STATE_ACC_OFF) {
+                    mAccState = STATE_ACC_OFF;
+                    Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_OFF);
+                    sendStateCode(1);
+                }
+                try {
+                    Thread.sleep(TIME_CHECK_ACC_DURATION);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "mCheckAcc InterruptedException " + e.getMessage());
+                    isCheckAcc = false;
+                }
+            }
+            Log.i(TAG, "check acc end ...");
+        }
+    });
+
+    private void readAcc() {
+        FileReader reader = null;
+        try {
+            reader = new FileReader(CustomValue.ACC_PATH);
+            reader.read(accBuf);
+        } catch (IOException ex) {
+            isCheckAcc = false;
+            Log.e(TAG, "readAcc() IOException " + ex.getMessage());
+        } catch (NumberFormatException e) {
+            isCheckAcc = false;
+            Log.e(TAG, "readAcc() IOException " + e.getMessage());
+        } finally {
+            if (null != reader) {
+                try {
+                    reader.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
+    }
+    //end
+
+    private void sendStateCode(int code) {
+        Intent it = new Intent("com.transiot.kardidvr003");
+        it.putExtra("machineState", code);
+        mContext.sendBroadcast(it);
+    }
+
 }
 

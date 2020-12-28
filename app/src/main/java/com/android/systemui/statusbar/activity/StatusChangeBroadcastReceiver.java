@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.android.systemui.SystemUIApplication;
@@ -197,6 +198,12 @@ public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
 //                        break;
                 }
                 break;
+            case Intent.ACTION_SCREEN_OFF:
+                sendToDVR003(false);
+                break;
+            case Intent.ACTION_SCREEN_ON:
+                sendToDVR003(true);
+                break;
         }
 
     }
@@ -228,4 +235,22 @@ public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
 //        }
     }
 
+    private void sendToDVR003(boolean isOpen) {
+        int accState = Settings.Global.getInt(SystemUIApplication.getInstance().getContentResolver(),
+                "bx_acc_state", 1);
+        if (accState != 0) {
+            return;
+        }
+        if (isOpen) {
+            sendStateCode(0);
+        } else {
+            sendStateCode(1);
+        }
+    }
+
+    private void sendStateCode(int code) {
+        Intent it = new Intent("com.transiot.kardidvr003");
+        it.putExtra("machineState", code);
+        SystemUIApplication.getInstance().sendBroadcast(it);
+    }
 }
