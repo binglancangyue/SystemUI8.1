@@ -623,10 +623,10 @@ public class SettingsFunctionTool {
 
 
     public void startFormatting() {
-        aa();
-        /*StorageManager mStorage = (StorageManager) SystemUIApplication.getInstance()
+        StorageManager mStorage = (StorageManager) SystemUIApplication.getInstance()
                 .getSystemService(Context.STORAGE_SERVICE);
-        DiskInfo mDisk = mStorage.findDiskById("disk:179,64");
+//        DiskInfo mDisk = mStorage.findDiskById("disk:179,64");
+        DiskInfo mDisk = getDiskId(mStorage);
         Intent intent = new Intent();
         intent.setClassName("com.android.settings", "com.android.settings.deviceinfo.StorageWizardFormatProgress");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -634,7 +634,7 @@ public class SettingsFunctionTool {
         intent.putExtra(DiskInfo.EXTRA_DISK_ID, mDisk.getId());
         intent.putExtra(EXTRA_FORMAT_PRIVATE, false);
         intent.putExtra(EXTRA_FORGET_UUID, "");
-        mContext.startActivity(intent);*/
+        mContext.startActivity(intent);
     }
 
     public int getWeatherIcon(String weather) {
@@ -734,17 +734,17 @@ public class SettingsFunctionTool {
         return mWifiInfo.isConnected();
     }
 
-    private void aa(){
-        StorageManager mStorage = (StorageManager) SystemUIApplication.getInstance()
-                .getSystemService(Context.STORAGE_SERVICE);
+    private DiskInfo getDiskId(StorageManager mStorage) {
+//        String id = null;
+        DiskInfo diskinfo = null;
         for (VolumeInfo volumeInfo : mStorage.getVolumes()) {
-            //这里NTFS的SD卡未挂载，类型算是未知
             if (VolumeInfo.TYPE_PUBLIC == volumeInfo.getType()) {
-
+//                id = volumeInfo.getDiskId();
+                diskinfo = volumeInfo.getDisk();
+                Log.d(TAG, "aa: VolumeInfo " + volumeInfo.getType() + " " + volumeInfo.getDiskId());
             }
-            DiskInfo aa = volumeInfo.getDisk();
-            Log.d(TAG, "aa: VolumeInfo " + volumeInfo.getType() + " " + volumeInfo.getDiskId());
         }
+        return diskinfo;
     }
 
 }
