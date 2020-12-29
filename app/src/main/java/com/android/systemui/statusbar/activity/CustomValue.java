@@ -41,10 +41,10 @@ public class CustomValue {
     public static final boolean IS_966 = false;//9.66寸 车镜
 
     /***特殊需求***/
-    public static final boolean ENGLISH_VERSION = false;//英文版本 不需要语音识别
+    public static final boolean ENGLISH_VERSION = true;//英文版本 不需要语音识别
     public static final boolean NOT_MOBILE_NETWORK = false;//7in 英文版 无移动网络
     public static final boolean NOT_MOBILE_WIFI = false;//7in 英文版 无wifi
-    public static final boolean NOT_DVR = false;//7in 英文版 无DVR
+    public static final boolean NOT_DVR = true;//7in 英文版 无DVR
 
     /**
      * ICON_TYPE: 导航栏图标样式
