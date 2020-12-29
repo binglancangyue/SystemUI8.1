@@ -743,8 +743,7 @@ public class SettingsFunctionTool {
 
             }
             DiskInfo aa = volumeInfo.getDisk();
-            Log.d(TAG, "aa: VolumeInfo " + volumeInfo.getType() + " " + aa.toString()
-                    + " " + aa.getId());
+            Log.d(TAG, "aa: VolumeInfo " + volumeInfo.getType() + " " + volumeInfo.getDiskId());
         }
     }
 
