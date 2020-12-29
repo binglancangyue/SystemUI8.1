@@ -334,7 +334,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         rbADASHigh = findViewById(R.id.rb_adas_value_high);
 
         RelativeLayout btnDvrFormat = findViewById(R.id.btn_dvr_format);
-        btnDvrFormat.setVisibility(View.GONE);
         RelativeLayout btnDvrBT = findViewById(R.id.btn_dvr_bt);
         RelativeLayout btnDvrSystemSettings = findViewById(R.id.btn_dvr_settings);
 
