@@ -509,12 +509,12 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     }
 
     public void formatSDCard() {
-        if (CustomValue.NOT_DVR) {
+//        if (CustomValue.NOT_DVR) {
             mSettingsUtils.startFormatting();
-        } else {
-            Intent intent = new Intent(CustomValue.ACTION_FORMAT_SD_CARD);
-            sendBroadcast(intent);
-        }
+//        } else {
+//            Intent intent = new Intent(CustomValue.ACTION_FORMAT_SD_CARD);
+//            sendBroadcast(intent);
+//        }
     }
 
     private void startSettings() {

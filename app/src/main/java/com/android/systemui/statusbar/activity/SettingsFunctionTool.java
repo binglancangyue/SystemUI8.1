@@ -42,7 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.os.storage.DiskInfo;
-
+import android.os.storage.VolumeInfo;
 
 /**
  * @author Altair
@@ -623,7 +623,9 @@ public class SettingsFunctionTool {
 
 
     public void startFormatting() {
-        StorageManager mStorage = mContext.getSystemService(StorageManager.class);
+        aa();
+        /*StorageManager mStorage = (StorageManager) SystemUIApplication.getInstance()
+                .getSystemService(Context.STORAGE_SERVICE);
         DiskInfo mDisk = mStorage.findDiskById("disk:179,64");
         Intent intent = new Intent();
         intent.setClassName("com.android.settings", "com.android.settings.deviceinfo.StorageWizardFormatProgress");
@@ -632,8 +634,7 @@ public class SettingsFunctionTool {
         intent.putExtra(DiskInfo.EXTRA_DISK_ID, mDisk.getId());
         intent.putExtra(EXTRA_FORMAT_PRIVATE, false);
         intent.putExtra(EXTRA_FORGET_UUID, "");
-        mContext.startActivity(intent);
-
+        mContext.startActivity(intent);*/
     }
 
     public int getWeatherIcon(String weather) {
@@ -731,6 +732,20 @@ public class SettingsFunctionTool {
         }
         NetworkInfo mWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return mWifiInfo.isConnected();
+    }
+
+    private void aa(){
+        StorageManager mStorage = (StorageManager) SystemUIApplication.getInstance()
+                .getSystemService(Context.STORAGE_SERVICE);
+        for (VolumeInfo volumeInfo : mStorage.getVolumes()) {
+            //这里NTFS的SD卡未挂载，类型算是未知
+            if (VolumeInfo.TYPE_PUBLIC == volumeInfo.getType()) {
+
+            }
+            DiskInfo aa = volumeInfo.getDisk();
+            Log.d(TAG, "aa: VolumeInfo " + volumeInfo.getType() + " " + aa.toString()
+                    + " " + aa.getId());
+        }
     }
 
 }
