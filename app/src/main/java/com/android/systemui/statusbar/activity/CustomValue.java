@@ -35,9 +35,9 @@ public class CustomValue {
     public final static String ACTION_SETTINGS_FUNCTION="com.bixin.launcher.action.settings_function";
 
     /***平台***/
-    public static final boolean SCREEN_3 = true;//kd002 3寸屏  不需要语音识别
+    public static final boolean SCREEN_3 = false;//kd002 3寸屏  不需要语音识别
     public static final boolean SCREEN_3_BX = false;//比心3寸屏
-    public static final boolean SCREEN_3IN_KD003 = false;//3寸屏 多了个后摄像头按钮
+    public static final boolean SCREEN_3IN_KD003 = true;//3寸屏 多了个后摄像头按钮
     public static final boolean SCREEN_439IN = false;//4.39寸屏
     public static final boolean IS_966 = false;//9.66寸 车镜
 
@@ -54,7 +54,7 @@ public class CustomValue {
      * STATUS_BAR_ICON_TYPE: 状态栏图标样式
      * 0:默认(系统原样式) 1:7in
      */
-    public static final int ICON_TYPE = 0;
+    public static final int ICON_TYPE = 1;
     public static final int STATUS_BAR_ICON_TYPE = 0;
 
     public static final int[] HOME_ICONS = {
