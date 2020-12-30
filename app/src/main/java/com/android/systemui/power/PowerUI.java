@@ -301,7 +301,7 @@ public class PowerUI extends SystemUI {
 
                     // only play SFX when the dialog comes up or the bucket changes
                     final boolean playSound = bucket != oldBucket || oldPlugged;
-                    mWarnings.showLowBatteryWarning(playSound);
+//                    mWarnings.showLowBatteryWarning(playSound);
                 } else if (isPowerSaver || plugged || (bucket > oldBucket && bucket > 0)) {
                     mWarnings.dismissLowBatteryWarning();
                 } else {
@@ -310,7 +310,7 @@ public class PowerUI extends SystemUI {
 
                 if (plugged && mBatteryLevel < mLowBatteryReminderLevels[1] &&
                     (mBatteryLevel != oldBatteryLevel || !oldPlugged)) {
-                    mWarnings.showCriticalBatteryWarningDialog();
+//                    mWarnings.showCriticalBatteryWarningDialog();
                 } else if (!plugged || mBatteryLevel >= mLowBatteryReminderLevels[1]){
                     mWarnings.dismissCriticalBatteryWarningDialog();
                 }
@@ -789,11 +789,11 @@ public class PowerUI extends SystemUI {
                 if (accValue == '1' && mAccState != STATE_ACC_ON) {
                     mAccState = STATE_ACC_ON;
                     Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_ON);
-                    sendStateCode(0);
+                    sendStateCode(3);
                 } else if (accValue == '0' && mAccState != STATE_ACC_OFF) {
                     mAccState = STATE_ACC_OFF;
                     Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_OFF);
-                    sendStateCode(1);
+                    sendStateCode(2);
                 }
                 try {
                     Thread.sleep(TIME_CHECK_ACC_DURATION);
@@ -829,7 +829,7 @@ public class PowerUI extends SystemUI {
     //end
 
     private void sendStateCode(int code) {
-        Intent it = new Intent("com.transiot.kardidvr003");
+        Intent it = new Intent("com.transiot.kardidvr003.machineState");
         it.putExtra("machineState", code);
         mContext.sendBroadcast(it);
     }
