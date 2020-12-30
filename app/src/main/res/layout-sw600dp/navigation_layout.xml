@@ -36,23 +36,24 @@
             android:clipChildren="false"
             android:orientation="horizontal" />
 
-        <!--    <LinearLayout
-                android:id="@+id/center_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:background="@drawable/icon_bx_bg_left"
-                android:gravity="center_horizontal"
-                android:orientation="vertical" />-->
+<!--        <LinearLayout
+            android:id="@+id/center_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:background="@drawable/icon_bx_bg_left"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" />-->
 
         <LinearLayout
             android:id="@+id/center_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#1f1f1f"
             android:clipChildren="false"
-            android:gravity="center"
-            android:orientation="horizontal" />
+            android:divider="@drawable/shape_horizontal_divider"
+            android:gravity="center|top"
+            android:orientation="horizontal"
+            android:showDividers="middle" />
 
     </com.android.systemui.statusbar.phone.NearestTouchFrame>
 
