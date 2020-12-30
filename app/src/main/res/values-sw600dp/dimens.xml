@@ -95,7 +95,7 @@
     <dimen name="navigation_key_padding">25dp</dimen>
 -->
     <dimen name="navigation_key_padding">0dp</dimen>
-    <dimen name="navigation_key_height">68dp</dimen>
+    <dimen name="navigation_key_height">65dp</dimen>
     <!-- Keyboard shortcuts helper -->
     <dimen name="ksh_layout_width">488dp</dimen>
 
