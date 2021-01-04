@@ -788,12 +788,13 @@ public class PowerUI extends SystemUI {
                 Log.d(TAG, "run() accValue = " + accValue);
                 if (accValue == '1' && mAccState != STATE_ACC_ON) {
                     mAccState = STATE_ACC_ON;
-                    Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_ON);
                     sendStateCode(3);
+                    Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_ON);
+//                    sendStateCode(0);
                 } else if (accValue == '0' && mAccState != STATE_ACC_OFF) {
                     mAccState = STATE_ACC_OFF;
-                    Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_OFF);
                     sendStateCode(2);
+                    Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_OFF);
                 }
                 try {
                     Thread.sleep(TIME_CHECK_ACC_DURATION);
@@ -829,7 +830,8 @@ public class PowerUI extends SystemUI {
     //end
 
     private void sendStateCode(int code) {
-        Intent it = new Intent("com.transiot.kardidvr003.machineState");
+        Log.d(TAG, "sendStateCode: " + code);
+        Intent it = new Intent(CustomValue.ACTION_TW_STATE);
         it.putExtra("machineState", code);
         mContext.sendBroadcast(it);
     }

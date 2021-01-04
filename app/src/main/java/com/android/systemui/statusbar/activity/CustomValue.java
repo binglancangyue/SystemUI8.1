@@ -33,6 +33,7 @@ public class CustomValue {
     public static final String ACTION_GO_TO_SLEEP = "com.android.systemui.action_go_to_sleep";
     public final static String ACTION_HIDE_NAVIGATION = "com.bixin.launcher.action.hide_navigation";
     public final static String ACTION_SETTINGS_FUNCTION="com.bixin.launcher.action.settings_function";
+    public static final String ACTION_TW_STATE = "com.transiot.kardidvr003.machineState";
 
     /***平台***/
     public static final boolean SCREEN_3 = false;//kd002 3寸屏  不需要语音识别
