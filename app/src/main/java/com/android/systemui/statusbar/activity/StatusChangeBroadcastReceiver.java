@@ -198,12 +198,6 @@ public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
 //                        break;
                 }
                 break;
-            case Intent.ACTION_SCREEN_OFF:
-                sendToDVR003(false);
-                break;
-            case Intent.ACTION_SCREEN_ON:
-                sendToDVR003(true);
-                break;
         }
 
     }
