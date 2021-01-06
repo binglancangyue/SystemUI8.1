@@ -785,5 +785,6 @@
     <string name="reboot">重啓</string>
     <string name="shutdown">關機</string>
     <string name="shutdown_confirm_time_out_desc"> %1$s 秒後將會關機.</string>
+    <string name="no_sd_card_detected">No SD card detected</string>
     <!--add end-->
 </resources>

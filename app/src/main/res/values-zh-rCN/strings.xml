@@ -845,5 +845,6 @@
     <string name="shutdown_confirm_time_out_desc"> %1$s 秒后将会关机.</string>
     <string name="sleep_confirm_time_out_desc"> %1$s 秒后将会进入休眠.</string>
     <string name="is_sleep">您要进入休眠吗？</string>
+    <string name="no_sd_card_detected">No SD card detected</string>
     <!--add end-->
 </resources>

@@ -627,6 +627,10 @@ public class SettingsFunctionTool {
                 .getSystemService(Context.STORAGE_SERVICE);
 //        DiskInfo mDisk = mStorage.findDiskById("disk:179,64");
         DiskInfo mDisk = getDiskId(mStorage);
+        if (mDisk == null) {
+            ToastTool.showToast(R.string.no_sd_card_detected);
+            return;
+        }
         Intent intent = new Intent();
         intent.setClassName("com.android.settings", "com.android.settings.deviceinfo.StorageWizardFormatProgress");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -741,7 +745,7 @@ public class SettingsFunctionTool {
             if (VolumeInfo.TYPE_PUBLIC == volumeInfo.getType()) {
 //                id = volumeInfo.getDiskId();
                 diskinfo = volumeInfo.getDisk();
-                Log.d(TAG, "aa: VolumeInfo " + volumeInfo.getType() + " " + volumeInfo.getDiskId());
+                Log.d(TAG, "VolumeInfo " + volumeInfo.getType() + " " + volumeInfo.getDiskId());
             }
         }
         return diskinfo;
