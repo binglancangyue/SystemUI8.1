@@ -394,7 +394,6 @@ public class PowerUI extends SystemUI {
     private void powerDisconnected() {
         isCharging = false;
         showConfirmShutdown();
-//        kd003ShotDown();
         mContext.sendBroadcast(new Intent(ACTION_POWER_DISCONNECTED));
     }
 
@@ -500,47 +499,6 @@ public class PowerUI extends SystemUI {
 
 
     /**
-     * by lym kd003 shot down style
-     */
-    void kd003ShotDown() {
-/*        if (kd003Dialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            View view = View.inflate(mContext, R.layout.dialog_layout_kd003, null);
-            builder.setView(view);
-            TextView title = view.findViewById(R.id.tv_dialog_title);
-            TextView message = view.findViewById(R.id.tv_dialog_message);
-            title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    kd003Dialog.dismiss();
-                    shutDown();
-                }
-            });
-            message.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    kd003Dialog.dismiss();
-                }
-            });
-            kd003Dialog = builder.create();
-            kd003Dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_DISPLAY_OVERLAY);
-            kd003Dialog.getWindow().getAttributes().privateFlags |=
-                    WindowManager.LayoutParams.PRIVATE_FLAG_SHOW_FOR_ALL_USERS;
-        }
-        showAlertDialog(kd003Dialog);*/
-    }
-
-    private void showAlertDialog(AlertDialog alertDialog) {
-        if (!alertDialog.isShowing()) {
-            alertDialog.show();
-            WindowManager.LayoutParams params =
-                    alertDialog.getWindow().getAttributes();
-            params.width = (int) mContext.getResources().getDimension(R.dimen.kd003DialogWidth);
-            alertDialog.getWindow().setAttributes(params);
-        }
-    }
-
-    /**
      * add by lym
      */
     void showConfirmSleep() {
@@ -638,9 +596,6 @@ public class PowerUI extends SystemUI {
     void dismissConfirmShutdown() {
         if (mShutdownConfirmDialog != null && mShutdownConfirmDialog.isShowing()) {
             mShutdownConfirmDialog.dismiss();
-        }
-        if (kd003Dialog != null && mShutdownConfirmDialog.isShowing()) {
-            kd003Dialog.dismiss();
         }
     }
     //add end
