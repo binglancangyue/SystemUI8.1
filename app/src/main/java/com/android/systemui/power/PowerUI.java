@@ -745,7 +745,8 @@ public class PowerUI extends SystemUI {
                     mAccState = STATE_ACC_ON;
                     sendStateCode(3);
                     Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_ON);
-//                    sendStateCode(0);
+                    Thread.sleep(TIME_CHECK_ACC_DURATION);
+                    sendStateCode(0);
                 } else if (accValue == '0' && mAccState != STATE_ACC_OFF) {
                     mAccState = STATE_ACC_OFF;
                     sendStateCode(2);
