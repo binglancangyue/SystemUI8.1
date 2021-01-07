@@ -841,5 +841,6 @@
     <string name="is_sleep">您要進入休眠嗎？</string>
     <string name="kd003_shut_down">關機</string>
     <string name="kd003_restart">重新開機</string>
+    <string name="no_sd_card_detected">沒有檢測到SD卡</string>
     <!--add end-->
 </resources>
