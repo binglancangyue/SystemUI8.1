@@ -745,7 +745,11 @@ public class PowerUI extends SystemUI {
                     mAccState = STATE_ACC_ON;
                     sendStateCode(3);
                     Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_ON);
-                    Thread.sleep(TIME_CHECK_ACC_DURATION);
+                    try {
+                        Thread.sleep(TIME_CHECK_ACC_DURATION);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     sendStateCode(0);
                 } else if (accValue == '0' && mAccState != STATE_ACC_OFF) {
                     mAccState = STATE_ACC_OFF;
@@ -778,7 +782,8 @@ public class PowerUI extends SystemUI {
             if (null != reader) {
                 try {
                     reader.close();
-                } catch (IOException e2) {
+                } catch (IOException ignored) {
+                    Log.e(TAG, "readAcc() IOException " + ignored.getMessage());
                 }
             }
         }
