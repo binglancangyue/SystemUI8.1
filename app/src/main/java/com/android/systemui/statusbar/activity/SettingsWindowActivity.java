@@ -147,6 +147,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void setWindowSize() {
         Window window = getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
+        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         //获取手机屏幕的高度
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -217,7 +218,9 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         initADASLevel();
         initCollisionLevel();
         //FM
-        updateBtnFM(mSettingsUtils.getFmStatus());
+        mSettingsUtils.initFM();
+//        updateBtnFM(mSettingsUtils.getFmStatus());
+        updateBtnFM(mSettingsUtils.getFMState());
         Log.d(TAG, "setData: " + mSettingsUtils.isGpsOpen());
 
         //WIFI AP
@@ -1168,6 +1171,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                 hideNavigationBar();
             }
         }
+        sendMessageToDVR(true);
 //        registerGPSContentObserver();
 //        registerBrightnessContentObserver();
     }
@@ -1232,6 +1236,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     @Override
     protected void onStop() {
         super.onStop();
+        sendMessageToDVR(false);
 //        unRegisterContentObserver();
     }
 
@@ -1240,6 +1245,14 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         super.onDestroy();
         Log.d(TAG, "system activity onDestroy: ");
         cleanHandle();
+    }
+
+    public static final String ACTION_SETTINGS_WINDOW = "com.android.systemui.settings_window_state";
+
+    private void sendMessageToDVR(boolean isShow) {
+        Intent intent = new Intent(ACTION_SETTINGS_WINDOW);
+        intent.putExtra("window_state",isShow);
+        sendBroadcast(intent);
     }
 
 }
