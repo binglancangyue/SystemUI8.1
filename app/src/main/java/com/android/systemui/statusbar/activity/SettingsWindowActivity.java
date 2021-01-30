@@ -557,6 +557,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     }
 
     private void setAutoBrightnessCheck(boolean value) {
+        cleanDayOrNightRBCheck();
         rbAuto.setChecked(value);
         mSharedPreferencesTool.saveAutoBrightness(value);
         Log.d(TAG, "setAutoBrightnessCheck: " + value);
@@ -673,6 +674,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void cleanDayOrNightRBCheck() {
         rbDay.setChecked(false);
         rbNight.setChecked(false);
+        rbAuto.setChecked(false);
     }
 
     private void cleanFunctionRBCheck() {
