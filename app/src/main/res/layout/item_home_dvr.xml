@@ -82,4 +82,55 @@
             android:text="@string/dvr_value_high" />
     </LinearLayout>
 
+   <!-- <LinearLayout
+        android:id="@+id/ll_speed_row"
+        style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_alignParentStart="true"
+            android:text="@string/dvr_setting_adas_value" />
+
+        <RadioButton
+            android:id="@+id/rb_speed_open"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_low" />
+
+        <RadioButton
+            android:id="@+id/rb_speed_close"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_middle" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_over_speed_row"
+        style="@style/PopWindowContainerItemLayoutStyle">
+
+        <TextView
+            style="@style/PopWindowContainerTileTextStyle"
+            android:layout_alignParentStart="true"
+            android:text="@string/dvr_setting_over_speed_value" />
+
+        <RadioButton
+            android:id="@+id/rb_over_speed_0"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_low" />
+
+        <RadioButton
+            android:id="@+id/rb_over_speed_5"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_middle" />
+
+        <RadioButton
+            android:id="@+id/rb_over_speed_10"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_middle" />
+
+        <RadioButton
+            android:id="@+id/rb_over_speed_close"
+            style="@style/PopWindowContainerCircularRadioButtonStyle"
+            android:text="@string/dvr_value_middle" />
+    </LinearLayout>-->
+
 </LinearLayout>

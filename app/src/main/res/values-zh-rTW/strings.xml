@@ -841,5 +841,6 @@
     <string name="is_sleep">您要進入休眠嗎？</string>
     <string name="kd003_shut_down">關機</string>
     <string name="kd003_restart">重新開機</string>
+    <string name="dvr_setting_over_speed_value">超速提示</string>
     <!--add end-->
 </resources>
