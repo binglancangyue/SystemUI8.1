@@ -224,19 +224,19 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         updateBtnHotspot(wifiUtils.isWifiApOpen());
 
         //Mobile Network
-        if (mSettingsUtils.isHasSimCard()) {
-            update4GBtn(mSettingsUtils.getDataEnabled());
-            if (wifiUtils.isWifiEnable()) {
-                update4GState(false);
-            } else {
-                update4GState(mSettingsUtils.getDataEnabled());
-            }
-        }
-        //GPS
-        boolean isGPSOpen = mSettingsUtils.isGpsOpen();
+        if (mSettingsUtils.isHasSimCard())  isGPSOpen = mSettingsUtils.isGpsOpen();
 //        if (isGPSOpen) {
 //            mSettingsUtils.openGPS(true);
+//        }{
+//            update4GBtn(mSettingsUtils.getDataEnabled());
+//            if (wifiUtils.isWifiEnable()) {
+//                update4GState(false);
+//            } else {
+//                update4GState(mSettingsUtils.getDataEnabled());
+//            }
 //        }
+//        //GPS
+//        boolean
         updateBtnGPS(isGPSOpen);
         //AutoBrightness
         Log.d(TAG, "setData: AutoBrightness " + mSharedPreferencesTool.getAutoBrightness());
