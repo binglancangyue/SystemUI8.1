@@ -34,6 +34,7 @@ public class CustomValue {
     public final static String ACTION_HIDE_NAVIGATION = "com.bixin.launcher.action.hide_navigation";
     public final static String ACTION_SETTINGS_FUNCTION="com.bixin.launcher.action.settings_function";
     public static final String ACTION_TW_STATE = "com.transiot.kardidvr003.machineState";
+    public static final String ACTION_START_SOS = "com.bx.carDVR.action.start_sos";
 
     /***平台***/
     public static final boolean SCREEN_3 = true;//kd002 3寸屏  不需要语音识别
@@ -64,27 +65,27 @@ public class CustomValue {
             R.drawable.ic_bx_btn_home_3in};
 
     public static final int[] BACK_ICONS = {
-            R.drawable.icon_back_3in, R.drawable.selector_kd003_back,
+            R.drawable.selector_kd002_back, R.drawable.selector_kd003_back,
             R.drawable.icon_back_7in, R.drawable.ic_bx_btn_back,
             R.drawable.ic_bx_btn_back_3in};
 
     public static final int[] FRONT_CAMERA_ICONS = {
-            R.drawable.icon_camera_3in, R.drawable.selector_kd003_camera,
+            R.drawable.selector_kd002_record, R.drawable.selector_kd003_camera,
             R.drawable.icon_camera_7in, R.drawable.ic_bx_btn_streaming,
             R.drawable.ic_bx_btn_streaming};
 
     public static final int[] BACK_CAMERA_ICONS = {
-            R.drawable.ic_back_facing_3in_kd003, R.drawable.selector_kd003_back_camera,
+            R.drawable.selector_kd002_adas, R.drawable.selector_kd003_back_camera,
             R.drawable.ic_back_facing_3in_kd003, R.drawable.ic_back_facing_3in_kd003,
             R.drawable.ic_back_facing_3in_kd003};
 
     public static final int[] VOICE_ICONS = {
-            R.drawable.icon_voice, R.drawable.selector_kd003_cloud,
+            R.drawable.selector_kd002_mic, R.drawable.selector_kd003_cloud,
             R.drawable.icon_voice_7in, R.drawable.home_voice_selector,
             R.drawable.selector_home_voice};
 
     public static final int[] SETTINGS_ICONS = {
-            R.drawable.icon_settings, R.drawable.selector_kd003_recording,
+            R.drawable.selector_kd002_sos, R.drawable.selector_kd003_recording,
             R.drawable.icon_setttings_7in, R.drawable.icon_setttings_7in,
             R.drawable.ic_bx_btn_settings_3in};
 
@@ -127,4 +128,9 @@ public class CustomValue {
     public static final String ACC_PATH = "/dev/bx_gpio";
     public static final boolean IS_SUPPORT_ACC = false;
 
+
+    public static final String CAMERA_RECORD_STATUS = "camera_record_status";
+    public static final String CAMERA_MIC_STATUS = "camera_mic_status";
+    public static final String CAMERA_ADAS_STATUS = "camera_adas_status";
+    public static final String CAMERA_NAV_COLOR = "camera_nav_color";
 }

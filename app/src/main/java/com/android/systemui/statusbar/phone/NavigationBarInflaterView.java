@@ -120,6 +120,7 @@ public class NavigationBarInflaterView extends FrameLayout
     public static final int NAVIGATION_LEFT = 0x01;
     public static final int NAVIGATION_RIGHT_NOTI = 0x02;
     public static final int NAVIGATION_LEFT_NOTI = 0x03;
+    private FrameLayout navFrameLayout;
     /* @} */
 
     public NavigationBarInflaterView(Context context, AttributeSet attrs) {
@@ -150,6 +151,7 @@ public class NavigationBarInflaterView extends FrameLayout
     private void inflateChildren() {
         removeAllViews();
         mRot0 = (FrameLayout) mLayoutInflater.inflate(R.layout.navigation_layout, this, false);
+        navFrameLayout = mRot0.findViewById(R.id.fl_navigation_bar);
         setBackGround();
         mRot0.setId(R.id.rot0);
         addView(mRot0);
@@ -165,23 +167,11 @@ public class NavigationBarInflaterView extends FrameLayout
 
     protected String getDefaultLayout() {
         /* SPRD: Bug 692453 new feature of dynamic navigationbar @{ */
-        if (mSupportDynamicBar) {
-            return readLNavigationLayoutSettings();
-        }
+//        if (mSupportDynamicBar) {
+//            return readLNavigationLayoutSettings();
+//        }
         /* @} */
-        if (CustomValue.SCREEN_3IN_KD003) {
-            return mContext.getString(R.string.config_navBarLayout_kd003);
-        } else if (CustomValue.SCREEN_3) {
-            return mContext.getString(R.string.config_navBarLayout_kd002);
-        } else if (CustomValue.ENGLISH_VERSION) {
-            if (CustomValue.NOT_DVR) {
-                return mContext.getString(R.string.config_navBarLayout_not_dvr);
-            } else {
-                return mContext.getString(R.string.config_navBarLayout_english);
-            }
-        } else {
-            return mContext.getString(R.string.config_navBarLayout);
-        }
+        return mContext.getString(R.string.config_navBarLayout_kd002);
     }
 
     /* SPRD: Bug 692453 new feature of dynamic navigationbar @{ */
@@ -234,6 +224,23 @@ public class NavigationBarInflaterView extends FrameLayout
         }
     };
 
+    private final ContentObserver mNavColorObserver = new ContentObserver(
+            new Handler()) {
+        @Override
+        public void onChange(boolean selfChange) {
+            int type = Settings.Global.getInt(mContext.getContentResolver(), CustomValue.CAMERA_NAV_COLOR, 0);
+//            if (navFrameLayout==null){
+//                return;
+//            }
+            if (type == 1) {
+                mRot0.setBackgroundResource(R.drawable.system_bar_background_t);
+            } else {
+                mRot0.setBackgroundResource(R.drawable.system_bar_background);
+            }
+            Log.d(TAG, "onChange:type "+type);
+        }
+    };
+
     /* @} */
     @Override
     protected void onAttachedToWindow() {
@@ -246,6 +253,9 @@ public class NavigationBarInflaterView extends FrameLayout
         mContext.getContentResolver().registerContentObserver(
                 Settings.System.getUriFor("navigationbar_config"), true,
                 mNavigationSettingsObserver);
+        mContext.getContentResolver().registerContentObserver(
+                Settings.Global.getUriFor(CustomValue.CAMERA_NAV_COLOR), true,
+                mNavColorObserver);
         /* @} */
     }
 
@@ -257,6 +267,8 @@ public class NavigationBarInflaterView extends FrameLayout
         /* SPRD: Bug 692453 new feature of dynamic navigationbar @{ */
         mContext.getContentResolver().unregisterContentObserver(
                 mNavigationSettingsObserver);
+        mContext.getContentResolver().unregisterContentObserver(
+                mNavColorObserver);
         /* @} */
     }
 
@@ -626,11 +638,11 @@ public class NavigationBarInflaterView extends FrameLayout
     }
 
     private void setBackGround() {
-        FrameLayout frameLayout = mRot0.findViewById(R.id.fl_navigation_bar);
+        Settings.Global.putInt(mContext.getContentResolver(), CustomValue.CAMERA_NAV_COLOR, 0);
         if (CustomValue.SCREEN_3IN_KD003) {
-            frameLayout.setBackgroundResource(R.color.colorNavigationBarBG);
+            mRot0.setBackgroundResource(R.color.colorNavigationBarBG);
         } else {
-            frameLayout.setBackgroundResource(R.drawable.system_bar_background);
+            mRot0.setBackgroundResource(R.drawable.system_bar_background);
         }
     }
 

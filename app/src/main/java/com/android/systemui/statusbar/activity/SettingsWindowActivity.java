@@ -147,6 +147,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void setWindowSize() {
         Window window = getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
+		 lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         //获取手机屏幕的高度
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -224,20 +225,19 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         updateBtnHotspot(wifiUtils.isWifiApOpen());
 
         //Mobile Network
-        if (mSettingsUtils.isHasSimCard())  isGPSOpen = mSettingsUtils.isGpsOpen();
-//        if (isGPSOpen) {
-//            mSettingsUtils.openGPS(true);
-//        }{
-//            update4GBtn(mSettingsUtils.getDataEnabled());
-//            if (wifiUtils.isWifiEnable()) {
-//                update4GState(false);
-//            } else {
-//                update4GState(mSettingsUtils.getDataEnabled());
-//            }
-//        }
-//        //GPS
-//        boolean
+        if (mSettingsUtils.isHasSimCard()) {
+            update4GBtn(mSettingsUtils.getDataEnabled());
+            if (wifiUtils.isWifiEnable()) {
+                update4GState(false);
+            } else {
+                update4GState(mSettingsUtils.getDataEnabled());
+            }
+        }
+
+        //GPS
+        boolean isGPSOpen = mSettingsUtils.isGpsOpen();
         updateBtnGPS(isGPSOpen);
+
         //AutoBrightness
         Log.d(TAG, "setData: AutoBrightness " + mSharedPreferencesTool.getAutoBrightness());
         setAutoBrightnessCheck(mSharedPreferencesTool.getAutoBrightness());
@@ -1163,11 +1163,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 //        registerSettingsReceiver();
-        if (SystemUIApplication.getInstance().getHideNavigationBar()) {
-            if (CustomValue.SCREEN_3) {
-                hideNavigationBar();
-            }
-        }
+        hideNavigationBar();
 //        registerGPSContentObserver();
 //        registerBrightnessContentObserver();
     }

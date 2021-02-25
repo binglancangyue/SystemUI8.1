@@ -51,7 +51,7 @@
             android:layout_height="match_parent"
             android:clipChildren="false"
             android:divider="@drawable/shape_horizontal_divider"
-            android:gravity="center|top"
+            android:gravity="bottom|center_horizontal"
             android:orientation="horizontal"
             android:showDividers="middle" />
 

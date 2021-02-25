@@ -20,7 +20,7 @@
     xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
     coreApp="true"
     package="com.android.systemui"
-    android:versionName="8.1.3.0928.3"
+    android:versionName="8.1.210224.1"
     android:sharedUserId="android.uid.systemui">
 
     <!-- SysUI must be the one to define this permission; its name is
