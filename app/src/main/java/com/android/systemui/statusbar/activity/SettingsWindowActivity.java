@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,7 +73,20 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private RadioButton rbADASLow;
     private RadioButton rbADASMiddle;
     private RadioButton rbADASHigh;
-
+    private RadioButton rbSpeedCameraOpen;
+    private RadioButton rbSpeedCameraClose;
+    private RadioButton rbOverSpeed0;
+    private RadioButton rbOverSpeed5;
+    private RadioButton rbOverSpeed10;
+    private RadioButton rbOverSpeedClose;
+    private RadioButton rbSmartDriverOpen;
+    private RadioButton rbSmartDriverClose;
+    private RadioButton rbWarningUnlimited;
+    private RadioButton rbWarning5;
+    private RadioButton rbWarning10;
+    private RadioButton rbWarningModeComplete;
+    private RadioButton rbWarningModePicture;
+    private RadioButton rbWarningModeSound;
     private LinearLayout llBtnWifi;
     private TextView tvWifi;
     private TextView tvWifiStatus;
@@ -104,6 +118,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private RelativeLayout rlFmRow;
 
     private SharedPreferencesTool mSharedPreferencesTool;
+    private int enableColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +162,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void setWindowSize() {
         Window window = getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-		 lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         //获取手机屏幕的高度
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -172,15 +187,18 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         }
         lp.width = widthPixels;
         lp.height = heightPixels;
-        lp.gravity= Gravity.CENTER_HORIZONTAL;
+        lp.gravity = Gravity.CENTER_HORIZONTAL;
         window.setAttributes(lp);
     }
 
     @SuppressLint("InflateParams")
     public void createPopWindow() {
-        initPopupWindow();
-        setData();
-        setPopupWindowListener();
+        getWindow().getDecorView().post(() -> mHandler.post(() -> {
+            enableColor = getColor(R.color.colorEnable);
+            initPopupWindow();
+            setData();
+            setPopupWindowListener();
+        }));
     }
 
     private void setData() {
@@ -241,6 +259,21 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         //AutoBrightness
         Log.d(TAG, "setData: AutoBrightness " + mSharedPreferencesTool.getAutoBrightness());
         setAutoBrightnessCheck(mSharedPreferencesTool.getAutoBrightness());
+
+        //Speed camera
+        updateSpeedCamera(-1);
+
+        //Over speed
+        updateOverSpeed(-1);
+
+        //Smart Driving
+        updateSmartDriver(-1);
+
+        //Warning interval
+        updateWarningInterval(-1);
+
+        //Warning mode
+        updateWarningMode(-1);
     }
 
     public void setOnSettingPopupWindowListener(OnSettingPopupWindowListener listener) {
@@ -333,6 +366,20 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         rbADASLow = findViewById(R.id.rb_adas_value_low);
         rbADASMiddle = findViewById(R.id.rb_adas_value_middle);
         rbADASHigh = findViewById(R.id.rb_adas_value_high);
+        rbSpeedCameraOpen = findViewById(R.id.rb_speed_camera_open);
+        rbSpeedCameraClose = findViewById(R.id.rb_speed_camera_close);
+        rbOverSpeed0 = findViewById(R.id.rb_over_speed_0);
+        rbOverSpeed5 = findViewById(R.id.rb_over_speed_5);
+        rbOverSpeed10 = findViewById(R.id.rb_over_speed_10);
+        rbOverSpeedClose = findViewById(R.id.rb_over_speed_close);
+        rbSmartDriverOpen = findViewById(R.id.rb_smart_driver_open);
+        rbSmartDriverClose = findViewById(R.id.rb_smart_driver_close);
+        rbWarningUnlimited = findViewById(R.id.rb_interval_unlimited);
+        rbWarning5 = findViewById(R.id.rb_interval_5);
+        rbWarning10 = findViewById(R.id.rb_interval_10);
+        rbWarningModeComplete = findViewById(R.id.rb_warning_mode_complete);
+        rbWarningModePicture = findViewById(R.id.rb_warning_mode_picture);
+        rbWarningModeSound = findViewById(R.id.rb_warning_mode_voice);
 
         RelativeLayout btnDvrFormat = findViewById(R.id.btn_dvr_format);
         RelativeLayout btnDvrBT = findViewById(R.id.btn_dvr_bt);
@@ -348,6 +395,20 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         rbADASLow.setOnClickListener(this);
         rbADASMiddle.setOnClickListener(this);
         rbADASHigh.setOnClickListener(this);
+        rbSpeedCameraOpen.setOnClickListener(this);
+        rbSpeedCameraClose.setOnClickListener(this);
+        rbOverSpeed0.setOnClickListener(this);
+        rbOverSpeed5.setOnClickListener(this);
+        rbOverSpeed10.setOnClickListener(this);
+        rbOverSpeedClose.setOnClickListener(this);
+        rbSmartDriverOpen.setOnClickListener(this);
+        rbSmartDriverClose.setOnClickListener(this);
+        rbWarningUnlimited.setOnClickListener(this);
+        rbWarning5.setOnClickListener(this);
+        rbWarning10.setOnClickListener(this);
+        rbWarningModeComplete.setOnClickListener(this);
+        rbWarningModePicture.setOnClickListener(this);
+        rbWarningModeSound.setOnClickListener(this);
         btnDvrFormat.setOnClickListener(this);
         btnDvrBT.setOnClickListener(this);
         btnDvrSystemSettings.setOnClickListener(this);
@@ -451,9 +512,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                 mSharedPreferencesTool.saveADALevel(3);
                 break;
             case R.id.btn_dvr_bt:
-                Intent bt = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
-                startActivity(bt);
-                finish();
+                startBT();
                 break;
             case R.id.btn_dvr_format:
 //                mSettingsUtils.formatMedia(StoragePaTool.getStoragePath(true));
@@ -506,6 +565,49 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                 mSettingsUtils.openOrCloseFM(!ivFmSwitch.isSelected());
                 updateBtnFM(mSettingsUtils.getFmStatus());
                 break;
+            case R.id.rb_speed_camera_open:
+                updateSpeedCamera(0);
+                break;
+            case R.id.rb_speed_camera_close:
+                updateSpeedCamera(1);
+                break;
+            case R.id.rb_over_speed_0:
+                updateOverSpeed(0);
+                break;
+            case R.id.rb_over_speed_5:
+                updateOverSpeed(1);
+                break;
+            case R.id.rb_over_speed_10:
+                updateOverSpeed(2);
+                break;
+            case R.id.rb_over_speed_close:
+                updateOverSpeed(3);
+                break;
+            case R.id.rb_smart_driver_open:
+                updateSmartDriver(0);
+                break;
+            case R.id.rb_smart_driver_close:
+                updateSmartDriver(1);
+                break;
+            case R.id.rb_interval_unlimited:
+                updateWarningInterval(0);
+                break;
+            case R.id.rb_interval_5:
+                updateWarningInterval(1);
+                break;
+            case R.id.rb_interval_10:
+                updateWarningInterval(2);
+                break;
+            case R.id.rb_warning_mode_complete:
+                updateWarningMode(0);
+                break;
+            case R.id.rb_warning_mode_picture:
+                updateWarningMode(1);
+                break;
+            case R.id.rb_warning_mode_voice:
+                updateWarningMode(2);
+                break;
+
         }
     }
 
@@ -522,6 +624,16 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         try {
             Intent intent = new Intent(Settings.ACTION_SETTINGS);
             startActivity(intent);
+            finish();
+        } catch (Exception e) {
+            Log.d(TAG, "startSettings: " + e.toString());
+        }
+    }
+
+    private void startBT() {
+        try {
+            Intent bt = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+            startActivity(bt);
             finish();
         } catch (Exception e) {
             Log.d(TAG, "startSettings: " + e.toString());
@@ -952,7 +1064,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         tvBrightnessValue.setText(String.valueOf(brightness));
     }
 
-    private void setMaxScreenOffTimeOut(){
+    private void setMaxScreenOffTimeOut() {
         cleanFunctionRBCheck();
         cleanTimeRBCheck();
         rbBright.setChecked(true);
@@ -1155,6 +1267,9 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                             break;
                     }
                     break;
+                case CustomValue.HANDLE_POP_UPDATE_ENABLE:
+                    mPopupWindow.updateEnable((Boolean) msg.obj);
+                    break;
             }
         }
     }
@@ -1211,6 +1326,164 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         if (mBrightnessObserver != null) {
             getContentResolver().unregisterContentObserver(mBrightnessObserver);
         }
+    }
+
+    /**
+     * 測速相機
+     *
+     * @param type [0-1]
+     */
+    private void updateSpeedCamera(int type) {
+        rbSpeedCameraOpen.setChecked(false);
+        rbSpeedCameraClose.setChecked(false);
+        int item;
+        if (type == -1) {
+            item = Settings.Global.getInt(getContentResolver(), CustomValue.CAMERA_SPEED_CAMERA, 0);
+        } else {
+            item = type;
+            Settings.Global.putInt(getContentResolver(), CustomValue.CAMERA_SPEED_CAMERA, item);
+            sendBroadcastToTWApp("key_speed_camera", item);
+        }
+        if (item == 0) {
+            rbSpeedCameraOpen.setChecked(true);
+        } else {
+            rbSpeedCameraClose.setChecked(true);
+        }
+    }
+
+    /**
+     * 超速警示
+     *
+     * @param type [0-3]
+     */
+    private void updateOverSpeed(int type) {
+        rbOverSpeed0.setChecked(false);
+        rbOverSpeed5.setChecked(false);
+        rbOverSpeed10.setChecked(false);
+        rbOverSpeedClose.setChecked(false);
+        int item;
+        if (type == -1) {
+            item = Settings.Global.getInt(getContentResolver(), CustomValue.CAMERA_OVER_SPEED, 0);
+        } else {
+            item = type;
+            Settings.Global.putInt(getContentResolver(), CustomValue.CAMERA_OVER_SPEED, item);
+            sendBroadcastToTWApp("key_over_speed", item);
+        }
+        if (item == 0) {
+            rbOverSpeed0.setChecked(true);
+        } else if (item == 1) {
+            rbOverSpeed5.setChecked(true);
+        } else if (item == 2) {
+            rbOverSpeed10.setChecked(true);
+        } else {
+            rbOverSpeedClose.setChecked(true);
+        }
+    }
+
+    /**
+     * 智慧驾驶
+     *
+     * @param type [0-1]
+     */
+    private void updateSmartDriver(int type) {
+        rbSmartDriverOpen.setChecked(false);
+        rbSmartDriverClose.setChecked(false);
+        int item;
+        if (type == -1) {
+            item = Settings.Global.getInt(getContentResolver(), CustomValue.CAMERA_SMART_DRIVER, 0);
+        } else {
+            item = type;
+            Settings.Global.putInt(getContentResolver(), CustomValue.CAMERA_SMART_DRIVER, item);
+            sendBroadcastToTWApp("key_smart_driving", item);
+        }
+        Message message = Message.obtain();
+        message.what = CustomValue.HANDLE_POP_UPDATE_ENABLE;
+        if (item == 0) {
+            rbSmartDriverOpen.setChecked(true);
+            message.obj = true;
+        } else {
+            rbSmartDriverClose.setChecked(true);
+            message.obj = false;
+        }
+        mHandler.sendMessage(message);
+    }
+
+    /**
+     * 警示间隔
+     *
+     * @param type [0-2]
+     */
+    private void updateWarningInterval(int type) {
+        rbWarningUnlimited.setChecked(false);
+        rbWarning5.setChecked(false);
+        rbWarning10.setChecked(false);
+        int item;
+        if (type == -1) {
+            item = Settings.Global.getInt(getContentResolver(), CustomValue.CAMERA_WARNING_INTERVAL, 0);
+        } else {
+            item = type;
+            Settings.Global.putInt(getContentResolver(), CustomValue.CAMERA_WARNING_INTERVAL, item);
+            sendBroadcastToTWApp("key_warning_interval", item);
+        }
+        if (item == 0) {
+            rbWarningUnlimited.setChecked(true);
+        } else if (item == 1) {
+            rbWarning5.setChecked(true);
+        } else {
+            rbWarning10.setChecked(true);
+        }
+    }
+
+    /**
+     * 警示方式
+     *
+     * @param type [0-2]
+     */
+    private void updateWarningMode(int type) {
+        rbWarningModeComplete.setChecked(false);
+        rbWarningModePicture.setChecked(false);
+        rbWarningModeSound.setChecked(false);
+        int item;
+        if (type == -1) {
+            item = Settings.Global.getInt(getContentResolver(), CustomValue.CAMERA_WARNING_MODE, 0);
+        } else {
+            item = type;
+            Settings.Global.putInt(getContentResolver(), CustomValue.CAMERA_WARNING_MODE, item);
+            sendBroadcastToTWApp("key_warning_mode", item);
+        }
+        if (item == 0) {
+            rbWarningModeComplete.setChecked(true);
+        } else if (item == 1) {
+            rbWarningModePicture.setChecked(true);
+        } else {
+            rbWarningModeSound.setChecked(true);
+        }
+    }
+
+    private void updateEnable(boolean enable) {
+        int textColor = Color.WHITE;
+        rbWarningUnlimited.setEnabled(enable);
+        rbWarning5.setEnabled(enable);
+        rbWarning10.setEnabled(enable);
+        rbWarningModeComplete.setEnabled(enable);
+        rbWarningModePicture.setEnabled(enable);
+        rbWarningModeSound.setEnabled(enable);
+        if (!enable) {
+            textColor = enableColor;
+        }
+        rbWarningUnlimited.setTextColor(textColor);
+        rbWarning5.setTextColor(textColor);
+        rbWarning10.setTextColor(textColor);
+        rbWarningModeComplete.setTextColor(textColor);
+        rbWarningModePicture.setTextColor(textColor);
+        rbWarningModeSound.setTextColor(textColor);
+    }
+
+    private void sendBroadcastToTWApp(String key, int value) {
+        Intent intent = new Intent("com.android.systemui.action_settings");
+        intent.putExtra("key_checked_type", key);
+        intent.putExtra("key_checked_value", value);
+        sendBroadcast(intent);
     }
 
     /**

@@ -4,31 +4,10 @@
     style="@style/PopWindowContainerLayoutStyle"
     android:layout_width="match_parent">
 
-    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
-
-        <TextView
-            style="@style/PopWindowContainerTileTextStyle"
-            android:text="@string/dvr_setting_record_time" />
-
-        <RadioButton
-            android:id="@+id/rb_record_time_1"
-            style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/rb_time_1min" />
-
-        <RadioButton
-            android:id="@+id/rb_record_time_3"
-            style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/rb_time_3min" />
-
-        <RadioButton
-            android:id="@+id/rb_record_time_5"
-            style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/rb_time_5min" />
-    </LinearLayout>
-
     <LinearLayout
         android:id="@+id/ll_g_sensor_row"
-        style="@style/PopWindowContainerItemLayoutStyle">
+        style="@style/PopWindowContainerItemLayoutStyle"
+        android:visibility="gone">
 
         <TextView
             style="@style/PopWindowContainerTileTextStyle"
@@ -59,7 +38,8 @@
 
     <LinearLayout
         android:id="@+id/ll_adas_row"
-        style="@style/PopWindowContainerItemLayoutStyle">
+        style="@style/PopWindowContainerItemLayoutStyle"
+        android:visibility="gone">
 
         <TextView
             style="@style/PopWindowContainerTileTextStyle"
@@ -82,24 +62,29 @@
             android:text="@string/dvr_value_high" />
     </LinearLayout>
 
-   <!-- <LinearLayout
-        android:id="@+id/ll_speed_row"
-        style="@style/PopWindowContainerItemLayoutStyle">
+    <LinearLayout
+        android:id="@+id/ll_speed_camera_row"
+        style="@style/PopWindowContainerItemLayoutStyle"
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/PopWindowContainerTileTextStyle"
             android:layout_alignParentStart="true"
-            android:text="@string/dvr_setting_adas_value" />
+            android:text="@string/dvr_setting_speed_camera_title" />
+
 
         <RadioButton
-            android:id="@+id/rb_speed_open"
-            style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/dvr_value_low" />
+            android:id="@+id/rb_speed_camera_open"
+            style="@style/PopWindowContainerRadioButtonStyle"
+            android:layout_weight="0"
+            android:text="@string/dvr_value_open" />
 
         <RadioButton
-            android:id="@+id/rb_speed_close"
-            style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/dvr_value_middle" />
+            android:id="@+id/rb_speed_camera_close"
+            style="@style/PopWindowContainerRadioButtonStyle"
+            android:layout_marginStart="40dp"
+            android:layout_weight="0"
+            android:text="@string/dvr_value_close" />
 
     </LinearLayout>
 
@@ -115,22 +100,109 @@
         <RadioButton
             android:id="@+id/rb_over_speed_0"
             style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/dvr_value_low" />
+            android:text="原時速" />
 
         <RadioButton
             android:id="@+id/rb_over_speed_5"
             style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/dvr_value_middle" />
+            android:text="速限+5" />
 
         <RadioButton
             android:id="@+id/rb_over_speed_10"
             style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/dvr_value_middle" />
+            android:text="速限+10" />
 
         <RadioButton
             android:id="@+id/rb_over_speed_close"
             style="@style/PopWindowContainerCircularRadioButtonStyle"
-            android:text="@string/dvr_value_middle" />
-    </LinearLayout>-->
+            android:text="@string/dvr_value_close" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/PopWindowContainerItemLayoutStyle"
+        android:layout_weight="1.7"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_smart_driver"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/PopWindowContainerTileTextStyle"
+                android:layout_alignParentStart="true"
+                android:text="@string/dvr_setting_smart_driver_title" />
+
+            <RadioButton
+                android:id="@+id/rb_smart_driver_open"
+                style="@style/PopWindowContainerRadioButtonStyle"
+                android:layout_weight="0"
+                android:text="@string/dvr_value_open" />
+
+            <RadioButton
+                android:id="@+id/rb_smart_driver_close"
+                style="@style/PopWindowContainerRadioButtonStyle"
+                android:layout_marginStart="40dp"
+                android:layout_weight="0"
+                android:text="@string/dvr_value_close" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_interval_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                style="@style/PopWindowContainerTileTextStyle"
+                android:layout_alignParentStart="true"
+                android:text="@string/dvr_setting_warning_time" />
+
+            <RadioButton
+                android:id="@+id/rb_interval_unlimited"
+                style="@style/PopWindowContainerCircularRadioButtonStyle"
+                android:text="@string/rb_time_unlimited" />
+
+            <RadioButton
+                android:id="@+id/rb_interval_5"
+                style="@style/PopWindowContainerCircularRadioButtonStyle"
+                android:text="@string/rb_time_5min" />
+
+            <RadioButton
+                android:id="@+id/rb_interval_10"
+                style="@style/PopWindowContainerCircularRadioButtonStyle"
+                android:text="@string/rb_time_10min" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_warning_mode_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                style="@style/PopWindowContainerTileTextStyle"
+                android:layout_alignParentStart="true"
+                android:text="@string/dvr_setting_warning_mode" />
+
+            <RadioButton
+                android:id="@+id/rb_warning_mode_complete"
+                style="@style/PopWindowContainerCircularRadioButtonStyle"
+                android:text="@string/dvr_warning_mode_complete" />
+
+            <RadioButton
+                android:id="@+id/rb_warning_mode_picture"
+                style="@style/PopWindowContainerCircularRadioButtonStyle"
+                android:text="@string/dvr_warning_mode_picture" />
+
+            <RadioButton
+                android:id="@+id/rb_warning_mode_voice"
+                style="@style/PopWindowContainerCircularRadioButtonStyle"
+                android:text="@string/dvr_warning_mode_sound" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
+

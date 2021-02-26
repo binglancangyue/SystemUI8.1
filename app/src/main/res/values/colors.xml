@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright 2010, The Android Open Source Project
  *
@@ -72,7 +71,9 @@
     <color name="notification_legacy_background_color">#ff1a1a1a</color>
 
     <!-- The color of the material notification background -->
-    <color name="notification_material_background_color">@*android:color/notification_material_background_color</color>
+    <color name="notification_material_background_color">
+        @*android:color/notification_material_background_color
+    </color>
 
     <!-- The color of the material notification background when dimmed -->
     <color name="notification_material_background_dimmed_color">#ccffffff</color>
@@ -172,5 +173,7 @@
     <color name="colorTransparent_w_90">#1AFFFFFF</color>
     <color name="colorTransparent_w_85">#26FFFFFF</color>
     <color name="colorNavigationBarBG">#4b5159</color>
+
+    <color name="colorEnable">#626262</color>
 
 </resources>

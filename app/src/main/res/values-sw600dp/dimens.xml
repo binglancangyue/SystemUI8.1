@@ -90,7 +90,7 @@
 
     <dimen name="fab_margin">24dp</dimen>
 
-    <dimen name="navigation_key_width">100dp</dimen>
+    <dimen name="navigation_key_width">128dp</dimen>
 <!--
     <dimen name="navigation_key_padding">25dp</dimen>
 -->
@@ -110,10 +110,10 @@
     <dimen name="appIconWidth">65dp</dimen>
     <dimen name="appNameTextSize">16sp</dimen>
     <dimen name="settingContainerWidth">150dp</dimen>
-    <dimen name="PopWindowContainerItemLayoutMargin">30dp</dimen>
+    <dimen name="PopWindowContainerItemLayoutMargin">26dp</dimen>
 
     <dimen name="popWindowLeftBtnTextSize">26sp</dimen>
-    <dimen name="popWindowContainerTextSize">25sp</dimen>
+    <dimen name="popWindowContainerTextSize">24sp</dimen>
     <dimen name="popWindowLeftBtnTextViewMarginTop">5dp</dimen>
     <dimen name="testSpacing">10dp</dimen>
     <dimen name="popupWindowSeekBarMargin">15dp</dimen>

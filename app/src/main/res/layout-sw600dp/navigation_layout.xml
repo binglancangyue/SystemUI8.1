@@ -50,10 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
-            android:divider="@drawable/shape_horizontal_divider"
             android:gravity="bottom|center_horizontal"
-            android:orientation="horizontal"
-            android:showDividers="middle" />
+            android:orientation="horizontal"/>
 
     </com.android.systemui.statusbar.phone.NearestTouchFrame>
 

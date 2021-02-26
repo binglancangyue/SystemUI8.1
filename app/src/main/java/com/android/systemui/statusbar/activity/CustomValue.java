@@ -104,6 +104,7 @@ public class CustomValue {
     public static final int HANDLE_POP_UPDATE_DATA = 5;
     public static final int HANDLE_POP_UPDATE_BTN_TXZ = 6;
     public static final int HANDLE_POP_UPDATE_BTN_BY_LISTENER = 7;
+    public static final int HANDLE_POP_UPDATE_ENABLE = 8;
 //    public static final int HANDLE_POP_UPDATE_MOBILE_NETWORK = 8;
 
     public static final int RADIO_BTN_TYPE_SCREEN_OFF_TIMEOUT = 0;
@@ -133,4 +134,9 @@ public class CustomValue {
     public static final String CAMERA_MIC_STATUS = "camera_mic_status";
     public static final String CAMERA_ADAS_STATUS = "camera_adas_status";
     public static final String CAMERA_NAV_COLOR = "camera_nav_color";
+    public static final String CAMERA_SPEED_CAMERA = "camera_speed_camera";
+    public static final String CAMERA_OVER_SPEED = "camera_over_speed";
+    public static final String CAMERA_SMART_DRIVER = "camera_smart_driver";
+    public static final String CAMERA_WARNING_INTERVAL = "camera_warning_interval";
+    public static final String CAMERA_WARNING_MODE = "camera_warning_mode";
 }

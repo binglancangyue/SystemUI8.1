@@ -845,8 +845,19 @@
     <string name="shutdown_confirm_time_out_desc"> %1$s 秒后将会关机.</string>
     <string name="sleep_confirm_time_out_desc"> %1$s 秒后将会进入休眠.</string>
     <string name="is_sleep">您要进入休眠吗？</string>
+    <string name="no_sd_card_detected">No SD card detected</string>
     <string name="kd003_shut_down">關機</string>
     <string name="kd003_restart">重新開機</string>
     <string name="dvr_setting_over_speed_value">超速提示</string>
+    <string name="dvr_value_open" >打开</string>
+    <string name="dvr_setting_speed_camera_title" >測速相機提示</string>
+    <string name="dvr_setting_smart_driver_title">智慧驾驶</string>
+    <string name="dvr_setting_warning_time">警示間隔</string>
+    <string name="dvr_setting_warning_mode">警示方式</string>
+    <string name="rb_time_10min">10分鐘</string>
+    <string name="rb_time_unlimited">不限</string>
+    <string name="dvr_warning_mode_complete">完整警示</string>
+    <string name="dvr_warning_mode_picture">畫面</string>
+    <string name="dvr_warning_mode_sound">聲音</string>
     <!--add end-->
 </resources>

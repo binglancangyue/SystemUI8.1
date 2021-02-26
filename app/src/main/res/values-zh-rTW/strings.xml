@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<?xml version="1.0" encoding="utf-8"?><!--
 /**
  * Copyright (c) 2009, The Android Open Source Project
  *
@@ -17,8 +16,7 @@
  */
  -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="7164937344850004466">"系統 UI"</string>
     <string name="status_bar_clear_all_button" msgid="7774721344716731603">"清除"</string>
     <string name="status_bar_recent_remove_item_title" msgid="6026395868129852968">"從清單中移除"</string>
@@ -26,8 +24,8 @@
     <string name="status_bar_no_recent_apps" msgid="7374907845131203189">"你最近的螢幕會顯示在這裡"</string>
     <string name="status_bar_accessibility_dismiss_recents" msgid="4576076075226540105">"關閉最近使用的應用程式"</string>
     <plurals name="status_bar_accessibility_recent_apps" formatted="false" msgid="9138535907802238759">
-      <item quantity="other">總覽中有 %d 個畫面</item>
-      <item quantity="one">總覽中有 1 個畫面</item>
+        <item quantity="other">總覽中有 %d 個畫面</item>
+        <item quantity="one">總覽中有 1 個畫面</item>
     </plurals>
     <string name="status_bar_no_notifications_title" msgid="4755261167193833213">"沒有通知"</string>
     <string name="status_bar_ongoing_events_title" msgid="1682504513316879202">"進行中"</string>
@@ -252,8 +250,8 @@
     <string name="accessibility_clear_all" msgid="5235938559247164925">"清除所有通知。"</string>
     <string name="notification_group_overflow_indicator" msgid="1863231301642314183">"+ <xliff:g id="NUMBER">%s</xliff:g>"</string>
     <plurals name="notification_group_overflow_description" formatted="false" msgid="4579313201268495404">
-      <item quantity="other">群組中還有 <xliff:g id="NUMBER_1">%s</xliff:g> 則通知。</item>
-      <item quantity="one">群組中還有 <xliff:g id="NUMBER_0">%s</xliff:g> 則通知。</item>
+        <item quantity="other">群組中還有 <xliff:g id="NUMBER_1">%s</xliff:g> 則通知。</item>
+        <item quantity="one">群組中還有 <xliff:g id="NUMBER_0">%s</xliff:g> 則通知。</item>
     </plurals>
     <string name="status_bar_notification_inspect_item_title" msgid="5668348142410115323">"通知設定"</string>
     <string name="status_bar_notification_app_settings_title" msgid="5525260160341558869">"<xliff:g id="APP_NAME">%s</xliff:g>設定"</string>
@@ -343,8 +341,7 @@
     <string name="recents_accessibility_split_screen_top" msgid="9056056469282256287">"將分割畫面顯示在頂端"</string>
     <string name="recents_accessibility_split_screen_left" msgid="8987144699630620019">"將分割畫面顯示在左邊"</string>
     <string name="recents_accessibility_split_screen_right" msgid="275069779299592867">"將分割畫面顯示在右邊"</string>
-  <string-array name="recents_blacklist_array">
-  </string-array>
+    <string-array name="recents_blacklist_array"></string-array>
     <string name="expanded_header_battery_charged" msgid="5945855970267657951">"已充飽"</string>
     <string name="expanded_header_battery_charging" msgid="205623198487189724">"充電中"</string>
     <string name="expanded_header_battery_charging_with_time" msgid="457559884275395376">"<xliff:g id="CHARGING_TIME">%s</xliff:g>後充飽"</string>
@@ -556,13 +553,13 @@
     <string name="notification_default_channel_desc" msgid="2506053815870808359">"這個應用程式沒有通知類別"</string>
     <string name="notification_unblockable_desc" msgid="3561016061737896906">"無法關閉這個應用程式發出的通知"</string>
     <plurals name="notification_num_channels_desc" formatted="false" msgid="5492793452274077663">
-      <item quantity="other">在 <xliff:g id="NUMBER_1">%s</xliff:g> 個通知類別中，有 1 個類別是來自這個應用程式</item>
-      <item quantity="one">在 <xliff:g id="NUMBER_0">%s</xliff:g> 個通知類別中，有 1 個類別是來自這個應用程式</item>
+        <item quantity="other">在 <xliff:g id="NUMBER_1">%s</xliff:g> 個通知類別中，有 1 個類別是來自這個應用程式</item>
+        <item quantity="one">在 <xliff:g id="NUMBER_0">%s</xliff:g> 個通知類別中，有 1 個類別是來自這個應用程式</item>
     </plurals>
     <string name="notification_channels_list_desc_2" msgid="6214732715833946441">"<xliff:g id="CHANNEL_NAME_1">%1$s</xliff:g>、<xliff:g id="CHANNEL_NAME_2">%2$s</xliff:g>"</string>
     <plurals name="notification_channels_list_desc_2_and_others" formatted="false" msgid="2747813553355336157">
-      <item quantity="other"><xliff:g id="CHANNEL_NAME_1_3">%1$s</xliff:g>、<xliff:g id="CHANNEL_NAME_2_4">%2$s</xliff:g>和另外 <xliff:g id="NUMBER_5">%3$d</xliff:g> 個管道</item>
-      <item quantity="one"><xliff:g id="CHANNEL_NAME_1_0">%1$s</xliff:g>、<xliff:g id="CHANNEL_NAME_2_1">%2$s</xliff:g>和另外 <xliff:g id="NUMBER_2">%3$d</xliff:g> 個管道</item>
+        <item quantity="other"><xliff:g id="CHANNEL_NAME_1_3">%1$s</xliff:g>、<xliff:g id="CHANNEL_NAME_2_4">%2$s</xliff:g>和另外 <xliff:g id="NUMBER_5">%3$d</xliff:g> 個管道</item>
+        <item quantity="one"><xliff:g id="CHANNEL_NAME_1_0">%1$s</xliff:g>、<xliff:g id="CHANNEL_NAME_2_1">%2$s</xliff:g>和另外 <xliff:g id="NUMBER_2">%3$d</xliff:g> 個管道</item>
     </plurals>
     <string name="notification_channel_controls_opened_accessibility" msgid="6553950422055908113">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」的通知控制項已開啟"</string>
     <string name="notification_channel_controls_closed_accessibility" msgid="7521619812603693144">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」的通知控制項已關閉"</string>
@@ -577,12 +574,12 @@
     <string name="snooze_undo" msgid="6074877317002985129">"復原"</string>
     <string name="snoozed_for_time" msgid="2390718332980204462">"已延後 <xliff:g id="TIME_AMOUNT">%1$s</xliff:g>"</string>
     <plurals name="snoozeHourOptions" formatted="false" msgid="2124335842674413030">
-      <item quantity="other">%d 小時</item>
-      <item quantity="one">%d 小時</item>
+        <item quantity="other">%d 小時</item>
+        <item quantity="one">%d 小時</item>
     </plurals>
     <plurals name="snoozeMinuteOptions" formatted="false" msgid="4127251700591510196">
-      <item quantity="other">%d 分鐘</item>
-      <item quantity="one">%d 分鐘</item>
+        <item quantity="other">%d 分鐘</item>
+        <item quantity="one">%d 分鐘</item>
     </plurals>
     <string name="battery_panel_title" msgid="7944156115535366613">"電池用量"</string>
     <string name="battery_detail_charging_summary" msgid="4055327085770378335">"充電時無法使用節約耗電量模式"</string>
@@ -649,18 +646,18 @@
     <string name="left_nav_bar_button_type" msgid="8555981238887546528">"其他向左按鈕類型"</string>
     <string name="right_nav_bar_button_type" msgid="2481056627065649656">"其他向右按鈕類型"</string>
     <string name="nav_bar_default" msgid="8587114043070993007">"(預設)"</string>
-  <string-array name="nav_bar_buttons">
-    <item msgid="1545641631806817203">"剪貼簿"</item>
-    <item msgid="5742013440802239414">"按鍵碼"</item>
-    <item msgid="8802889973626281575">"鍵盤切換工具"</item>
-    <item msgid="8175437057325747277">"無"</item>
-  </string-array>
-  <string-array name="nav_bar_layouts">
-    <item msgid="8077901629964902399">"一般"</item>
-    <item msgid="8256205964297588988">"精簡"</item>
-    <item msgid="8719936228094005878">"靠左"</item>
-    <item msgid="586019486955594690">"靠右"</item>
-  </string-array>
+    <string-array name="nav_bar_buttons">
+        <item msgid="1545641631806817203">"剪貼簿"</item>
+        <item msgid="5742013440802239414">"按鍵碼"</item>
+        <item msgid="8802889973626281575">"鍵盤切換工具"</item>
+        <item msgid="8175437057325747277">"無"</item>
+    </string-array>
+    <string-array name="nav_bar_layouts">
+        <item msgid="8077901629964902399">"一般"</item>
+        <item msgid="8256205964297588988">"精簡"</item>
+        <item msgid="8719936228094005878">"靠左"</item>
+        <item msgid="586019486955594690">"靠右"</item>
+    </string-array>
     <string name="menu_ime" msgid="4998010205321292416">"鍵盤切換工具"</string>
     <string name="save" msgid="2311877285724540644">"儲存"</string>
     <string name="reset" msgid="2448168080964209908">"重設"</string>
@@ -675,16 +672,16 @@
     <string name="drag_to_remove_tiles" msgid="3361212377437088062">"拖曳到這裡即可移除"</string>
     <string name="qs_edit" msgid="2232596095725105230">"編輯"</string>
     <string name="tuner_time" msgid="6572217313285536011">"時間"</string>
-  <string-array name="clock_options">
-    <item msgid="5965318737560463480">"顯示小時、分鐘和秒"</item>
-    <item msgid="1427801730816895300">"顯示小時和分鐘 (預設)"</item>
-    <item msgid="3830170141562534721">"不顯示這個圖示"</item>
-  </string-array>
-  <string-array name="battery_options">
-    <item msgid="3160236755818672034">"一律顯示百分比"</item>
-    <item msgid="2139628951880142927">"充電時顯示百分比 (預設)"</item>
-    <item msgid="3327323682209964956">"不顯示這個圖示"</item>
-  </string-array>
+    <string-array name="clock_options">
+        <item msgid="5965318737560463480">"顯示小時、分鐘和秒"</item>
+        <item msgid="1427801730816895300">"顯示小時和分鐘 (預設)"</item>
+        <item msgid="3830170141562534721">"不顯示這個圖示"</item>
+    </string-array>
+    <string-array name="battery_options">
+        <item msgid="3160236755818672034">"一律顯示百分比"</item>
+        <item msgid="2139628951880142927">"充電時顯示百分比 (預設)"</item>
+        <item msgid="3327323682209964956">"不顯示這個圖示"</item>
+    </string-array>
     <string name="other" msgid="4060683095962566764">"其他"</string>
     <string name="accessibility_divider" msgid="5903423481953635044">"分割畫面分隔線"</string>
     <string name="accessibility_action_divider_left_full" msgid="2801570521881574972">"以全螢幕顯示左側畫面"</string>
@@ -839,8 +836,19 @@
     <string name="shutdown_confirm_time_out_desc"> %1$s 秒後將會關機.</string>
     <string name="sleep_confirm_time_out_desc"> %1$s 秒後將會進入休眠.</string>
     <string name="is_sleep">您要進入休眠嗎？</string>
+    <string name="no_sd_card_detected">No SD card detected</string>
     <string name="kd003_shut_down">關機</string>
     <string name="kd003_restart">重新開機</string>
     <string name="dvr_setting_over_speed_value">超速提示</string>
+    <string name="dvr_value_open">開啟</string>
+    <string name="dvr_setting_speed_camera_title">測速相機提示</string>
+    <string name="dvr_setting_smart_driver_title">智慧駕駛</string>
+    <string name="dvr_setting_warning_time">警示間隔</string>
+    <string name="dvr_setting_warning_mode">警示方式</string>
+    <string name="rb_time_10min">10分鐘</string>
+    <string name="rb_time_unlimited">不限</string>
+    <string name="dvr_warning_mode_complete">完整警示</string>
+    <string name="dvr_warning_mode_picture">畫面</string>
+    <string name="dvr_warning_mode_sound">聲音</string>
     <!--add end-->
 </resources>

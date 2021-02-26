@@ -2162,8 +2162,19 @@
     <string name="shutdown_confirm_time_out_desc">After %1$s ,it will shutdown.</string>
     <string name="sleep_confirm_time_out_desc">After %1$s ,it will go to sleep.</string>
     <string name="is_sleep">Do you want to go to sleep?</string>
+    <string name="no_sd_card_detected">No SD card detected</string>
     <string name="kd003_shut_down">關機</string>
     <string name="kd003_restart">重新開機</string>
     <string name="dvr_setting_over_speed_value">超速提示</string>
+    <string name="dvr_value_open">Open</string>
+    <string name="dvr_setting_speed_camera_title">Speed camera</string>
+    <string name="dvr_setting_smart_driver_title">Smart driving</string>
+    <string name="dvr_setting_warning_time">Warning interval</string>
+    <string name="dvr_setting_warning_mode">Warning mode</string>
+    <string name="rb_time_10min">5min</string>
+    <string name="rb_time_unlimited">unlimited</string>
+    <string name="dvr_warning_mode_complete">Complete</string>
+    <string name="dvr_warning_mode_picture">Picture</string>
+    <string name="dvr_warning_mode_sound">Sound</string>
     <!--add end-->
 </resources>

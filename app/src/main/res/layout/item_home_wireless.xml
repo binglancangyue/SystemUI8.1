@@ -6,11 +6,11 @@
 
     <LinearLayout
         android:id="@+id/ll_wireless_data_row"
-        style="@style/PopWindowContainerItemLayoutStyle">
+        style="@style/PopWindowContainerItemLayoutStyle2">
 
         <LinearLayout
             android:id="@+id/ll_btn_wifi"
-            style="@style/PopWindowContainerItemLayoutStyle"
+            style="@style/PopWindowContainerItemLayoutStyle2"
             android:orientation="vertical">
 
             <TextView
@@ -28,7 +28,7 @@
 
         <LinearLayout
             android:id="@+id/ll_btn_hotspot"
-            style="@style/PopWindowContainerItemLayoutStyle"
+            style="@style/PopWindowContainerItemLayoutStyle2"
             android:orientation="vertical">
 
             <ImageView
@@ -47,11 +47,11 @@
 
     <LinearLayout
         android:id="@+id/ll_mobile_data_row"
-        style="@style/PopWindowContainerItemLayoutStyle">
+        style="@style/PopWindowContainerItemLayoutStyle2">
 
         <LinearLayout
             android:id="@+id/ll_btn_mobile_data"
-            style="@style/PopWindowContainerItemLayoutStyle"
+            style="@style/PopWindowContainerItemLayoutStyle2"
             android:orientation="vertical">
 
             <ImageView
@@ -67,7 +67,7 @@
 
         <LinearLayout
             android:id="@+id/ll_mobile_data_status"
-            style="@style/PopWindowContainerItemLayoutStyle"
+            style="@style/PopWindowContainerItemLayoutStyle2"
             android:orientation="vertical">
 
             <TextView
@@ -82,16 +82,16 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/PopWindowContainerItemLayoutStyle"
+            style="@style/PopWindowContainerItemLayoutStyle2"
             android:orientation="vertical"
             android:visibility="gone" />
     </LinearLayout>
 
-    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle">
+    <LinearLayout style="@style/PopWindowContainerItemLayoutStyle2">
 
         <LinearLayout
             android:id="@+id/ll_btn_bluetooth"
-            style="@style/PopWindowContainerItemLayoutStyle"
+            style="@style/PopWindowContainerItemLayoutStyle2"
             android:orientation="vertical">
 
             <ImageView
@@ -107,7 +107,7 @@
 
         <LinearLayout
             android:id="@+id/ll_btn_gps"
-            style="@style/PopWindowContainerItemLayoutStyle"
+            style="@style/PopWindowContainerItemLayoutStyle2"
             android:orientation="vertical"
             android:visibility="visible">
 
