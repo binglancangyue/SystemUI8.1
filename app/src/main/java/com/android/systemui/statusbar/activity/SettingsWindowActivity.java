@@ -351,6 +351,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         btnDvrFormat.setOnClickListener(this);
         btnDvrBT.setOnClickListener(this);
         btnDvrSystemSettings.setOnClickListener(this);
+        btnDvrBT.setVisibility(View.GONE);
 /*
         //获取手机屏幕的高度
         DisplayMetrics metric = new DisplayMetrics();

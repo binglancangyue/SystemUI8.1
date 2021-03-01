@@ -432,6 +432,22 @@ public class PhoneStatusBarPolicy implements Callback, Callbacks,
         mIconController.setIconVisibility(mSlotBluetooth, bluetoothEnabled);
     }
 
+    public final void updateBluetoothByApp() {
+        int iconId = CustomValue.BT_STATUS_ICON[CustomValue.STATUS_BAR_ICON_TYPE];
+        String contentDescription =
+                mContext.getString(R.string.accessibility_quick_settings_bluetooth_on);
+        boolean bluetoothEnabled = false;
+        bluetoothEnabled = mBluetooth.isBluetoothEnabled();
+        if (bluetoothEnabled) {
+            if (mBluetooth.isBluetoothConnected()) {
+                iconId = CustomValue.BT_STATUS_ICON_CONNECTED[CustomValue.STATUS_BAR_ICON_TYPE];
+                contentDescription = mContext.getString(R.string.accessibility_bluetooth_connected);
+            }
+        }
+        mIconController.setIcon(mSlotBluetooth, iconId, contentDescription);
+        mIconController.setIconVisibility(mSlotBluetooth, bluetoothEnabled);
+    }
+
     private final void updateTTY() {
         TelecomManager telecomManager =
                 (TelecomManager) mContext.getSystemService(Context.TELECOM_SERVICE);
