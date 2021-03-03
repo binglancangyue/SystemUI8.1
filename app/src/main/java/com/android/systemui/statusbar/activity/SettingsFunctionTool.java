@@ -230,6 +230,24 @@ public class SettingsFunctionTool {
         }
     }
 
+
+    /**
+     * 根据seeBar progress 转换后屏幕亮度
+     *
+     * @param progress seekBar progress
+     */
+    public void progressChangeToBrightnessSystemRude(int progress) {
+//        int brightnessValue = (int) Math.ceil(progress * baseValue);
+        int brightnessValue = (int) Math.round(progress * 2.45f);
+
+        Log.d(TAG, "progressChangeToBrightness: brightnessValue " + brightnessValue);
+        try {
+            modifyScreenBrightness(brightnessValue);
+        } catch (Exception e) {
+            Log.e(TAG, "progressChangeToBrightness Exception: " + e.getMessage());
+        }
+    }
+
     /**
      * 获取开启静音(音量设为0)的权限
      */

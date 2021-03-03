@@ -916,7 +916,8 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
             int progress = seekBarBrightness.getProgress();
             mSettingsUtils.progressChangeToBrightness(progress);
             Log.d(TAG, "updateSeekBarProgress: " + progress);
-            tvBrightnessValue.setText(String.valueOf(progress));
+//            tvBrightnessValue.setText(String.valueOf(progress));
+            updateBrightness();
         } else {
             int volume = seekBarVolume.getProgress();
             mSettingsUtils.setVolume(volume);
@@ -1170,7 +1171,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
             }
         }
 //        registerGPSContentObserver();
-//        registerBrightnessContentObserver();
+        registerBrightnessContentObserver();
     }
 
     /**
@@ -1233,7 +1234,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     @Override
     protected void onStop() {
         super.onStop();
-//        unRegisterContentObserver();
+        unRegisterContentObserver();
     }
 
     @Override
