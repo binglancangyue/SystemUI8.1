@@ -65,6 +65,8 @@ public class SettingsFunctionTool {
     public static final String EXTRA_FORMAT_PRIVATE = "format_private";
     public static final String EXTRA_FORGET_UUID = "forget_uuid";
     public static final String FM_STATE = "bx_fm_state";
+    public static final String FM_VALUE = "bx_fm_value";
+    public static final String BX_HEADSET_PATH = "/sys/kernel/headset/state";
 
     public SettingsFunctionTool(Context mContext) {
         this.mContext = mContext;
@@ -619,18 +621,21 @@ public class SettingsFunctionTool {
         int state = Settings.Global.getInt(mContext.getContentResolver(), FM_STATE, 0);
         Log.d(TAG, "getInitFmStatus: " + state);
         if (state == 1) {
+            setFmValue(Settings.Global.getInt(mContext.getContentResolver(), FM_VALUE, 9800));
+            openFm();
             return true;
         } else {
-            return isOpen;
+            closeFm();
+            return false;
         }
     }
-
 
     private void openFm() {
         try {
             Writer fm_power = new FileWriter(fm_power_path);
             fm_power.write("on");
             fm_power.close();
+            setFmState("on");
             setSpeakerphoneOn(false);
             Settings.Global.putInt(mContext.getContentResolver(), FM_STATE, 1);
             Log.d(TAG, "openFm:on ");
@@ -646,6 +651,7 @@ public class SettingsFunctionTool {
             fm_power.write("off");
             fm_power.flush();
             fm_power.close();
+            setFmState("off");
             setSpeakerphoneOn(false);
             Settings.Global.putInt(mContext.getContentResolver(), FM_STATE, 1);
             Log.d(TAG, "openFm:on off");
@@ -655,6 +661,49 @@ public class SettingsFunctionTool {
         }
     }
 
+    public void setFmState(String value) {
+        Writer fmState = null;
+        try {
+            fmState = new FileWriter(BX_HEADSET_PATH);
+            fmState.write(value);
+            fmState.flush();
+            Log.d(TAG, "setFmState:value " + value);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "setFmState: " + e.getMessage());
+        } finally {
+            if (fmState != null) {
+                try {
+                    fmState.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    public void setFmValue(int value) {
+        Writer fmTuneTouch = null;
+        try {
+            fmTuneTouch = new FileWriter(fm_tunetoch_path);
+            fmTuneTouch.write(value + "");
+            fmTuneTouch.flush();
+//            Settings.Global.putInt(mContext.getContentResolver(), FM_VALUE, value);
+            Log.d(TAG, "setFmValue:value " + value);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "setFmValue: " + e.getMessage());
+        } finally {
+            if (fmTuneTouch != null) {
+                try {
+                    fmTuneTouch.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     public void startFormatting() {
         StorageManager mStorage = mContext.getSystemService(StorageManager.class);
