@@ -64,6 +64,7 @@ public class SettingsFunctionTool {
     public static final int STREAM_TYPE = AudioManager.STREAM_VOICE_CALL;
     public static final String EXTRA_FORMAT_PRIVATE = "format_private";
     public static final String EXTRA_FORGET_UUID = "forget_uuid";
+    public static final String FM_STATE = "bx_fm_state";
 
     public SettingsFunctionTool(Context mContext) {
         this.mContext = mContext;
@@ -613,12 +614,25 @@ public class SettingsFunctionTool {
         return isOpen;
     }
 
+    public boolean getInitFmStatus() {
+        boolean isOpen = false;
+        int state = Settings.Global.getInt(mContext.getContentResolver(), FM_STATE, 0);
+        Log.d(TAG, "getInitFmStatus: " + state);
+        if (state == 1) {
+            return true;
+        } else {
+            return isOpen;
+        }
+    }
+
 
     private void openFm() {
         try {
             Writer fm_power = new FileWriter(fm_power_path);
             fm_power.write("on");
             fm_power.close();
+            setSpeakerphoneOn(false);
+            Settings.Global.putInt(mContext.getContentResolver(), FM_STATE, 1);
             Log.d(TAG, "openFm:on ");
         } catch (IOException e) {
             e.printStackTrace();
@@ -632,6 +646,8 @@ public class SettingsFunctionTool {
             fm_power.write("off");
             fm_power.flush();
             fm_power.close();
+            setSpeakerphoneOn(false);
+            Settings.Global.putInt(mContext.getContentResolver(), FM_STATE, 1);
             Log.d(TAG, "openFm:on off");
         } catch (IOException e) {
             e.printStackTrace();
@@ -749,6 +765,21 @@ public class SettingsFunctionTool {
         }
         NetworkInfo mWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return mWifiInfo.isConnected();
+    }
+
+    public void setSpeakerphoneOn(boolean b) {
+        if (audioManager != null) {
+            if (!b) {
+                audioManager.setParameters("fm=1");
+                Log.d(TAG, "setSpeakerphoneOn: fm=1");
+            } else {
+                audioManager.setMode(AudioManager.MODE_NORMAL);
+                audioManager.setParameters("fm=0");
+                Log.d(TAG, "setSpeakerphoneOn: fm=0");
+            }
+            audioManager.setSpeakerphoneOn(b);
+            Log.d(TAG, "setSpeakerphoneOn: " + b);
+        }
     }
 
 }

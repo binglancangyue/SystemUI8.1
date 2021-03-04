@@ -217,8 +217,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         initADASLevel();
         initCollisionLevel();
         //FM
-        updateBtnFM(mSettingsUtils.getFmStatus());
-        Log.d(TAG, "setData: " + mSettingsUtils.isGpsOpen());
+        updateBtnFM(mSettingsUtils.getInitFmStatus());
 
         //WIFI AP
         updateBtnHotspot(wifiUtils.isWifiApOpen());
@@ -234,10 +233,9 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         }
         //GPS
         boolean isGPSOpen = mSettingsUtils.isGpsOpen();
-//        if (isGPSOpen) {
-//            mSettingsUtils.openGPS(true);
-//        }
+        Log.d(TAG, "setData: " + isGPSOpen);
         updateBtnGPS(isGPSOpen);
+
         //AutoBrightness
         Log.d(TAG, "setData: AutoBrightness " + mSharedPreferencesTool.getAutoBrightness());
         setAutoBrightnessCheck(mSharedPreferencesTool.getAutoBrightness());
