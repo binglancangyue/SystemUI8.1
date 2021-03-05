@@ -111,10 +111,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         this.mContext = this;
         setContentView(R.layout.popup_window_setting);
         mHandler = new InnerHandler(this);
-        mSettingsUtils = new SettingsFunctionTool();
-        wifiUtils = new WifiTool();
-//        requestPermissionsTool = new RequestPermissionsTool();
-        mSharedPreferencesTool = new SharedPreferencesTool();
         setWindowSize();
         NotifyMessageManager.getInstance().setListener(this);
         createPopWindow();
@@ -171,15 +167,29 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         }
         lp.width = widthPixels;
         lp.height = heightPixels;
-        lp.gravity= Gravity.CENTER_HORIZONTAL;
+        lp.gravity = Gravity.CENTER_HORIZONTAL;
         window.setAttributes(lp);
     }
 
     @SuppressLint("InflateParams")
     public void createPopWindow() {
-        initPopupWindow();
-        setData();
-        setPopupWindowListener();
+        getWindow().getDecorView().post(new Runnable() {
+            @Override
+            public void run() {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSettingsUtils = new SettingsFunctionTool();
+                        wifiUtils = new WifiTool();
+//                        requestPermissionsTool = new RequestPermissionsTool();
+                        mSharedPreferencesTool = new SharedPreferencesTool();
+                        initPopupWindow();
+                        setPopupWindowListener();
+                        setData();
+                    }
+                });
+            }
+        });
     }
 
     private void setData() {
@@ -952,7 +962,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         tvBrightnessValue.setText(String.valueOf(brightness));
     }
 
-    private void setMaxScreenOffTimeOut(){
+    private void setMaxScreenOffTimeOut() {
         cleanFunctionRBCheck();
         cleanTimeRBCheck();
         rbBright.setChecked(true);

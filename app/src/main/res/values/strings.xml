@@ -2162,5 +2162,8 @@
     <string name="shutdown_confirm_time_out_desc">After %1$s ,it will shutdown.</string>
     <string name="sleep_confirm_time_out_desc">After %1$s ,it will go to sleep.</string>
     <string name="is_sleep">Do you want to go to sleep?</string>
+    <string name="kd003_shut_down">關機</string>
+    <string name="kd003_restart">重新開機</string>
+    <string name="no_sd_card_detected">No SD card detected</string>
     <!--add end-->
 </resources>

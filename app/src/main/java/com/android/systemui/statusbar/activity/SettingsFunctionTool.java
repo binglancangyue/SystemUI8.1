@@ -42,7 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.os.storage.DiskInfo;
-
+import android.os.storage.VolumeInfo;
 
 /**
  * @author Altair
@@ -61,7 +61,7 @@ public class SettingsFunctionTool {
     private PowerManager mPowerManager;
     public static final String fm_power_path = "/sys/class/QN8027/QN8027/power_state";
     public static final String fm_tunetoch_path = "/sys/class/QN8027/QN8027/tunetoch";
-    public static final int STREAM_TYPE = AudioManager.STREAM_VOICE_CALL;
+    public static final int STREAM_TYPE = AudioManager.STREAM_MUSIC;
     public static final String EXTRA_FORMAT_PRIVATE = "format_private";
     public static final String EXTRA_FORGET_UUID = "forget_uuid";
     public static final String FM_STATE = "bx_fm_state";
@@ -653,7 +653,7 @@ public class SettingsFunctionTool {
             fm_power.close();
             setFmState("off");
             setSpeakerphoneOn(false);
-            Settings.Global.putInt(mContext.getContentResolver(), FM_STATE, 1);
+            Settings.Global.putInt(mContext.getContentResolver(), FM_STATE, 0);
             Log.d(TAG, "openFm:on off");
         } catch (IOException e) {
             e.printStackTrace();
@@ -706,8 +706,14 @@ public class SettingsFunctionTool {
     }
 
     public void startFormatting() {
-        StorageManager mStorage = mContext.getSystemService(StorageManager.class);
-        DiskInfo mDisk = mStorage.findDiskById("disk:179,64");
+        StorageManager mStorage = (StorageManager) SystemUIApplication.getInstance()
+                .getSystemService(Context.STORAGE_SERVICE);
+//        DiskInfo mDisk = mStorage.findDiskById("disk:179,64");
+        DiskInfo mDisk = getDiskId(mStorage);
+        if (mDisk == null) {
+            ToastTool.showToast(R.string.no_sd_card_detected);
+            return;
+        }
         Intent intent = new Intent();
         intent.setClassName("com.android.settings", "com.android.settings.deviceinfo.StorageWizardFormatProgress");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -814,6 +820,19 @@ public class SettingsFunctionTool {
         }
         NetworkInfo mWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return mWifiInfo.isConnected();
+    }
+
+    private DiskInfo getDiskId(StorageManager mStorage) {
+//        String id = null;
+        DiskInfo diskinfo = null;
+        for (VolumeInfo volumeInfo : mStorage.getVolumes()) {
+            if (VolumeInfo.TYPE_PUBLIC == volumeInfo.getType()) {
+//                id = volumeInfo.getDiskId();
+                diskinfo = volumeInfo.getDisk();
+                Log.d(TAG, "VolumeInfo " + volumeInfo.getType() + " " + volumeInfo.getDiskId());
+            }
+        }
+        return diskinfo;
     }
 
     public void setSpeakerphoneOn(boolean b) {
