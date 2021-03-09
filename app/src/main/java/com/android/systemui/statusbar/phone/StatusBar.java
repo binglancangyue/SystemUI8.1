@@ -8058,10 +8058,6 @@ public class StatusBar extends SystemUI implements DemoMode,
         intentFilter.addAction(CustomValue.ACTION_UPDATE_BRIGHTNESS_BY_TIME);
         intentFilter.addAction(CustomValue.ACTION_UPDATE_WEATHER);
         intentFilter.addAction("android.location.PROVIDERS_CHANGED");
-        intentFilter.addAction(CustomValue.ACTION_SETTINGS_FUNCTION);
-        intentFilter.addAction(CustomValue.ACTION_HIDE_NAVIGATION);
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         mContext.registerReceiver(mReceiver, intentFilter);
     }
 

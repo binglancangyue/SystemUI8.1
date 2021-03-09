@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_kd002_no_p" android:state_pressed="true" />
+    <item android:drawable="@drawable/ic_kd002_no_n" android:state_pressed="false" />
+    <item android:drawable="@drawable/ic_kd002_no_n" />
+</selector>

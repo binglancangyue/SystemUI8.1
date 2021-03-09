@@ -119,6 +119,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
 
     private SharedPreferencesTool mSharedPreferencesTool;
     private int enableColor;
+    private DialogTool mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,8 +131,8 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         wifiUtils = new WifiTool();
 //        requestPermissionsTool = new RequestPermissionsTool();
         mSharedPreferencesTool = new SharedPreferencesTool();
+        mDialog = new DialogTool();
         setWindowSize();
-        NotifyMessageManager.getInstance().setListener(this);
         createPopWindow();
     }
 
@@ -198,6 +199,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
             initPopupWindow();
             setData();
             setPopupWindowListener();
+            NotifyMessageManager.getInstance().setListener(this);
         }));
     }
 
@@ -546,15 +548,25 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
 //                sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 1);
                 break;
             case R.id.ll_btn_gps:
-                mSettingsUtils.openGPS(!mSettingsUtils.isGpsOpen());
-                sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 2);
+                boolean isOpen = mSettingsUtils.isGpsOpen();
+                if (isOpen) {
+                    mDialog.showStopGPSDialog(this);
+                } else {
+                    mSettingsUtils.openGPS(!isOpen);
+                    sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 2);
+                }
                 break;
             case R.id.ll_btn_mobile_data:
-                if (mSettingsUtils.isHasSimCard()) {
-                    mSettingsUtils.setDataEnabled(!mSettingsUtils.getDataEnabled());
-                    sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 3);
+                boolean isEnabled = mSettingsUtils.getDataEnabled();
+                if (isEnabled) {
+                    mDialog.showStop4GDialog(this);
                 } else {
-                    ToastTool.showToast(R.string.no_sim_card);
+                    if (mSettingsUtils.isHasSimCard()) {
+                        mSettingsUtils.setDataEnabled(!isEnabled);
+                        sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 3);
+                    } else {
+                        ToastTool.showToast(R.string.no_sim_card);
+                    }
                 }
                 break;
             case R.id.ll_btn_bluetooth:
@@ -1126,6 +1138,18 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                 break;
             case CustomValue.TYPE_VOLUME:
                 message.arg1 = 8;
+                break;
+            case 20:
+                mSettingsUtils.openGPS(!mSettingsUtils.isGpsOpen());
+                sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 2);
+                break;
+            case 21:
+                if (mSettingsUtils.isHasSimCard()) {
+                    mSettingsUtils.setDataEnabled(!mSettingsUtils.getDataEnabled());
+                    sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 3);
+                } else {
+                    ToastTool.showToast(R.string.no_sim_card);
+                }
                 break;
         }
 //        if (type == CustomValue.TYPE_WIFI_STATE) {//wifi

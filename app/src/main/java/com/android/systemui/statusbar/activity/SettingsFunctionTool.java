@@ -42,7 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.os.storage.DiskInfo;
-
+import android.os.storage.VolumeInfo;
 
 /**
  * @author Altair

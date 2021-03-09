@@ -167,9 +167,9 @@ public class NavigationBarInflaterView extends FrameLayout
 
     protected String getDefaultLayout() {
         /* SPRD: Bug 692453 new feature of dynamic navigationbar @{ */
-//        if (mSupportDynamicBar) {
-//            return readLNavigationLayoutSettings();
-//        }
+        if (mSupportDynamicBar) {
+            return readLNavigationLayoutSettings();
+        }
         /* @} */
         return mContext.getString(R.string.config_navBarLayout_kd002);
     }

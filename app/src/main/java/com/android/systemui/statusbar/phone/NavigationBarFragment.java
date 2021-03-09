@@ -40,6 +40,7 @@ import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.inputmethodservice.InputMethodService;
+import android.media.AudioManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,6 +56,7 @@ import android.support.annotation.VisibleForTesting;
 import android.telecom.TelecomManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.IRotationWatcher.Stub;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -75,6 +77,7 @@ import com.android.keyguard.LatencyTracker;
 import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.SysUiServiceProvider;
+import com.android.systemui.SystemUI;
 import com.android.systemui.SystemUIApplication;
 import com.android.systemui.assist.AssistManager;
 import com.android.systemui.fragments.FragmentHostManager;
@@ -158,7 +161,6 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     private int stateADAS = 0;
     private KeyButtonDrawable sosN;
     private KeyButtonDrawable sosC;
-    private int adasState = 0;
     // ----- Fragment Lifecycle Callbacks -----
 
     @Override
@@ -453,6 +455,7 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
 
         dvrBackButton = mNavigationBarView.getDVRBackButton();
         dvrBackButton.setOnClickListener(this::startBackDVRPreview);
+        dvrBackButton.setOnLongClickListener(this::startADASLine);
 
         settingsButton = mNavigationBarView.getSettingsButton();
 
@@ -623,7 +626,11 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
 //                context.startActivity(launchIntent);
 //            }
         }
+    }
 
+    private boolean startADASLine(View view) {
+        sendToDVR2("cmd_adas_line");
+        return true;
     }
 
     private void startRecording(View view){
@@ -994,9 +1001,9 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
                     }
                     break;
                 case 4:
-                    adasState = Settings.Global.getInt(getContext().getContentResolver(), CAMERA_ADAS_STATUS, 0);
-                    Log.d(TAG, "stateADAS: " + adasState);
-                    if (adasState == 0) {
+                    int stateADAS = Settings.Global.getInt(getContext().getContentResolver(), CAMERA_ADAS_STATUS, 0);
+                    Log.d(TAG, "stateADAS: " + stateADAS);
+                    if (stateADAS == 0) {
                         dvrBackButton.setSelected(false);
                     } else {
                         dvrBackButton.setSelected(true);
