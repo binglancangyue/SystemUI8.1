@@ -17,11 +17,12 @@
     xmlns:systemui="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fl_navigation_bar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/rounded_corner_content_padding"
-    android:layout_marginEnd="@dimen/rounded_corner_content_padding"
-    android:paddingStart="@dimen/nav_content_padding"
-    android:paddingEnd="@dimen/nav_content_padding">
+    android:layout_height="match_parent">
+    <!--    android:layout_marginStart="@dimen/rounded_corner_content_padding"
+        android:layout_marginEnd="@dimen/rounded_corner_content_padding"
+        android:paddingStart="@dimen/nav_content_padding"
+        android:paddingEnd="@dimen/nav_content_padding"-->
+
 
     <com.android.systemui.statusbar.phone.NearestTouchFrame
         android:id="@+id/nav_buttons"
@@ -35,22 +36,23 @@
             android:clipChildren="false"
             android:orientation="horizontal" />
 
+        <!--    <LinearLayout
+                android:id="@+id/center_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:background="@drawable/icon_bx_bg_left"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" />-->
+
         <LinearLayout
             android:id="@+id/center_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#1f1f1f"
             android:clipChildren="false"
-            android:background="@drawable/icon_bx_bg_left"
-            android:gravity="center_horizontal"
-            android:orientation="vertical" />
-
-        <!--        <LinearLayout
-                    android:id="@+id/center_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipChildren="false"
-                    android:gravity="center"
-                    android:orientation="horizontal" />-->
+            android:gravity="center"
+            android:orientation="horizontal" />
 
     </com.android.systemui.statusbar.phone.NearestTouchFrame>
 

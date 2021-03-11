@@ -287,7 +287,7 @@ public class PowerUI extends SystemUI {
 
                     // only play SFX when the dialog comes up or the bucket changes
                     final boolean playSound = bucket != oldBucket || oldPlugged;
-                    mWarnings.showLowBatteryWarning(playSound);
+//                    mWarnings.showLowBatteryWarning(playSound);
                 } else if (isPowerSaver || plugged || (bucket > oldBucket && bucket > 0)) {
                     mWarnings.dismissLowBatteryWarning();
                 } else {
@@ -296,7 +296,7 @@ public class PowerUI extends SystemUI {
 
                 if (plugged && mBatteryLevel < mLowBatteryReminderLevels[1] &&
                     (mBatteryLevel != oldBatteryLevel || !oldPlugged)) {
-                    mWarnings.showCriticalBatteryWarningDialog();
+//                    mWarnings.showCriticalBatteryWarningDialog();
                 } else if (!plugged || mBatteryLevel >= mLowBatteryReminderLevels[1]){
                     mWarnings.dismissCriticalBatteryWarningDialog();
                 }
@@ -415,7 +415,7 @@ public class PowerUI extends SystemUI {
                     WindowManager.LayoutParams.PRIVATE_FLAG_SHOW_FOR_ALL_USERS;
 
             dialog.show();
-            View view = View.inflate(mContext, R.layout.bx_usbchanger, null);
+            View view = View.inflate(mContext, R.layout.dialog_layout_kd003, null);
             TextView guanji = (TextView) view.findViewById(R.id.btn_downnow);
             TextView chongqi = (TextView) view.findViewById(R.id.btn_dontdow);
             outtime = (TextView) view.findViewById(R.id.tv_downtime);

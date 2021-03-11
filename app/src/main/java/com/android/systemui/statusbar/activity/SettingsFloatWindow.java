@@ -1,22 +1,17 @@
 package com.android.systemui.statusbar.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.database.ContentObserver;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,13 +27,12 @@ import com.android.systemui.statusbar.activity.listener.OnSettingsStatusListener
 
 import java.lang.ref.WeakReference;
 
-
 /**
- * @author Altair
- * @date :2020.01.07 下午 02:16
+ * @author: Administrator
+ * @date: 2021/3/10
  * @description:
  */
-public class SettingsWindowActivity extends Activity implements View.OnClickListener,
+public class SettingsFloatWindow implements View.OnClickListener,
         SeekBar.OnSeekBarChangeListener, OnSettingsStatusListener {
     private static final String TAG = "SettingsWindowActivity";
     private OnSettingPopupWindowListener mListener;
@@ -104,51 +98,38 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private RelativeLayout rlFmRow;
 
     private SharedPreferencesTool mSharedPreferencesTool;
+    private LayoutInflater inflater;
+    private View parent;
+    private WindowManager mWindowManager;
+    private boolean isAdd = false;
+    private int widthPixels = 0;
+    private int heightPixels = 0;
+    private Dialog settingsDialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.mContext = this;
-        setContentView(R.layout.popup_window_setting);
+    public SettingsFloatWindow(Context mContext) {
+        mWindowManager = (WindowManager) SystemUIApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
+        this.mContext = mContext;
         mHandler = new InnerHandler(this);
+        inflater = LayoutInflater.from(mContext);
         setWindowSize();
         NotifyMessageManager.getInstance().setListener(this);
         createPopWindow();
+        registerBrightnessContentObserver();
     }
 
-    @SuppressLint("NewApi")
-    public void hideNavigationBar() {
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        //布局位于状态栏下方
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                        //全屏
-                        View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        //隐藏导航栏
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-                if (Build.VERSION.SDK_INT >= 19) {
-                    uiOptions |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-                } else {
-                    uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
-                }
-                getWindow().getDecorView().setSystemUiVisibility(uiOptions);
-            }
-        });
-    }
+    private WindowManager.LayoutParams mParams;
 
     private void setWindowSize() {
-        Window window = getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
-        //获取手机屏幕的高度
+//        mParams = new WindowManager.LayoutParams();
+//        mParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+//        mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+//                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
+//        mParams.gravity = Gravity.CENTER;
+//        //获取手机屏幕的高度
         DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int widthPixels = (int) (metric.widthPixels * 0.8f);
-        int heightPixels = (int) (metric.heightPixels * 0.72f);
+        mWindowManager.getDefaultDisplay().getMetrics(metric);
+        widthPixels = (int) (metric.widthPixels * 0.8f);
+        heightPixels = (int) (metric.heightPixels * 0.72f);
         if (CustomValue.SCREEN_3) {
             widthPixels = WindowManager.LayoutParams.MATCH_PARENT;
             heightPixels = (int) (metric.heightPixels * 0.79f);
@@ -166,39 +147,28 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
             widthPixels = WindowManager.LayoutParams.MATCH_PARENT;
             heightPixels = (int) (metric.heightPixels * 0.85f);
         }
-        lp.width = widthPixels;
-        lp.height = heightPixels;
-        lp.gravity = Gravity.CENTER_HORIZONTAL;
-        window.setAttributes(lp);
+//        mParams.width = widthPixels;
+//        mParams.height = heightPixels;
     }
 
     @SuppressLint("InflateParams")
     public void createPopWindow() {
-        getWindow().getDecorView().post(new Runnable() {
-            @Override
-            public void run() {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSettingsUtils = new SettingsFunctionTool();
-                        wifiUtils = new WifiTool();
+
+        mSettingsUtils = new SettingsFunctionTool();
+        wifiUtils = new WifiTool();
 //                        requestPermissionsTool = new RequestPermissionsTool();
-                        mSharedPreferencesTool = new SharedPreferencesTool();
-                        initPopupWindow();
-                        setPopupWindowListener();
-                        setData();
-                    }
-                });
-            }
-        });
+        mSharedPreferencesTool = new SharedPreferencesTool();
+        initPopupWindow();
+        setPopupWindowListener();
+        setData();
     }
 
     private void setData() {
         if (CustomValue.SCREEN_3) {
             llWirelessDataRow.setVisibility(View.GONE);
             rlFmRow.setVisibility(View.GONE);
-            LinearLayout llADASRow = findViewById(R.id.ll_adas_row);
-            LinearLayout llGSensorRow = findViewById(R.id.ll_g_sensor_row);
+            LinearLayout llADASRow = parent.findViewById(R.id.ll_adas_row);
+            LinearLayout llGSensorRow = parent.findViewById(R.id.ll_g_sensor_row);
             llADASRow.setVisibility(View.GONE);
             llGSensorRow.setVisibility(View.GONE);
         }
@@ -261,105 +231,124 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     }
 
     private void initPopupWindow() {
-        llBtnWireless = findViewById(R.id.ll_left_wifi);
-        llBtnScreenControl = findViewById(R.id.ll_left_screen_control);
-        llBtnOther = findViewById(R.id.ll_left_other);
-        llBtnDVR = findViewById(R.id.ll_left_dvr);
+        if (settingsDialog == null) {
+            parent = inflater.inflate(R.layout.popup_window_setting, null);
+//            AlertDialog.Builder builder = new AlertDialog.Builder(SystemUIApplication.getInstance());
+//            builder.setView(parent);
+//            dialog = builder.create();
+            settingsDialog = new Dialog(SystemUIApplication.getInstance(), R.style.SettingDialog);
+            settingsDialog.setContentView(parent);
+//            dialog.setView(parent, 0, 0, 0, 0);
+            settingsDialog.getWindow().setType(
+                    (WindowManager.LayoutParams.TYPE_SYSTEM_ERROR));
+//        parent.setFocusableInTouchMode(true);
+//        parent.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                Log.d(TAG, "onKey: " + keyCode);
+//                return false;
+//            }
+//        });
+            llBtnWireless = parent.findViewById(R.id.ll_left_wifi);
+            llBtnScreenControl = parent.findViewById(R.id.ll_left_screen_control);
+            llBtnOther = parent.findViewById(R.id.ll_left_other);
+            llBtnDVR = parent.findViewById(R.id.ll_left_dvr);
 
-        llWireless = findViewById(R.id.ll_wireless_data);
-        llScreenControl = findViewById(R.id.ll_brightness);
-        llOther = findViewById(R.id.ll_other);
-        llDVR = findViewById(R.id.ll_dvr);
+            llWireless = parent.findViewById(R.id.ll_wireless_data);
+            llScreenControl = parent.findViewById(R.id.ll_brightness);
+            llOther = parent.findViewById(R.id.ll_other);
+            llDVR = parent.findViewById(R.id.ll_dvr);
 
-        // Wireless data
-        llWirelessDataRow = findViewById(R.id.ll_wireless_data_row);
-        llMobileDataRow = findViewById(R.id.ll_mobile_data_row);
-        llBtnWifi = findViewById(R.id.ll_btn_wifi);
-        tvWifi = findViewById(R.id.tv_wifi);
-        tvWifiStatus = findViewById(R.id.tv_wifi_status);
-        llBtnHotspot = findViewById(R.id.ll_btn_hotspot);
-        ivHotspot = findViewById(R.id.iv_hotspot);
-        tvHotspotStatus = findViewById(R.id.tv_hotspot_status);
-        llBtnGps = findViewById(R.id.ll_btn_gps);
-        ivGps = findViewById(R.id.iv_gps);
-        tvGpsStatus = findViewById(R.id.tv_gps_status);
-        llBtnMobileData = findViewById(R.id.ll_btn_mobile_data);
-        ivMobileData = findViewById(R.id.iv_mobile_data);
-        tvMobileDataStatus = findViewById(R.id.tv_mobile_data_status);
-        tv4GStatus = findViewById(R.id.tv_4g_status);
-        llBtnBlueTooth = findViewById(R.id.ll_btn_bluetooth);
-        ivBlueTooth = findViewById(R.id.iv_bluetooth);
-        tvBlueTooth = findViewById(R.id.tv_bluetooth_status);
+            // Wireless data
+            llWirelessDataRow = parent.findViewById(R.id.ll_wireless_data_row);
+            llMobileDataRow = parent.findViewById(R.id.ll_mobile_data_row);
+            llBtnWifi = parent.findViewById(R.id.ll_btn_wifi);
+            tvWifi = parent.findViewById(R.id.tv_wifi);
+            tvWifiStatus = parent.findViewById(R.id.tv_wifi_status);
+            llBtnHotspot = parent.findViewById(R.id.ll_btn_hotspot);
+            ivHotspot = parent.findViewById(R.id.iv_hotspot);
+            tvHotspotStatus = parent.findViewById(R.id.tv_hotspot_status);
+            llBtnGps = parent.findViewById(R.id.ll_btn_gps);
+            ivGps = parent.findViewById(R.id.iv_gps);
+            tvGpsStatus = parent.findViewById(R.id.tv_gps_status);
+            llBtnMobileData = parent.findViewById(R.id.ll_btn_mobile_data);
+            ivMobileData = parent.findViewById(R.id.iv_mobile_data);
+            tvMobileDataStatus = parent.findViewById(R.id.tv_mobile_data_status);
+            tv4GStatus = parent.findViewById(R.id.tv_4g_status);
+            llBtnBlueTooth = parent.findViewById(R.id.ll_btn_bluetooth);
+            ivBlueTooth = parent.findViewById(R.id.iv_bluetooth);
+            tvBlueTooth = parent.findViewById(R.id.tv_bluetooth_status);
 
-        llBtnWifi.setOnClickListener(this);
-        llBtnHotspot.setOnClickListener(this);
-        llBtnGps.setOnClickListener(this);
-        llBtnMobileData.setOnClickListener(this);
-        llBtnBlueTooth.setOnClickListener(this);
+            llBtnWifi.setOnClickListener(this);
+            llBtnHotspot.setOnClickListener(this);
+            llBtnGps.setOnClickListener(this);
+            llBtnMobileData.setOnClickListener(this);
+            llBtnBlueTooth.setOnClickListener(this);
 
 
-        //Screen control
-        rbCloseScreen = findViewById(R.id.rb_close_screen);
-        rbBright = findViewById(R.id.rb_bright);
-        rbScreenSaver = findViewById(R.id.rb_screen_saver);
+            //Screen control
+            rbCloseScreen = parent.findViewById(R.id.rb_close_screen);
+            rbBright = parent.findViewById(R.id.rb_bright);
+            rbScreenSaver = parent.findViewById(R.id.rb_screen_saver);
 
-        rbTime1 = findViewById(R.id.rb_time_1);
-        rbTime5 = findViewById(R.id.rb_time_5);
-        rbTime30 = findViewById(R.id.rb_time_30);
+            rbTime1 = parent.findViewById(R.id.rb_time_1);
+            rbTime5 = parent.findViewById(R.id.rb_time_5);
+            rbTime30 = parent.findViewById(R.id.rb_time_30);
 
-        rbDay = findViewById(R.id.rb_screen_control_day);
-        rbNight = findViewById(R.id.rb_screen_control_night);
-        rbAuto = findViewById(R.id.rb_screen_control_auto);
+            rbDay = parent.findViewById(R.id.rb_screen_control_day);
+            rbNight = parent.findViewById(R.id.rb_screen_control_night);
+            rbAuto = parent.findViewById(R.id.rb_screen_control_auto);
 
-        rbCloseScreen.setOnClickListener(this);
-        rbBright.setOnClickListener(this);
-        rbScreenSaver.setOnClickListener(this);
-        rbTime1.setOnClickListener(this);
-        rbTime5.setOnClickListener(this);
-        rbTime30.setOnClickListener(this);
-        rbDay.setOnClickListener(this);
-        rbNight.setOnClickListener(this);
-        rbAuto.setOnClickListener(this);
+            rbCloseScreen.setOnClickListener(this);
+            rbBright.setOnClickListener(this);
+            rbScreenSaver.setOnClickListener(this);
+            rbTime1.setOnClickListener(this);
+            rbTime5.setOnClickListener(this);
+            rbTime30.setOnClickListener(this);
+            rbDay.setOnClickListener(this);
+            rbNight.setOnClickListener(this);
+            rbAuto.setOnClickListener(this);
 
-        seekBarBrightness = findViewById(R.id.sb_brightness);
-        tvBrightnessValue = findViewById(R.id.tv_brightness_value);
+            seekBarBrightness = parent.findViewById(R.id.sb_brightness);
+            tvBrightnessValue = parent.findViewById(R.id.tv_brightness_value);
 
-        // Other
-        rlFmRow = findViewById(R.id.rl_fm_row);
-        ivFmSwitch = findViewById(R.id.iv_switch_fm);
-        seekBarVolume = findViewById(R.id.sb_volume);
-        seekBarVolume.setMax(mSettingsUtils.getMaxValue(SettingsFunctionTool.STREAM_TYPE));
-        tvVolumeValue = findViewById(R.id.tv_volume_value);
+            // Other
+            rlFmRow = parent.findViewById(R.id.rl_fm_row);
+            ivFmSwitch = parent.findViewById(R.id.iv_switch_fm);
+            seekBarVolume = parent.findViewById(R.id.sb_volume);
+            seekBarVolume.setMax(mSettingsUtils.getMaxValue(SettingsFunctionTool.STREAM_TYPE));
+            tvVolumeValue = parent.findViewById(R.id.tv_volume_value);
 
-        // DVR
-        rbRecordTime1 = findViewById(R.id.rb_record_time_1);
-        rbRecordTime3 = findViewById(R.id.rb_record_time_3);
-        rbRecordTime5 = findViewById(R.id.rb_record_time_5);
-        rbCollisionLow = findViewById(R.id.rb_collision_value_low);
-        rbCollisionMiddle = findViewById(R.id.rb_collision_value_middle);
-        rbCollisionHigh = findViewById(R.id.rb_collision_value_high);
-        rbCollisionClose = findViewById(R.id.rb_collision_value_close);
-        rbADASLow = findViewById(R.id.rb_adas_value_low);
-        rbADASMiddle = findViewById(R.id.rb_adas_value_middle);
-        rbADASHigh = findViewById(R.id.rb_adas_value_high);
+            // DVR
+            rbRecordTime1 = parent.findViewById(R.id.rb_record_time_1);
+            rbRecordTime3 = parent.findViewById(R.id.rb_record_time_3);
+            rbRecordTime5 = parent.findViewById(R.id.rb_record_time_5);
+            rbCollisionLow = parent.findViewById(R.id.rb_collision_value_low);
+            rbCollisionMiddle = parent.findViewById(R.id.rb_collision_value_middle);
+            rbCollisionHigh = parent.findViewById(R.id.rb_collision_value_high);
+            rbCollisionClose = parent.findViewById(R.id.rb_collision_value_close);
+            rbADASLow = parent.findViewById(R.id.rb_adas_value_low);
+            rbADASMiddle = parent.findViewById(R.id.rb_adas_value_middle);
+            rbADASHigh = parent.findViewById(R.id.rb_adas_value_high);
 
-        RelativeLayout btnDvrFormat = findViewById(R.id.btn_dvr_format);
-        RelativeLayout btnDvrBT = findViewById(R.id.btn_dvr_bt);
-        RelativeLayout btnDvrSystemSettings = findViewById(R.id.btn_dvr_settings);
+            RelativeLayout btnDvrFormat = parent.findViewById(R.id.btn_dvr_format);
+            RelativeLayout btnDvrBT = parent.findViewById(R.id.btn_dvr_bt);
+            RelativeLayout btnDvrSystemSettings = parent.findViewById(R.id.btn_dvr_settings);
 
-        rbRecordTime1.setOnClickListener(this);
-        rbRecordTime3.setOnClickListener(this);
-        rbRecordTime5.setOnClickListener(this);
-        rbCollisionLow.setOnClickListener(this);
-        rbCollisionMiddle.setOnClickListener(this);
-        rbCollisionHigh.setOnClickListener(this);
-        rbCollisionClose.setOnClickListener(this);
-        rbADASLow.setOnClickListener(this);
-        rbADASMiddle.setOnClickListener(this);
-        rbADASHigh.setOnClickListener(this);
-        btnDvrFormat.setOnClickListener(this);
-        btnDvrBT.setOnClickListener(this);
-        btnDvrSystemSettings.setOnClickListener(this);
+            rbRecordTime1.setOnClickListener(this);
+            rbRecordTime3.setOnClickListener(this);
+            rbRecordTime5.setOnClickListener(this);
+            rbCollisionLow.setOnClickListener(this);
+            rbCollisionMiddle.setOnClickListener(this);
+            rbCollisionHigh.setOnClickListener(this);
+            rbCollisionClose.setOnClickListener(this);
+            rbADASLow.setOnClickListener(this);
+            rbADASMiddle.setOnClickListener(this);
+            rbADASHigh.setOnClickListener(this);
+            btnDvrFormat.setOnClickListener(this);
+            btnDvrBT.setOnClickListener(this);
+            btnDvrSystemSettings.setOnClickListener(this);
+            btnDvrBT.setVisibility(View.GONE);
 /*
         //获取手机屏幕的高度
         DisplayMetrics metric = new DisplayMetrics();
@@ -375,10 +364,10 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
 
         popupWindow.setBackgroundDrawable(new ColorDrawable(-000000));
         popupWindow.setAnimationStyle(R.style.SettingsTranslateAnim);*/
-
-        cleanLeftButton();
-        llBtnWireless.setSelected(true);
-        llWireless.setVisibility(View.VISIBLE);
+            cleanLeftButton();
+            llBtnWireless.setSelected(true);
+            llWireless.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -460,16 +449,19 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                 mSharedPreferencesTool.saveADALevel(3);
                 break;
             case R.id.btn_dvr_bt:
+                dismissDialog();
                 Intent bt = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
-                startActivity(bt);
-                finish();
+                SystemUIApplication.getInstance().startActivity(bt);
+//                removeView();
                 break;
             case R.id.btn_dvr_format:
 //                mSettingsUtils.formatMedia(StoragePaTool.getStoragePath(true));
-                finishAffinity();
+//                finishAffinity();
+                dismissDialog();
                 formatSDCard();
                 break;
             case R.id.btn_dvr_settings:
+                dismissDialog();
                 startSettings();
                 break;
             case R.id.rb_screen_control_day:
@@ -523,15 +515,15 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
             mSettingsUtils.startFormatting();
         } else {
             Intent intent = new Intent(CustomValue.ACTION_FORMAT_SD_CARD);
-            sendBroadcast(intent);
+            SystemUIApplication.getInstance().sendBroadcast(intent);
         }
     }
 
     private void startSettings() {
         try {
             Intent intent = new Intent(Settings.ACTION_SETTINGS);
-            startActivity(intent);
-            finish();
+            SystemUIApplication.getInstance().startActivity(intent);
+//            finish();
         } catch (Exception e) {
             Log.d(TAG, "startSettings: " + e.toString());
         }
@@ -1025,6 +1017,9 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
             case CustomValue.TYPE_VOLUME:
                 message.arg1 = 8;
                 break;
+            case 101:
+                dismissDialog();
+                break;
         }
 //        if (type == CustomValue.TYPE_WIFI_STATE) {//wifi
 //            message.arg1 = 2;
@@ -1111,10 +1106,10 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     }
 
     private static class InnerHandler extends Handler {
-        private final WeakReference<SettingsWindowActivity> activityWeakReference;
-        private SettingsWindowActivity mPopupWindow;
+        private final WeakReference<SettingsFloatWindow> activityWeakReference;
+        private SettingsFloatWindow mPopupWindow;
 
-        private InnerHandler(SettingsWindowActivity popupWindow) {
+        private InnerHandler(SettingsFloatWindow popupWindow) {
             this.activityWeakReference = new WeakReference<>(popupWindow);
             mPopupWindow = activityWeakReference.get();
 
@@ -1169,25 +1164,11 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-//        registerSettingsReceiver();
-        if (SystemUIApplication.getInstance().getHideNavigationBar()) {
-            if (CustomValue.SCREEN_3) {
-                hideNavigationBar();
-            }
-        }
-//        sendMessageToDVR(true);
-//        registerGPSContentObserver();
-        registerBrightnessContentObserver();
-    }
-
     /**
      * 注册监听屏幕亮度变化
      */
     private void registerBrightnessContentObserver() {
-        getContentResolver().registerContentObserver(
+        SystemUIApplication.getInstance().getContentResolver().registerContentObserver(
                 Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), true,
                 mBrightnessObserver);
     }
@@ -1205,7 +1186,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
      */
     private void registerGPSContentObserver() {
         Log.d(TAG, "registerGPSContentObserver: ");
-        getContentResolver().registerContentObserver(
+        SystemUIApplication.getInstance().getContentResolver().registerContentObserver(
                 Settings.Secure.getUriFor(Settings.System.LOCATION_PROVIDERS_ALLOWED),
                 false, mGpsContentObserver);
     }
@@ -1221,44 +1202,66 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
 
     private void unRegisterContentObserver() {
         if (mGpsContentObserver != null) {
-            getContentResolver().unregisterContentObserver(mGpsContentObserver);
+            SystemUIApplication.getInstance().getContentResolver().unregisterContentObserver(mGpsContentObserver);
         }
         if (mBrightnessObserver != null) {
-            getContentResolver().unregisterContentObserver(mBrightnessObserver);
+            SystemUIApplication.getInstance().getContentResolver().unregisterContentObserver(mBrightnessObserver);
         }
     }
 
     /**
      * 设置 app 不随着系统字体的调整而变化
      */
-    @Override
+/*    @Override
     public Resources getResources() {
         Resources res = super.getResources();
         Configuration config = new Configuration();
         config.setToDefaults();
         res.updateConfiguration(config, res.getDisplayMetrics());
         return res;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+    }*/
+    public void release() {
         unRegisterContentObserver();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "system activity onDestroy: ");
-        cleanHandle();
+    public void showSettingsDialog() {
+        Log.d(TAG, "showSettingsDialog: ");
+        if (settingsDialog != null) {
+            if (settingsDialog.isShowing()) {
+                settingsDialog.dismiss();
+            } else {
+                settingsDialog.show();
+                WindowManager.LayoutParams params =
+                        settingsDialog.getWindow().getAttributes();
+                params.width = widthPixels;
+                params.height = heightPixels;
+                settingsDialog.getWindow().setAttributes(params);
+            }
+        }
     }
 
-    public static final String ACTION_SETTINGS_WINDOW = "com.android.systemui.settings_window_state";
+    public void dismissDialog() {
+        if (settingsDialog.isShowing()) {
+            settingsDialog.dismiss();
+        }
+    }
 
-    private void sendMessageToDVR(boolean isShow) {
-        Intent intent = new Intent(ACTION_SETTINGS_WINDOW);
-        intent.putExtra("window_state",isShow);
-        sendBroadcast(intent);
+    public void addView() {
+        if (isAdd) {
+            isAdd = false;
+//            mWindowManager.removeViewImmediate(parent);
+        } else {
+            isAdd = true;
+//            mWindowManager.addView(parent, mParams);
+
+        }
+    }
+
+    public void removeView() {
+        if (isAdd) {
+            isAdd = false;
+            mWindowManager.removeViewImmediate(parent);
+        }
     }
 
 }

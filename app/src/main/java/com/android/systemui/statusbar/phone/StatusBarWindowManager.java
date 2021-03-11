@@ -62,7 +62,6 @@ public class StatusBarWindowManager implements RemoteInputController.Callback, D
     private float mScreenBrightnessDoze;
     private final State mCurrentState = new State();
     private OtherwisedCollapsedListener mListener;
-    private int statusWidth;
 
     public StatusBarWindowManager(Context context) {
         mContext = context;
@@ -71,8 +70,6 @@ public class StatusBarWindowManager implements RemoteInputController.Callback, D
         mKeyguardScreenRotation = shouldEnableKeyguardScreenRotation();
         mScreenBrightnessDoze = mContext.getResources().getInteger(
                 com.android.internal.R.integer.config_screenBrightnessDoze) / 255f;
-        statusWidth = mContext.getResources().getDimensionPixelSize(
-                com.android.internal.R.dimen.navigation_bar_width);
     }
 
     private boolean shouldEnableKeyguardScreenRotation() {
@@ -112,29 +109,6 @@ public class StatusBarWindowManager implements RemoteInputController.Callback, D
         mWindowManager.addView(mStatusBarView, mLp);
         mLpChanged = new WindowManager.LayoutParams();
         mLpChanged.copyFrom(mLp);
-        //by lym start
-//        mLp = new WindowManager.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                WindowManager.LayoutParams.TYPE_STATUS_BAR,
-//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-//                        | WindowManager.LayoutParams.FLAG_TOUCHABLE_WHEN_WAKING
-//                        | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH
-//                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-//                        | WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS,
-//                PixelFormat.TRANSLUCENT);
-//        mLp.token = new Binder();
-////        mLp.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
-//        mLp.gravity = Gravity.RIGHT;
-//        mLp.softInputMode = LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
-//        mLp.setTitle("StatusBar");
-//        mLp.packageName = mContext.getPackageName();
-//        mStatusBarView = statusBarView;
-//        mBarHeight = barHeight;
-//        mWindowManager.addView(mStatusBarView, mLp);
-//        mLpChanged = new WindowManager.LayoutParams();
-//        mLpChanged.copyFrom(mLp);
-        //end
     }
 
     public void setDozeScreenBrightness(int value) {
@@ -142,7 +116,6 @@ public class StatusBarWindowManager implements RemoteInputController.Callback, D
     }
 
     public void setKeyguardDark(boolean dark) {
-		//add by chengyuzhou
         int vis = mStatusBarView.getSystemUiVisibility();
         if (dark) {
             vis = vis | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
@@ -171,16 +144,12 @@ public class StatusBarWindowManager implements RemoteInputController.Callback, D
     private void adjustScreenOrientation(State state) {
         if (state.isKeyguardShowingAndNotOccluded() || state.dozing) {
             if (mKeyguardScreenRotation) {
-                Log.w(TAG, "adjustScreenOrientation:SCREEN_ORIENTATION_USER ");
                 mLpChanged.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_USER;
             } else {
-                Log.w(TAG, "adjustScreenOrientation:SCREEN_ORIENTATION_NOSENSOR ");
                 mLpChanged.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_NOSENSOR;
             }
         } else {
-            Log.w(TAG, "adjustScreenOrientation:SCREEN_ORIENTATION_UNSPECIFIED ");
             mLpChanged.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-//            mLpChanged.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
         }
     }
 

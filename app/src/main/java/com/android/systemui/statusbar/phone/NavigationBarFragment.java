@@ -87,6 +87,7 @@ import com.android.systemui.statusbar.CommandQueue;
 import com.android.systemui.statusbar.CommandQueue.Callbacks;
 import com.android.systemui.statusbar.activity.CustomValue;
 import com.android.systemui.statusbar.activity.NotifyMessageManager;
+import com.android.systemui.statusbar.activity.SettingsFloatWindow;
 import com.android.systemui.statusbar.activity.SettingsWindowActivity;
 import com.android.systemui.statusbar.activity.SharedPreferencesTool;
 import com.android.systemui.statusbar.activity.listener.OnShowSettingsWindowListener;
@@ -146,6 +147,7 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     public final static String ACTION_OPEN_OR_CLOSE_TXZ = "com.bixin.launcher_t20.action.txz.openOrClose";
     public static final String ACTION_DVR_PREVIEW = "com.bx.carDVR";
     private SharedPreferencesTool mPreferencesTool;
+    private SettingsFloatWindow settingsFloatWindow;
 
     // ----- Fragment Lifecycle Callbacks -----
 
@@ -181,6 +183,7 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         }
         //by lym start
         NotifyMessageManager.getInstance().setOnShowSettingsWindowListener(this);
+        settingsFloatWindow=new SettingsFloatWindow(getContext());
         //end
     }
 
@@ -568,13 +571,15 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         mPreferencesTool.saveCameraFront(false);
         mNavigationBarView.showIndicatorBar(3);
         Context context = getContext();
-        Intent launchIntent =
-                context.getPackageManager().getLaunchIntentForPackage(ACTION_DVR_PREVIEW);
-        if (launchIntent == null) {
-            Toast.makeText(context, R.string.app_not_installed, Toast.LENGTH_SHORT).show();
-        } else {
-            context.startActivity(launchIntent);
-        }
+        Intent intent = new Intent(CustomValue.ACTION_OPEN_DVR_CAMERA);
+        context.sendBroadcast(intent);
+//        Intent launchIntent =
+//                context.getPackageManager().getLaunchIntentForPackage(ACTION_DVR_PREVIEW);
+//        if (launchIntent == null) {
+//            Toast.makeText(context, R.string.app_not_installed, Toast.LENGTH_SHORT).show();
+//        } else {
+//            context.startActivity(launchIntent);
+//        }
     }
 
     private void startBackDVRPreview(View view) {
@@ -599,10 +604,11 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
             SystemUIApplication.getInstance().sendBroadcast(intent);
             return;
         }
-        Context context = getContext();
 
-        Intent intent = new Intent(context, SettingsWindowActivity.class);
-        context.startActivity(intent);
+        settingsFloatWindow.showSettingsDialog();
+//        Context context = getContext();
+//        Intent intent = new Intent(context, SettingsWindowActivity.class);
+//        context.startActivity(intent);
     }
 
     private void startVoiceUi(View view) {
@@ -881,5 +887,10 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     public void ShowSettingsWindow() {
         Log.d(TAG, "ShowSettingsWindow: ");
         startQuickSettingsView(null);
+    }
+
+    @Override
+    public void hideNavigationBar(boolean isHide) {
+
     }
 }

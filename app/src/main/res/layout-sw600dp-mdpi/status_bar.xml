@@ -47,33 +47,64 @@
 
         <!-- The alpha of this area is controlled from both PhoneStatusBarTransitions and
              PhoneStatusBar (DISABLE_NOTIFICATION_ICONS). -->
-        <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
-            android:id="@+id/notification_icon_area"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal" />
-
         <com.android.keyguard.AlphaOptimizedLinearLayout
             android:id="@+id/system_icon_area"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="start"
             android:orientation="horizontal">
 
             <include layout="@layout/system_icons" />
 
         </com.android.keyguard.AlphaOptimizedLinearLayout>
+
+        <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
+            android:id="@+id/notification_icon_area"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
     </LinearLayout>
 
-    <com.android.systemui.statusbar.policy.Clock
-        android:id="@+id/clock"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="10dp"
         android:gravity="center"
-        android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.StatusBar.Clock"
-        android:textSize="21sp" />
+        android:orientation="horizontal">
+
+        <com.android.systemui.statusbar.activity.WeatherTextView
+            android:id="@+id/tv_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.StatusBar.Clock"
+            android:textSize="20sp" />
+
+<!--        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="10dp"
+            android:format12Hour="MM-dd EEEE"
+            android:format24Hour="MM-dd EEEE"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.StatusBar.Clock"
+            android:textSize="21sp" />-->
+
+        <com.android.systemui.statusbar.policy.Clock
+            android:id="@+id/clock"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.StatusBar.Clock"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <ViewStub
         android:id="@+id/emergency_cryptkeeper_text"

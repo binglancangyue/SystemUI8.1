@@ -75,6 +75,16 @@ public class NotifyMessageManager {
         }
     }
 
+    /**
+     * hide 4 button
+     * @param isHide
+     */
+    public void hideNavigationBar(boolean isHide) {
+        if (mSettingsWindowListener != null) {
+            mSettingsWindowListener.hideNavigationBar(isHide);
+        }
+    }
+
     public void updateWeather(String weatherInfo) {
         if (mOnUpdateWeather != null) {
             mOnUpdateWeather.updateWeather(weatherInfo);

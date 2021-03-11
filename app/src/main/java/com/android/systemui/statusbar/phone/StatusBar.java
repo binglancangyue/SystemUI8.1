@@ -842,7 +842,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     private static final int MIN_CLICK_DELAY_TIME = 5000;
     private static long lastClickTime;
     private TextView tvWeather;
-    private ImageView ivWeather;
+    private ImageView ivWeather ;
     private String mWeatherInfo;
 
     @Override
@@ -1072,9 +1072,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 //            startVoiceRecognitionService();
 //        }
         mSettingsFunctionTool = new SettingsFunctionTool();
-        if (CustomValue.IS_966) {
-            NotifyMessageManager.getInstance().setOnUpdateWeatherListener(this);
-        }
+        NotifyMessageManager.getInstance().setOnUpdateWeatherListener(this);
     }
 
     protected void createIconController() {
@@ -8058,12 +8056,15 @@ public class StatusBar extends SystemUI implements DemoMode,
         intentFilter.addAction(CustomValue.ACTION_UPDATE_BRIGHTNESS_BY_TIME);
         intentFilter.addAction(CustomValue.ACTION_UPDATE_WEATHER);
         intentFilter.addAction("android.location.PROVIDERS_CHANGED");
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        intentFilter.addAction(CustomValue.ACTION_DISMISS_SETTINGS_DIALOG);
         mContext.registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
     public void updateWeather(String weatherInfo) {
-        if (CustomValue.IS_966) {
+        Log.d(TAG, "updateWeather: "+weatherInfo);
+        if (!weatherInfo.equals("update")) {
             mWeatherInfo = weatherInfo;
             mHandler.sendEmptyMessage(MSG_UPDATE_WEATHER);
         }
@@ -8080,30 +8081,31 @@ public class StatusBar extends SystemUI implements DemoMode,
     }
 
     private void setUpdateWeather(){
-        if(CustomValue.IS_966){
-            LinearLayout layout = mStatusBarView.findViewById(R.id.ll_right);
+//        if(CustomValue.IS_966){
+//            LinearLayout layout = mStatusBarView.findViewById(R.id.ll_right);
             tvWeather = mStatusBarView.findViewById(R.id.tv_weather);
-            ivWeather = mStatusBarView.findViewById(R.id.iv_weather);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isFastClick()) {
-                        Intent intent = new Intent(CustomValue.ACTION_GET_WEATHER);
-                        mContext.sendBroadcast(intent);
-                    }
-                }
-            });
-        }
+//            ivWeather = mStatusBarView.findViewById(R.id.iv_weather);
+//            layout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (isFastClick()) {
+//                        Intent intent = new Intent(CustomValue.ACTION_GET_WEATHER);
+//                        mContext.sendBroadcast(intent);
+//                    }
+//                }
+//            });
+//        }
     }
 
     private void updateWeather() {
         try {
             JSONObject jsonObject = new JSONObject(mWeatherInfo);
+            String cityName = jsonObject.getString("cityName");
             String weather = jsonObject.getString("weather");
             String currentTemperature = jsonObject.getString("currentTemperature");
-            String weatherInfo = weather + "  " + currentTemperature + "°";
+            String weatherInfo = cityName + " " + weather + "  " + currentTemperature + "°";
             tvWeather.setText(weatherInfo);
-            ivWeather.setImageResource(mSettingsFunctionTool.getWeatherIcon(weather));
+//            ivWeather.setImageResource(mSettingsFunctionTool.getWeatherIcon(weather));
         } catch (JSONException e) {
             e.printStackTrace();
         }

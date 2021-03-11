@@ -7,4 +7,5 @@ package com.android.systemui.statusbar.activity.listener;
  */
 public interface OnShowSettingsWindowListener {
     void ShowSettingsWindow();
+    void hideNavigationBar(boolean isHide);
 }

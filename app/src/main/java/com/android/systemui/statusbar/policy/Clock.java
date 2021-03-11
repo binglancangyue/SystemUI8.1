@@ -246,7 +246,7 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
         setText(getSmallTime());
         updateBrightness();
 		//SPRD add debug log
-        Log.d("Clock", "updateClock updateClock="+getSmallTime());
+//        Log.d("Clock", "updateClock updateClock="+getSmallTime());
         setContentDescription(mContentDescriptionFormat.format(mCalendar.getTime()));
     }
 
@@ -261,6 +261,8 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
         if (minute == 1) {
             Intent intent = new Intent(CustomValue.ACTION_UPDATE_BRIGHTNESS_BY_TIME);
             SystemUIApplication.getInstance().sendBroadcast(intent);
+            Intent weather = new Intent(CustomValue.ACTION_GET_WEATHER);
+            SystemUIApplication.getInstance().sendBroadcast(weather);
             Log.d("Clock", "updateBrightness: ");
         }
     }
@@ -337,6 +339,7 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
         String format = mShowSeconds
                 ? is24 ? d.timeFormat_Hms : d.timeFormat_hms
                 : is24 ? d.timeFormat_Hm : d.timeFormat_hm;
+//        Log.d("Clock", "getSmallTime:format " + format);
         if (!format.equals(mClockFormatString)) {
             mContentDescriptionFormat = new SimpleDateFormat(format);
             /*
@@ -369,12 +372,16 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
                         + "a" + MAGIC2 + format.substring(b + 1);
                 }
             }
-            mClockFormat = sdf = new SimpleDateFormat(format);
+//            mClockFormat = sdf = new SimpleDateFormat(format);
+            mClockFormat = sdf = new SimpleDateFormat("MM-dd EEEE HH:mm");
             mClockFormatString = format;
+//            Log.d("Clock", "getSmallTime:mClockFormat " + mClockFormat);
         } else {
             sdf = mClockFormat;
+//            Log.d("Clock", "getSmallTime:sdf " + sdf);
         }
         String result = sdf.format(mCalendar.getTime());
+//        Log.d("Clock", "getSmallTime: " + result);
         /* SPRD: 692446 clock add am/pm @{ */
         if(KeyguardSupportAmPm.getInstance(mContext).isEnabled()) {
             mAmPmStyle = AM_PM_STYLE_SMALL;
