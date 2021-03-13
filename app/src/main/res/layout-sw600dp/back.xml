@@ -20,6 +20,6 @@
     android:layout_height="match_parent"
     android:layout_weight="0"
     android:contentDescription="@string/accessibility_back"
-
+    android:paddingTop="15dp"
     android:scaleType="fitCenter"
     systemui:keyCode="4" />

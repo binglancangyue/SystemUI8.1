@@ -6,5 +6,4 @@
     android:layout_height="match_parent"
     android:layout_weight="0"
     android:contentDescription="@string/accessibility_settings"
-
     android:scaleType="fitCenter" />

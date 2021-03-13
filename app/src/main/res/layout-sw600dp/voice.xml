@@ -5,5 +5,5 @@
     android:layout_height="match_parent"
     android:layout_weight="0"
     android:contentDescription="@string/accessibility_voice"
-
+    android:paddingTop="15dp"
     android:scaleType="fitCenter" />
