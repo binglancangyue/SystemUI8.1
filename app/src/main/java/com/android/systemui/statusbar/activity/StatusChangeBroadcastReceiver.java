@@ -181,6 +181,7 @@ public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
                 Log.d(TAG, "onReceive:ACTION_SCREEN_OFF ");
                 break;
             case CustomValue.ACTION_DISMISS_SETTINGS_DIALOG:
+            case CustomValue.ACTION_REVERSE:
                 NotifyMessageManager.getInstance().openOrClose(101, true);
                 break;
         }

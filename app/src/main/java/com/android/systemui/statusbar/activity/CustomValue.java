@@ -32,7 +32,7 @@ public class CustomValue {
     public final static String ACTION_UPDATE_WEATHER = "com.bixin.speechrecognitiontool.action_update_weather";
     public static final String ACTION_GO_TO_SLEEP = "com.android.systemui.action_go_to_sleep";
     public static final String ACTION_DISMISS_SETTINGS_DIALOG = "com.android.deskclock.action.dismiss_settings_dialog";
-
+    public static final String ACTION_REVERSE = "com.bx.action.reverse";
 
     /***平台***/
     public static final boolean SCREEN_3 = false;//kd002 3寸屏  不需要语音识别
@@ -69,7 +69,7 @@ public class CustomValue {
 
     public static final int[] FRONT_CAMERA_ICONS = {
             R.drawable.icon_camera_3in, R.drawable.ic_front_3in_kd003,
-            R.drawable.icon_camera_7in, R.drawable.ic_bx_btn_streaming,
+            R.drawable.iv_navigation_half_screen_splite_qc7, R.drawable.ic_bx_btn_streaming,
             R.drawable.ic_bx_btn_streaming};
 
     public static final int[] BACK_CAMERA_ICONS = {

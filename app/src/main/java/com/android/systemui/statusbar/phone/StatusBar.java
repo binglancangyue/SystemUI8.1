@@ -8058,6 +8058,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         intentFilter.addAction("android.location.PROVIDERS_CHANGED");
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.addAction(CustomValue.ACTION_DISMISS_SETTINGS_DIALOG);
+        intentFilter.addAction(CustomValue.ACTION_REVERSE);
         mContext.registerReceiver(mReceiver, intentFilter);
     }
 
