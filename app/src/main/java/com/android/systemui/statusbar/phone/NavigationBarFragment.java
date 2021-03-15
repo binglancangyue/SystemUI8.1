@@ -568,7 +568,7 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
     }
 
     private void startDVRPreview(View view) {
-        mPreferencesTool.saveCameraFront(false);
+//        mPreferencesTool.saveCameraFront(false);
         mNavigationBarView.showIndicatorBar(3);
         Context context = getContext();
         Intent intent = new Intent(CustomValue.ACTION_OPEN_DVR_CAMERA);

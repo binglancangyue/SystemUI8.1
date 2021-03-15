@@ -16,6 +16,7 @@
 
 package com.android.systemui.power;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -26,13 +27,18 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
+import android.location.LocationManager;
+import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.HardwarePropertiesManager;
+import android.os.Message;
 import android.os.PowerManager;
+import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.service.dreams.DreamService;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.Slog;
@@ -43,13 +49,29 @@ import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.SystemUI;
 import com.android.systemui.statusbar.activity.CustomValue;
+import com.android.systemui.statusbar.activity.SettingsFunctionTool;
 import com.android.systemui.statusbar.phone.StatusBar;
 import com.sprd.systemui.power.SprdPowerUI;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Arrays;
+import com.android.systemui.statusbar.policy.BluetoothController;
+import com.android.systemui.statusbar.policy.HotspotController;
+import com.android.systemui.statusbar.policy.LocationController;
+import android.service.dreams.IDreamManager;
+import android.os.ServiceManager;
+import cn.kuwo.autosdk.api.KWAPI;
+import cn.kuwo.autosdk.api.PlayState;
 //add by lidf
+import android.view.LayoutInflater;
 import android.widget.TextView;
 import android.view.View;
 import android.os.AsyncTask;
@@ -74,7 +96,6 @@ public class PowerUI extends SystemUI {
     AlertDialog mShutdownConfirmDialog;
     //add end
 
-    private final Handler mHandler = new Handler();
     private final Receiver mReceiver = new Receiver();
 
     private PowerManager mPowerManager;
@@ -107,10 +128,77 @@ public class PowerUI extends SystemUI {
     private static final boolean SPRD_DEBUG =true;
     /* @} */
 
+    private AlertDialog kd003Dialog;
+
+    private WifiManager mWifiManager;
+    private AlarmManager mAlarmManager;
+    private BluetoothController mBTController;
+    private LocationController mLocationController;
+    private LocationManager mLocationManager;
+    private HotspotController mHSController;
+    private KWAPI mKwapi;
+
+    private boolean gpsEnabled = false;
+    private boolean wifiEnabled = false;
+    private boolean hotspotEnabled = false;
+    private boolean isBtEnableBeforeSystemSleep;
+    private boolean isFMEnableBeforeSystemSleep;
+
+    private static final String WAKEUP_REASON_ACC = "power_acc";
+    private static final String WAKEUP_REASON_USB = "power_usb";
+    private static final String WAKEUP_REASON_KEY = "power_key";
+    private static final String WAKEUP_REASON_GSENSOR = "gsensor";
+    private static final String WAKEUP_REASON_NET = "net";
+
+    private static final String SYSTEM_SLEEP = "com.bx.action.system_sleep";
+    private static final String SYSTEM_WAKE_UP = "com.bx.action.system_wake_up";
+    private static final String FINISH_WAKE_UP = "com.bx.action.wakeup_finish";
+
+    private static final int MSG_SYSTEM_SLEEP = 7;
+    private static final int MSG_SYSTEM_WAKEUP = 8;
+    private static final int MSG_ACC_OFF = 10;
+    private static final int MSG_ACC_ON = 11;
+    private static final int MSG_WAKEUP_FINISHED = 12;
+    private final Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case MSG_ACC_OFF:
+                    handleAccOff();
+                    break;
+                case MSG_ACC_ON:
+                    handleAccOn();
+                    break;
+                case MSG_SYSTEM_SLEEP:
+                    handleSystemSleep();
+                    break;
+                case MSG_SYSTEM_WAKEUP:
+                    String reasonWake = (String) msg.obj;
+                    handleSystemWakeup(reasonWake);
+                    break;
+                case MSG_WAKEUP_FINISHED:
+                    handleWakeupFinished();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     public void start() {
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
         mHardwarePropertiesManager = (HardwarePropertiesManager)
                 mContext.getSystemService(Context.HARDWARE_PROPERTIES_SERVICE);
+
+        mWifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+        mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        mHSController = Dependency.get(HotspotController.class);
+        mBTController = Dependency.get(BluetoothController.class);
+        mLocationController = Dependency.get(LocationController.class);
+        mKwapi = KWAPI.createKWAPI(mContext, "auto");
+
         mScreenOffTime = mPowerManager.isScreenOn() ? -1 : SystemClock.elapsedRealtime();
         mWarnings = Dependency.get(WarningsUI.class);
         mLastConfiguration.setTo(mContext.getResources().getConfiguration());
@@ -137,6 +225,16 @@ public class PowerUI extends SystemUI {
         /* SPRD: Modified for bug 505221/692451, add voltage high warning @{ */
         mSprdPowerUI = new SprdPowerUI(mContext);
         /* @} */
+
+        if (CustomValue.IS_SUPPORT_ACC) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mCheckAcc.start();
+                }
+            }, 10 * 1000);
+        }
+
     }
 
     @Override
@@ -213,8 +311,11 @@ public class PowerUI extends SystemUI {
             filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
             filter.addAction(Intent.ACTION_POWER_CONNECTED);
             filter.addAction(CustomValue.ACTION_GO_TO_SLEEP);
-
             //add end
+            //add by ls
+            filter.addAction(FINISH_WAKE_UP);
+            filter.addAction(CustomValue.ACTION_FAST_REBOOT);
+            //add by ls end
             mContext.registerReceiver(this, filter, null, mHandler);
         }
 
@@ -321,6 +422,10 @@ public class PowerUI extends SystemUI {
             } else if (CustomValue.ACTION_GO_TO_SLEEP.equals(action)) {
                 showConfirmSleep();
                 Slog.w(TAG, "showConfirmSleep");
+            } else if (FINISH_WAKE_UP.equals(action)) {
+                mHandler.sendEmptyMessage(MSG_WAKEUP_FINISHED);
+            } else if (CustomValue.ACTION_FAST_REBOOT.equals(action)) {
+                fastReboot();
             } else {
                 Slog.w(TAG, "unknown intent: " + intent);
             }
@@ -396,6 +501,10 @@ public class PowerUI extends SystemUI {
                 mContext.startActivityAsUser(intent, UserHandle.CURRENT);
             }
         });
+    }
+
+    void fastReboot() {
+        if(mPowerManager != null)mPowerManager.reboot("");
     }
 
 
@@ -573,6 +682,87 @@ public class PowerUI extends SystemUI {
 
     }
 
+    /**
+     * add by ls
+     */
+    private View contentLayout;
+    private TextView contentTextView;
+    void showCommonConfirmSleep() {
+        if (mSleepConfirmDialog != null && mSleepConfirmDialog.isShowing()) {
+            return;
+        }
+        if (mSleepConfirmDialog == null) {
+            contentLayout = LayoutInflater.from(mContext).inflate(R.layout.layout_content_shutdown,null);
+            contentTextView = (TextView) contentLayout.findViewById(R.id.tv_countdown);
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setView(contentLayout);
+            builder.setPositiveButton(R.string.system_sleep_ok, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(null != mSleepConfirmDialog){
+                        if (mSleepConfirmDialog.isShowing()) {
+                            mSleepConfirmDialog.hide();
+                            mSleepConfirmDialog.dismiss();
+                        }
+                    }
+                    mHandler.sendEmptyMessage(MSG_SYSTEM_SLEEP);
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(null != mSleepConfirmDialog){
+                        if (mSleepConfirmDialog.isShowing()) {
+                            mSleepConfirmDialog.hide();
+                            mSleepConfirmDialog.dismiss();
+                        }
+                    }
+                }
+            });
+            builder.setCancelable(false);
+            mSleepConfirmDialog = builder.create();
+            mSleepConfirmDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_DISPLAY_OVERLAY);
+        }
+        mSleepConfirmDialog.setTitle(R.string.system_sleep_hints);
+        mSleepConfirmDialog.show();
+        new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object... arg0) {
+                int time = FALLBACK_CONFIRM_SHUTDOWN_TIMEOUT;
+                while (time >= 0 && mSleepConfirmDialog.isShowing()) {
+                    publishProgress(time);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                    }
+                    time--;
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object result) {
+                super.onPostExecute(result);
+                if (mSleepConfirmDialog.isShowing()) {
+                    mSleepConfirmDialog.dismiss();
+                    mHandler.sendEmptyMessage(MSG_SYSTEM_SLEEP);
+                }
+            }
+
+            @Override
+            protected void onProgressUpdate(Object... values) {
+                super.onProgressUpdate(values);
+                int time = (Integer) values[0];
+                String str = mContext.getString(R.string.sleep_confirm_time_out_desc);
+                //         dialog.setMessage(String.format(str, Integer.toString(time)));
+                contentTextView.setText(String.format(str, Integer.toString(time)));
+            }
+        }.execute();
+
+    }
+
     private void goToSleep(){
         mPowerManager.goToSleep(SystemClock.uptimeMillis(), PowerManager.GO_TO_SLEEP_REASON_POWER_BUTTON,
                 PowerManager.GO_TO_SLEEP_FLAG_NO_DOZE);
@@ -708,5 +898,319 @@ public class PowerUI extends SystemUI {
         void dump(PrintWriter pw);
         void userSwitched();
     }
+
+    //ACC start
+    private static final String ACC_STATE = "bx_acc_state";
+    private boolean isCheckAcc = true;
+    private static final int STATE_ACC_OFF = 0;
+    private static final int STATE_ACC_ON = 1;
+    private int mAccState = STATE_ACC_ON;
+    private char accValue = '1';
+    private char[] accBuf = new char[5];
+    private static final int TIME_CHECK_ACC_DURATION = 1 * 1000;
+
+    private static boolean isSystemSleep = false;
+
+    private Thread mCheckAcc = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            Log.i(TAG, "start to check acc...");
+            while (isCheckAcc) {
+                readAcc();
+                accValue = accBuf[2];
+                Log.d(TAG, "run() accValue = " + accValue);
+                if (accValue == '1' && mAccState != STATE_ACC_ON) {
+                    mAccState = STATE_ACC_ON;
+                    Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_ON);
+                    //sendStateCode(0);
+                    mHandler.sendEmptyMessage(MSG_ACC_ON);
+                } else if (accValue == '0' && mAccState != STATE_ACC_OFF) {
+                    mAccState = STATE_ACC_OFF;
+                    Settings.Global.putInt(mContext.getContentResolver(), ACC_STATE, STATE_ACC_OFF);
+                    //sendStateCode(1);
+                    mHandler.sendEmptyMessage(MSG_ACC_OFF);
+                }
+                try {
+                    Thread.sleep(TIME_CHECK_ACC_DURATION);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "mCheckAcc InterruptedException " + e.getMessage());
+                    isCheckAcc = false;
+                }
+            }
+            Log.i(TAG, "check acc end ...");
+        }
+    });
+
+    private void readAcc() {
+        FileReader reader = null;
+        try {
+            reader = new FileReader(CustomValue.ACC_PATH);
+            reader.read(accBuf);
+        } catch (IOException ex) {
+            isCheckAcc = false;
+            Log.e(TAG, "readAcc() IOException " + ex.getMessage());
+        } catch (NumberFormatException e) {
+            isCheckAcc = false;
+            Log.e(TAG, "readAcc() IOException " + e.getMessage());
+        } finally {
+            if (null != reader) {
+                try {
+                    reader.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
+    }
+    //end
+
+    private void sendStateCode(int code) {
+        Intent it = new Intent("com.transiot.kardidvr003");
+        it.putExtra("machineState", code);
+        mContext.sendBroadcast(it);
+    }
+
+    private void handleAccOff() {
+        awakenDreams();
+        showCommonConfirmSleep();
+        //showConfirmSleep();
+        //handleSystemSleep();
+    }
+
+    private void handleAccOn() {
+        awakenDreams();
+        if (mSleepConfirmDialog != null && mSleepConfirmDialog.isShowing()) {
+            mSleepConfirmDialog.dismiss();
+        }
+        wakeUpIfNecessary(WAKEUP_REASON_ACC);
+    }
+
+    private void wakeUpIfNecessary(String wakeupReason) {
+        Log.w(TAG, "wakeUpIfNecessary()");
+        if (isSystemSleep) {
+            Log.w(TAG, "send broadcast to wake up! wakeupReason = "+wakeupReason);
+            isSystemSleep = false;
+            changeAirplaneModeSystemSetting(false);
+            setGpsEnable(true);
+            if(wifiEnabled){
+                setWifiEnable(true);
+            }else if(hotspotEnabled){
+                setHotspotEnable(true);
+            }
+            if (isFMEnableBeforeSystemSleep) {
+                openFm();
+            }
+            Intent intent = new Intent(SYSTEM_WAKE_UP);
+            intent.putExtra("wakeup_reason", wakeupReason);
+            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+            mContext.sendBroadcast(intent);
+            Log.w(TAG,"sendBroadcast SYSTEM_WAKE_UP");
+        }
+    }
+
+    private void handleSystemWakeup(String reasonWake) {
+        Log.w(TAG, "handleSystemWakeup() reasonWake="+reasonWake);
+
+    }
+
+    private void handleSystemSleep() {
+        if(CustomValue.IS_SUPPORT_ACC){
+            if(accValue == STATE_ACC_ON){
+                Log.w(TAG, "accValue=" + (accValue == STATE_ACC_ON));
+                return;
+            }
+        }
+        if(!isSystemSleep) {
+            Log.w(TAG, "handleSystemSleep() do system sleep.");
+            isSystemSleep = true;
+            checkWifi();
+            checkHotspot();
+            setWifiEnable(false);
+            setGpsEnable(false);
+            sendLowerNavigationVolumeBroadcast(1);
+//            if (null != mBTController && mBTController.isBluetoothEnabled()) {
+//                isBtEnableBeforeSystemSleep = true;
+//            }else {
+//                isBtEnableBeforeSystemSleep = false;
+//            }
+//            setBtEnable(false);
+            setHotspotEnable(false);
+            if (getFmStatus()) {
+                isFMEnableBeforeSystemSleep = true;
+                closeFm();
+            } else {
+                isFMEnableBeforeSystemSleep = false;
+            }
+            Intent intent = new Intent(SYSTEM_SLEEP);
+            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+            mContext.sendBroadcast(intent);
+            Log.w(TAG,"sendBroadcast SYSTEM_SLEEP");
+            mKwapi.setPlayState(PlayState.STATE_PAUSE);
+            mKwapi.exitAPP(mContext);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    changeAirplaneModeSystemSetting(true);
+                    mPowerManager.goToSleep(SystemClock.uptimeMillis());
+                }
+            },2000);
+        } else {
+            Log.w(TAG,"System is already sleep");
+        }
+    }
+
+    private void handleWakeupFinished() {
+        Log.w(TAG,"handleWakeupFinished");
+        if (CustomValue.IS_SUPPORT_SLEEP) {
+            if (mAccState == STATE_ACC_OFF) {
+                if (mSleepConfirmDialog != null && mSleepConfirmDialog.isShowing()) {
+                    mSleepConfirmDialog.dismiss();
+                }
+                wakeUpIfNecessary(WAKEUP_REASON_KEY);
+            }
+        }
+    }
+
+    private void checkWifi(){
+        wifiEnabled = isWifiEnable();
+        Log.w(TAG, "checkWifi() wifiEnabled = "+wifiEnabled);
+    }
+
+    private boolean isWifiEnable() {
+        if (null != mWifiManager) {
+            return mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
+        }
+        return false;
+    }
+
+    private void checkHotspot(){
+        hotspotEnabled = isHotspotEnable();
+        Log.w(TAG, "checkHotspot() hotspotEnabled = "+hotspotEnabled);
+    }
+
+    private boolean isHotspotEnable() {
+        if (null != mHSController) {
+            return mHSController.isHotspotEnabled();
+        }
+        return false;
+    }
+
+    private void setWifiEnable(boolean enable) {
+        if (null != mWifiManager) {
+            mWifiManager.setWifiEnabled(enable);
+        }
+    }
+
+    public void setGpsEnable(boolean enabled) {
+        if (null != mLocationController) {
+            boolean success = mLocationController.setLocationEnabled(enabled);
+            Log.w(TAG, "setGpsEnable success = "+success);
+        }
+    }
+
+    private void setBtEnable(boolean enable) {
+        if (null != mBTController) {
+            mBTController.setBluetoothEnabled(enable);
+        }
+    }
+
+    private void sendLowerNavigationVolumeBroadcast(int mute) {
+        Intent intentAudio = new Intent("AUTONAVI_STANDARD_BROADCAST_RECV");
+        intentAudio.putExtra("KEY_TYPE", 10047);
+        intentAudio.putExtra("EXTRA_MUTE", mute);
+        mContext.sendBroadcast(intentAudio);
+    }
+
+    public void setHotspotEnable(boolean enabled) {
+        if (null != mHSController) {
+            Log.e(TAG, "setHotspotEnable enabled = "+enabled);
+            mHSController.setHotspotEnabled(enabled);
+        }
+    }
+
+    public boolean getFmStatus() {
+        boolean isOpen = false;
+        BufferedReader reader;
+        String prop;
+        try {
+            reader = new BufferedReader(new FileReader(new File(SettingsFunctionTool.fm_power_path)));
+            prop = reader.readLine();
+            if (prop.equals("1")) {
+                isOpen = true;
+            }
+            Log.d(TAG, "getFmStatus:prop " + prop);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isOpen;
+    }
+
+    private void openFm() {
+        try {
+            Writer fm_power = new FileWriter(SettingsFunctionTool.fm_power_path);
+            fm_power.write("on");
+            fm_power.close();
+            Log.d(TAG, "openFm:on ");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "closeFm: " + e.getMessage());
+        }
+    }
+
+    private void closeFm() {
+        try {
+            Writer fm_power = new FileWriter(SettingsFunctionTool.fm_power_path);
+            fm_power.write("off");
+            fm_power.flush();
+            fm_power.close();
+            Log.d(TAG, "openFm:on off");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(TAG, "closeFm: " + e.getMessage());
+        }
+    }
+
+    private boolean isAirplaneModeOn(){
+        try{
+            return  (Settings.Global.getInt(mContext.getContentResolver(),
+                    Settings.Global.AIRPLANE_MODE_ON) == 1);
+        }catch (Settings.SettingNotFoundException e) {
+            return false;
+        }
+    }
+
+    private void changeAirplaneModeSystemSetting(boolean on) {
+        boolean currentState = isAirplaneModeOn();
+        Log.i(TAG, "changeAirplaneModeSystemSetting() on="+on+",currentState="+currentState);
+        if(currentState != on){
+            Settings.Global.putInt(
+                    mContext.getContentResolver(),
+                    Settings.Global.AIRPLANE_MODE_ON,
+                    on ? 1 : 0);
+            Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+            intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+            intent.putExtra("state", on);
+            mContext.sendBroadcastAsUser(intent, UserHandle.ALL);
+        }
+    }
+
+    private IDreamManager dreamManager;
+    private void awakenDreams() {
+        Log.w(TAG, "awakenDreams()");
+        if (dreamManager == null) {
+            dreamManager = IDreamManager.Stub.asInterface(ServiceManager.checkService(DreamService.DREAM_SERVICE));
+        }
+        if (dreamManager != null) {
+            try {
+                if (dreamManager.isDreaming()) {
+                    dreamManager.awaken();
+                }
+            } catch (RemoteException e) {
+                // fine, stay asleep then
+            }
+        }
+    }
+
 }
 
