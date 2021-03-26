@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 
 import com.android.systemui.Dependency;
 import com.android.systemui.R;
+import com.android.systemui.statusbar.activity.CustomValue;
 import com.android.systemui.statusbar.phone.SignalDrawable;
 import com.android.systemui.statusbar.phone.StatusBarIconController;
 import com.android.systemui.statusbar.policy.DarkIconDispatcher;
@@ -328,7 +329,13 @@ public class SignalClusterView extends LinearLayout implements NetworkController
 
     @Override
     public void setNoSims(boolean show, boolean simDetected) {
-        mNoSimsVisible = show && !mBlockMobile;
+        //add by lym start
+        if (CustomValue.NOT_MOBILE_NETWORK) {
+            mNoSimsVisible = false;
+        } else {
+            mNoSimsVisible = show && !mBlockMobile;
+        }
+        //end
         mSimDetected = simDetected;
         apply();
     }
@@ -678,7 +685,8 @@ public class SignalClusterView extends LinearLayout implements NetworkController
         }
 
         public boolean apply(boolean isSecondaryIcon) {
-            if (mMobileVisible && !mIsAirplaneMode) {
+            //add && !CustomValue.NOT_MOBILE_NETWORK by lym
+            if (mMobileVisible && !mIsAirplaneMode && !CustomValue.NOT_MOBILE_NETWORK) {
                 if (mLastMobileStrengthId != mMobileStrengthId) {
                     mMobile.getDrawable().setLevel(mMobileStrengthId);
                     mMobileDark.getDrawable().setLevel(mMobileStrengthId);
