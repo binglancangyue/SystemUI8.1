@@ -104,7 +104,9 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private RelativeLayout rlFmRow;
 
     private SharedPreferencesTool mSharedPreferencesTool;
-
+    private int colorBlue;
+    private int colorWhite;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +114,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         setContentView(R.layout.popup_window_setting);
         mHandler = new InnerHandler(this);
         setWindowSize();
+        initColor();
         NotifyMessageManager.getInstance().setListener(this);
         createPopWindow();
     }
@@ -740,8 +743,8 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void WifiSwitchClose() {
         llBtnWifi.setSelected(false);
 //        wifiUtils.closeWifi();
-        tvWifi.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
-        tvWifiStatus.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+        tvWifi.setTextColor(colorWhite);
+        tvWifiStatus.setTextColor(colorWhite);
         tvWifiStatus.setText(R.string.setting_closed);
     }
 
@@ -750,8 +753,8 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
 //            wifiUtils.openWifi();
 //        }
         llBtnWifi.setSelected(true);
-        tvWifi.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
-        tvWifiStatus.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
+        tvWifi.setTextColor(colorBlue);
+        tvWifiStatus.setTextColor(colorBlue);
         tvWifiStatus.setText(R.string.setting_opened);
     }
 
@@ -772,13 +775,13 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void updateWifiBtnStatus(boolean isOpen) {
         if (isOpen) {
             llBtnWifi.setSelected(true);
-            tvWifi.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
-            tvWifiStatus.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
+            tvWifi.setTextColor(colorBlue);
+            tvWifiStatus.setTextColor(colorBlue);
             tvWifiStatus.setText(R.string.setting_opened);
         } else {
             llBtnWifi.setSelected(false);
-            tvWifi.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
-            tvWifiStatus.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+            tvWifi.setTextColor(colorWhite);
+            tvWifiStatus.setTextColor(colorWhite);
             tvWifiStatus.setText(R.string.setting_closed);
         }
     }
@@ -786,26 +789,26 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void settingsSwitchOff(LinearLayout llButton, ImageView ivIcon, TextView tvStatus) {
         llButton.setSelected(false);
         ivIcon.setSelected(false);
-        tvStatus.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+        tvStatus.setTextColor(colorWhite);
         tvStatus.setText(R.string.setting_closed);
     }
 
     private void settingsSwitchOn(LinearLayout llButton, ImageView ivIcon, TextView tvStatus) {
         llButton.setSelected(true);
         ivIcon.setSelected(true);
-        tvStatus.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
+        tvStatus.setTextColor(colorBlue);
         tvStatus.setText(R.string.setting_opened);
     }
 
     private void update4GBtn(boolean isOpen) {
         llBtnMobileData.setSelected(isOpen);
         if (isOpen) {
-            tvMobileDataStatus.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
-            tvMobileDataStatus.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
+            tvMobileDataStatus.setTextColor(colorBlue);
+            tvMobileDataStatus.setTextColor(colorBlue);
             tvMobileDataStatus.setText(R.string.setting_opened);
         } else {
-            tvWifi.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
-            tvMobileDataStatus.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+            tvWifi.setTextColor(colorWhite);
+            tvMobileDataStatus.setTextColor(colorWhite);
             tvMobileDataStatus.setText(R.string.setting_closed);
         }
     }
@@ -814,10 +817,10 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         Log.d(TAG, "update4GState: " + isOpen);
         if (isOpen) {
             tv4GStatus.setText(R.string.mobile_data_status_connected);
-            tv4GStatus.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
+            tv4GStatus.setTextColor(colorBlue);
         } else {
             tv4GStatus.setText(R.string.mobile_data_status_unconnected);
-            tv4GStatus.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+            tv4GStatus.setTextColor(colorWhite);
         }
     }
 
@@ -1092,10 +1095,10 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         ivHotspot.setSelected(b);
         if (b) {
             tvHotspotStatus.setText(R.string.setting_opened);
-            tvHotspotStatus.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
+            tvHotspotStatus.setTextColor(colorBlue);
         } else {
             tvHotspotStatus.setText(R.string.setting_closed);
-            tvHotspotStatus.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+            tvHotspotStatus.setTextColor(colorWhite);
         }
     }
 
@@ -1104,10 +1107,10 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         ivGps.setSelected(b);
         if (b) {
             tvGpsStatus.setText(R.string.setting_opened);
-            tvGpsStatus.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
+            tvGpsStatus.setTextColor(colorBlue);
         } else {
             tvGpsStatus.setText(R.string.setting_closed);
-            tvGpsStatus.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+            tvGpsStatus.setTextColor(colorWhite);
         }
     }
 
@@ -1259,6 +1262,11 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         Intent intent = new Intent(ACTION_SETTINGS_WINDOW);
         intent.putExtra("window_state",isShow);
         sendBroadcast(intent);
+    }
+
+    private void initColor() {
+        colorBlue = mContext.getResources().getColor(R.color.colorBlue);
+        colorWhite = mContext.getResources().getColor(R.color.colorWhite);
     }
 
 }
