@@ -177,6 +177,13 @@ public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
                 String weather = intent.getStringExtra("weatherInfo");
                 NotifyMessageManager.getInstance().updateWeather(weather);
                 break;
+            case Intent.ACTION_SCREEN_OFF:
+                Log.d(TAG, "onReceive:ACTION_SCREEN_OFF ");
+                break;
+            case CustomValue.ACTION_DISMISS_SETTINGS_DIALOG:
+            case CustomValue.ACTION_REVERSE:
+                NotifyMessageManager.getInstance().openOrClose(101, true);
+                break;
         }
 
     }

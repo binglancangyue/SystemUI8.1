@@ -246,7 +246,7 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
         setText(getSmallTime());
         updateBrightness();
 		//SPRD add debug log
-        Log.d("Clock", "updateClock updateClock="+getSmallTime());
+//        Log.d("Clock", "updateClock updateClock="+getSmallTime());
         setContentDescription(mContentDescriptionFormat.format(mCalendar.getTime()));
     }
 
@@ -261,6 +261,8 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
         if (minute == 1) {
             Intent intent = new Intent(CustomValue.ACTION_UPDATE_BRIGHTNESS_BY_TIME);
             SystemUIApplication.getInstance().sendBroadcast(intent);
+            Intent weather = new Intent(CustomValue.ACTION_GET_WEATHER);
+            SystemUIApplication.getInstance().sendBroadcast(weather);
             Log.d("Clock", "updateBrightness: ");
         }
     }

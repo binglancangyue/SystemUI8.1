@@ -220,6 +220,7 @@
     <!--new feature of SubsidyLock -->
     <protected-broadcast android:name = "com.slc.action.ACTION_USER_UNLOCK"/>
     <!-- @} -->
+    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES" />
     <application
         android:name=".SystemUIApplication"
         android:persistent="true"

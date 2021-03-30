@@ -882,5 +882,6 @@
     <dimen name="top_center_text_size">30sp</dimen>
     <dimen name="seekBarMinWidth">40dp</dimen>
     <dimen name="homeButtonPadding">10dp</dimen>
+    <dimen name="kd003DialogWidth">400dp</dimen>
     <!--add end-->
 </resources>

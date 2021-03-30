@@ -177,7 +177,7 @@ public class PowerUI extends SystemUI {
      *
      * The code in this function is a little weird because I couldn't comprehend
      * the bucket going up when the battery level was going down. --joeo
-     *
+     *`
      * 1 means that the battery is "ok"
      * 0 means that the battery is between "ok" and what we should warn about.
      * less than 0 means that the battery is low
@@ -287,7 +287,7 @@ public class PowerUI extends SystemUI {
 
                     // only play SFX when the dialog comes up or the bucket changes
                     final boolean playSound = bucket != oldBucket || oldPlugged;
-                    mWarnings.showLowBatteryWarning(playSound);
+//                    mWarnings.showLowBatteryWarning(playSound);
                 } else if (isPowerSaver || plugged || (bucket > oldBucket && bucket > 0)) {
                     mWarnings.dismissLowBatteryWarning();
                 } else {
@@ -296,7 +296,7 @@ public class PowerUI extends SystemUI {
 
                 if (plugged && mBatteryLevel < mLowBatteryReminderLevels[1] &&
                     (mBatteryLevel != oldBatteryLevel || !oldPlugged)) {
-                    mWarnings.showCriticalBatteryWarningDialog();
+//                    mWarnings.showCriticalBatteryWarningDialog();
                 } else if (!plugged || mBatteryLevel >= mLowBatteryReminderLevels[1]){
                     mWarnings.dismissCriticalBatteryWarningDialog();
                 }

@@ -445,37 +445,18 @@ public class NavigationBarView extends FrameLayout implements PluginListener<Nav
         if (oldConfig.densityDpi != newConfig.densityDpi
                 || oldConfig.getLayoutDirection() != newConfig.getLayoutDirection()) {
             //by lym start
-//            mBackIcon = getDrawable(ctx, R.drawable.ic_sysbar_back, R.drawable.ic_sysbar_back_dark);
-//            mBackLandIcon = mBackIcon;
-//            mBackAltIcon = getDrawable(ctx,
-//                    R.drawable.ic_sysbar_back_ime, R.drawable.ic_sysbar_back_ime_dark);
-//            mBackAltLandIcon = mBackAltIcon;
-//
-//            mHomeDefaultIcon = getDrawable(ctx,
-//                    R.drawable.ic_sysbar_home, R.drawable.ic_sysbar_home_dark);
             int index = CustomValue.ICON_TYPE;
-//            mBackIcon = getDrawable(ctx, R.drawable.ic_sysbar_back, R.drawable.ic_sysbar_back_dark);
             mBackIcon = getDrawable(ctx, CustomValue.BACK_ICONS[index], CustomValue.BACK_ICONS[index]);
             mBackLandIcon = mBackIcon;
-//            mBackAltIcon = getDrawable(ctx,
-//                    R.drawable.ic_sysbar_back_ime, R.drawable.ic_sysbar_back_ime_dark);
             mBackAltIcon = getDrawable(ctx,
                     CustomValue.BACK_ICONS[index], CustomValue.BACK_ICONS[index]);
             mBackAltLandIcon = mBackAltIcon;
-//            mHomeDefaultIcon = getDrawable(ctx,
-//                    R.drawable.ic_sysbar_home, R.drawable.ic_sysbar_home_dark);
-            //end
-
-            //add by lym start
             mHomeDefaultIcon = getDrawable(ctx,
                     CustomValue.HOME_ICONS[index], CustomValue.HOME_ICONS[index]);
-            //end
 
             mRecentIcon = getDrawable(ctx,
                     R.drawable.ic_sysbar_recent, R.drawable.ic_sysbar_recent_dark);
             mMenuIcon = getDrawable(ctx, R.drawable.ic_sysbar_menu, R.drawable.ic_sysbar_menu_dark);
-
-            //by lym start
             mVoiceIcon = getDrawable(ctx,
                     CustomValue.VOICE_ICONS[index], CustomValue.VOICE_ICONS[index]);
             mDRVIcon = getDrawable(ctx,

@@ -882,4 +882,9 @@ public class NavigationBarFragment extends Fragment implements Callbacks,
         Log.d(TAG, "ShowSettingsWindow: ");
         startQuickSettingsView(null);
     }
+
+    @Override
+    public void hideNavigationBar(boolean isHide) {
+
+    }
 }
