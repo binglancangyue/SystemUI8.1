@@ -482,7 +482,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                 setDayOrNightBtnCheck(rbNight);
 //                mSharedPreferencesTool.saveBoolean("btn_night", true);
 //                mSharedPreferencesTool.saveBoolean("btn_day", false);
-                sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BRIGHTNESS, 40);
+                sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BRIGHTNESS, 41);
                 break;
             case R.id.rb_screen_control_auto:
                 setAutoBrightnessCheck(true);
@@ -938,8 +938,8 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
      */
     private void updateBrightnessByProgress(int value) {
         String progressValue = String.valueOf(value);
-        tvBrightnessValue.setText(progressValue);
-        seekBarBrightness.setProgress(value);
+//        tvBrightnessValue.setText(progressValue);
+//        seekBarBrightness.setProgress(value);
         mSettingsUtils.progressChangeToBrightness(value);
     }
 
