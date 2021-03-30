@@ -27,7 +27,6 @@ import android.widget.TextView;
 
 import com.android.systemui.R;
 import com.android.systemui.SystemUIApplication;
-import com.android.systemui.statusbar.activity.listener.OnSettingPopupWindowListener;
 import com.android.systemui.statusbar.activity.listener.OnSettingsStatusListener;
 
 import java.lang.ref.WeakReference;
@@ -36,12 +35,11 @@ import java.lang.ref.WeakReference;
 /**
  * @author Altair
  * @date :2020.01.07 下午 02:16
- * @description:
+ * @description: 快捷设置窗口
  */
 public class SettingsWindowActivity extends Activity implements View.OnClickListener,
         SeekBar.OnSeekBarChangeListener, OnSettingsStatusListener {
     private static final String TAG = "SettingsWindowActivity";
-    private OnSettingPopupWindowListener mListener;
     private Context mContext;
     private LinearLayout llBtnWireless;
     private LinearLayout llBtnScreenControl;
@@ -255,14 +253,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         setAutoBrightnessCheck(mSharedPreferencesTool.getAutoBrightness());
     }
 
-    public void setOnSettingPopupWindowListener(OnSettingPopupWindowListener listener) {
-        this.mListener = listener;
-    }
-
-    public void showPopupWindow() {
-        mHandler.sendEmptyMessage(CustomValue.HANDLE_POP_UPDATE_DATA);
-    }
-
     private void initPopupWindow() {
         llBtnWireless = findViewById(R.id.ll_left_wifi);
         llBtnScreenControl = findViewById(R.id.ll_left_screen_control);
@@ -385,6 +375,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         llWireless.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -513,7 +504,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                 break;
             case R.id.ll_btn_bluetooth:
                 mSettingsUtils.openOrCloseBT(!llBtnBlueTooth.isSelected());
-                sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 4);
+//                sendMessageToHomeActivity(CustomValue.HANDLE_POP_UPDATE_BTN, 4);
                 break;
             case R.id.iv_switch_fm:
                 mSettingsUtils.openOrCloseFM(!ivFmSwitch.isSelected());
@@ -647,28 +638,10 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         btn.setChecked(true);
     }
 
-    private void sendMessage(int what) {
-        if (mListener != null) {
-            mListener.sendMessageToActivity(what);
-        }
-    }
-
-    private void sendMessageToHomeActivity(int messageCode) {
-        mHandler.sendEmptyMessage(messageCode);
-    }
-
     public void sendMessageToHomeActivity(int num, int type) {
         Message message = Message.obtain();
         message.what = num;
         message.arg1 = type;
-        mHandler.sendMessage(message);
-    }
-
-    private void sendMessageToHomeActivity(int num, int type, int enable) {
-        Message message = Message.obtain();
-        message.what = num;
-        message.arg1 = type;
-        message.arg2 = enable;
         mHandler.sendMessage(message);
     }
 
@@ -766,10 +739,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         } else {
             wifiUtils.closeWifi();
         }
-    }
-
-    private void gpsOpenOrClose(boolean isOpen) {
-        updateBtnGPS(!isOpen);
     }
 
     private void updateWifiBtnStatus(boolean isOpen) {
@@ -1121,7 +1090,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         private InnerHandler(SettingsWindowActivity popupWindow) {
             this.activityWeakReference = new WeakReference<>(popupWindow);
             mPopupWindow = activityWeakReference.get();
-
         }
 
         @Override
