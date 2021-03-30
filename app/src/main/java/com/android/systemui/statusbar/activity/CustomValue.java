@@ -122,4 +122,7 @@ public class CustomValue {
     public static final int TYPE_MOBILE_DATA_STATE = 10;
     public static final int TYPE_GPS_SIGNAL = 11;
 
+    public static final String ACC_PATH = "/dev/bx_gpio";
+    public static final boolean IS_SUPPORT_ACC = true;
+    public static final boolean IS_SUPPORT_SLEEP = true;
 }
