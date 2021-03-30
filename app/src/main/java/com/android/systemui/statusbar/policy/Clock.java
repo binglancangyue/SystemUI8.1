@@ -258,7 +258,7 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
     private void updateBrightness() {
         int minute = mCalendar.get(Calendar.MINUTE);
         Log.d("Clock", "updateBrightness:minute "+minute);
-        if (minute == 1) {
+        if (minute == 0) {
             Intent intent = new Intent(CustomValue.ACTION_UPDATE_BRIGHTNESS_BY_TIME);
             SystemUIApplication.getInstance().sendBroadcast(intent);
             Intent weather = new Intent(CustomValue.ACTION_GET_WEATHER);

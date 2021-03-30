@@ -197,7 +197,7 @@ public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
         if (hours >= 6 && hours < 19) {
             settingsFunctionTool.progressChangeToBrightness(100);
         } else {
-            settingsFunctionTool.progressChangeToBrightness(40);
+            settingsFunctionTool.progressChangeToBrightness(41);
         }
     }
 
