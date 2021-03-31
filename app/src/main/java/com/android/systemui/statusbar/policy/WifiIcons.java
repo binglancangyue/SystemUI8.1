@@ -73,7 +73,7 @@ public class WifiIcons {
     static int WIFI_NO_NETWORK;
 
     static {
-        if (CustomValue.SCREEN_3) {
+        if (!CustomValue.SCREEN_3) {
             WIFI_SIGNAL_STRENGTH = new int[][]{
                     {R.drawable.stat_sys_wifi_signal_0,
                             R.drawable.stat_sys_wifi_signal_1,

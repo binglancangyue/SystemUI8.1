@@ -177,7 +177,7 @@ public class PowerUI extends SystemUI {
      *
      * The code in this function is a little weird because I couldn't comprehend
      * the bucket going up when the battery level was going down. --joeo
-     *`
+     *
      * 1 means that the battery is "ok"
      * 0 means that the battery is between "ok" and what we should warn about.
      * less than 0 means that the battery is low

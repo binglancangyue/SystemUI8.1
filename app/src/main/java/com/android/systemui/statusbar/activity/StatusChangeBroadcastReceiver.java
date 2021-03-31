@@ -12,7 +12,6 @@ import android.os.BatteryManager;
 import android.util.Log;
 
 import com.android.systemui.SystemUIApplication;
-import com.android.systemui.statusbar.activity.listener.OnSettingsStatusListener;
 import com.android.systemui.statusbar.activity.listener.OnStatusListener;
 
 import java.util.Calendar;
@@ -24,35 +23,20 @@ import java.util.Calendar;
  */
 public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "StatusChange";
-    private OnSettingsStatusListener mListener;
-    private OnStatusListener mOnStatusListener;
-    private TXZCommand mTxz;
-    private WifiTool wifiTool;
-    private SettingsFunctionTool settingsFunctionTool;
-    private Context mContext;
+    private final WifiTool wifiTool;
+    private final SettingsFunctionTool settingsFunctionTool;
     private static final String EXTRA_VOLUME_STREAM_TYPE = "android.media.EXTRA_VOLUME_STREAM_TYPE";
-    private SharedPreferencesTool mSharedPreferencesTool;
+    private final SharedPreferencesTool mSharedPreferencesTool;
 
     public StatusChangeBroadcastReceiver(OnStatusListener listener) {
-        this.mOnStatusListener = listener;
-        mTxz = new TXZCommand();
         wifiTool = new WifiTool();
         settingsFunctionTool = new SettingsFunctionTool();
         mSharedPreferencesTool = new SharedPreferencesTool();
     }
 
-    public SettingsFunctionTool getSettingsFunctionTool() {
-        return this.settingsFunctionTool;
-    }
-
-    public WifiTool getWifiTool() {
-        return this.wifiTool;
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        this.mContext = context;
         Log.d(TAG, "onReceive:action " + action);
         if (action == null) {
             return;
@@ -208,11 +192,6 @@ public class StatusChangeBroadcastReceiver extends BroadcastReceiver {
         if (type != 5 || type != 8 || type != 9) {
             NotifyMessageManager.getInstance().openOrClose(type, isOpen);
         }
-
-        //statusBar icon visible
-//        if (mOnStatusListener != null) {
-//            mOnStatusListener.statusChange(statusBean);
-//        }
     }
 
 }
