@@ -66,6 +66,7 @@
         <TextView
             android:id="@+id/tv_brightness_value"
             style="@style/PopWindowContainerTileTextStyle"
+            android:layout_width="50dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="0dp"
             android:layout_weight="0"

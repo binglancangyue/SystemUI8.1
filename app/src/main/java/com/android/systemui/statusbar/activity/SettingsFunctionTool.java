@@ -68,14 +68,6 @@ public class SettingsFunctionTool {
     public static final String FM_VALUE = "bx_fm_value";
     public static final String BX_HEADSET_PATH = "/sys/kernel/headset/state";
 
-    public SettingsFunctionTool(Context mContext) {
-        this.mContext = mContext;
-        locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
-    }
-
     public SettingsFunctionTool() {
         this.mContext = SystemUIApplication.getInstance();
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -83,37 +75,8 @@ public class SettingsFunctionTool {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 //        mFmManager = (FmManager) getSystemService(mContext, ContextDef.FM_SERVICE);
         mTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-        //        locationManager.addGpsStatusListener(statusListener);
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
     }
-
-    /*private final ContentObserver mGpsMonitor = new ContentObserver(null) {
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-
-            boolean enabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
-        }
-    };
-
-    public boolean checkGpsIsOpen() {
-        boolean isGpsOpen;
-        isGpsOpen = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        return isGpsOpen;
-    }
-
-    public void openOrCloseGPS(boolean open) {
-        if (open) {
-            mContext.getContentResolver()
-                    .registerContentObserver(Settings.Secure.getUriFor(Settings.System
-                    .LOCATION_PROVIDERS_ALLOWED),
-                            false, mGpsMonitor);
-        } else {
-            mContext.getContentResolver().unregisterContentObserver(mGpsMonitor);
-        }
-    }*/
-
 
     //打开或者关闭gps
     public void openGPS(boolean open) {
@@ -149,17 +112,6 @@ public class SettingsFunctionTool {
     }
 
     /**
-     * 获得屏幕亮度值
-     *
-     * @return 系统屏幕亮度值
-     */
-    public int getScreenBrightness() {
-        ContentResolver contentResolver = mContext.getContentResolver();
-        int defValue = 125;
-        return Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, defValue);
-    }
-
-    /**
      * 获得屏百分比制幕亮度值
      *
      * @return 百分比值
@@ -170,15 +122,6 @@ public class SettingsFunctionTool {
         String s = NumberFormat.getPercentInstance().format(getCurrentBrightness());
         s = s.replace("%", "");
         return Integer.parseInt(s);
-    }
-
-    /**
-     * 将百分比值转成亮度值
-     *
-     * @return
-     */
-    public int percentageValueChangeToBrightness(int value) {
-        return (int) (value * baseValue);
     }
 
     /**
@@ -224,24 +167,6 @@ public class SettingsFunctionTool {
     public void progressChangeToBrightness(int progress) {
 //        int brightnessValue = (int) Math.ceil(progress * baseValue);
         int brightnessValue = (int) Math.round(progress * baseValue);
-
-        Log.d(TAG, "progressChangeToBrightness: brightnessValue " + brightnessValue);
-        try {
-            modifyScreenBrightness(brightnessValue);
-        } catch (Exception e) {
-            Log.e(TAG, "progressChangeToBrightness Exception: " + e.getMessage());
-        }
-    }
-
-
-    /**
-     * 根据seeBar progress 转换后屏幕亮度
-     *
-     * @param progress seekBar progress
-     */
-    public void progressChangeToBrightnessSystemRude(int progress) {
-//        int brightnessValue = (int) Math.ceil(progress * baseValue);
-        int brightnessValue = (int) Math.round(progress * 2.45f);
 
         Log.d(TAG, "progressChangeToBrightness: brightnessValue " + brightnessValue);
         try {
@@ -320,11 +245,6 @@ public class SettingsFunctionTool {
         }
     }
 
-
-    private static Object getSystemService(Context context, String name) {
-        return context.getSystemService(name);
-    }
-
     public void openOrCloseFM(boolean isOpen) {
         if (isOpen) {
             Log.d(TAG, "openOrCloseFM: on");
@@ -375,109 +295,6 @@ public class SettingsFunctionTool {
             Log.e(TAG, "getScreenOutTime: error " + e.getMessage());
         }
         return 1;
-    }
-
-    /**
-     * 移动网络开关
-     */
-    public void toggleMobileData(boolean enabled) {
-        ConnectivityManager conMgr =
-                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        Class<?> conMgrClass; // ConnectivityManager类
-        Field iConMgrField; // ConnectivityManager类中的字段
-        Object iConMgr; // IConnectivityManager类的引用
-        Class<?> iConMgrClass; // IConnectivityManager类
-        Method setMobileDataEnabledMethod; // setMobileDataEnabled方法
-        try {
-            // 取得ConnectivityManager类
-            conMgrClass = Class.forName(conMgr.getClass().getName());
-            // 取得ConnectivityManager类中的对象mService
-            iConMgrField = conMgrClass.getDeclaredField("mService");
-            // 设置mService可访问
-            iConMgrField.setAccessible(true);
-            // 取得mService的实例化类IConnectivityManager
-            iConMgr = iConMgrField.get(conMgr);
-            // 取得IConnectivityManager类
-            iConMgrClass = Class.forName(iConMgr.getClass().getName());
-            // 取得IConnectivityManager类中的setMobileDataEnabled(boolean)方法
-            setMobileDataEnabledMethod = iConMgrClass.getDeclaredMethod("setMobileDataEnabled",
-                    Boolean.TYPE);
-            // 设置setMobileDataEnabled方法可访问
-            setMobileDataEnabledMethod.setAccessible(true);
-            // 调用setMobileDataEnabled方法
-            setMobileDataEnabledMethod.invoke(iConMgr, enabled);
-        } catch (ClassNotFoundException | NoSuchFieldException | SecurityException
-                | NoSuchMethodException | IllegalArgumentException | IllegalAccessException
-                | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 返回手机移动数据的状态
-     *
-     * @param arg 默认填null
-     * @return true 连接 false 未连接
-     */
-    public boolean getMobileDataState(Object[] arg) {
-        try {
-            ConnectivityManager mConnectivityManager =
-                    (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-            Class ownerClass = mConnectivityManager.getClass();
-            Class[] argsClass = null;
-            if (arg != null) {
-                argsClass = new Class[1];
-                argsClass[0] = arg.getClass();
-            }
-            Method method = ownerClass.getMethod("getMobileDataEnabled", argsClass);
-            Boolean isOpen = (Boolean) method.invoke(mConnectivityManager, arg);
-            return isOpen;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public boolean isSDCardMounted() {
-        boolean isMounted = false;
-        StorageManager sm = (StorageManager) mContext.getSystemService(Context.STORAGE_SERVICE);
-        try {
-            Method getVolumList = StorageManager.class.getMethod("getVolumeList", null);
-            getVolumList.setAccessible(true);
-            Object[] results = (Object[]) getVolumList.invoke(sm, null);
-            if (results != null) {
-                for (Object result : results) {
-                    Method mRemoveable = result.getClass().getMethod("isRemovable", null);
-                    Boolean isRemovable = (Boolean) mRemoveable.invoke(result, null);
-                    if (isRemovable) {
-                        Method getPath = result.getClass().getMethod("getPath", null);
-                        String path = (String) getPath.invoke(result, null);
-                        Method getPathFile = result.getClass().getMethod("getPathFile", null);
-                        File sdPathFile = (File) getPathFile.invoke(result, null);
-                        if (Environment.MEDIA_MOUNTED.equals(Environment.getStorageState(sdPathFile))) {
-                            isMounted = true;
-                        }
-                    }
-                }
-            }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "isSDCardMounted:isMounted " + isMounted);
-        return isMounted;
-    }
-
-    public boolean ExistSDCard() {
-        Log.d(TAG, "ExistSDCard: state " + android.os.Environment.getExternalStorageState());
-        if (android.os.Environment.getExternalStorageState().equals(
-                android.os.Environment.MEDIA_MOUNTED)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public boolean isHasSimCard() {
@@ -535,42 +352,6 @@ public class SettingsFunctionTool {
         return enabled;
     }
 
-
-    /**
-     * 卫星状态监听器
-     */
-    private final GpsStatus.Listener statusListener = new GpsStatus.Listener() {
-        public void onGpsStatusChanged(int event) { // GPS状态变化时的回调，如卫星数
-            GpsStatus status = locationManager.getGpsStatus(null); //取当前状态
-            int gpsSatelliteCount = updateGpsStatus(event, status);
-            if (gpsSatelliteCount != lastCount) {
-                lastCount = gpsSatelliteCount;
-                NotifyMessageManager.getInstance().updateStatusBarIconState(
-                        new StatusBean(CustomValue.TYPE_GPS_SIGNAL, gpsSatelliteCount));
-            }
-        }
-    };
-
-    private int updateGpsStatus(int event, GpsStatus status) {
-        int gpsSatelliteCount = 0;
-        List<GpsSatellite> numSatelliteList = new ArrayList<GpsSatellite>(); // 卫星信号
-        if (status == null) {
-            return 0;
-        }
-        if (event == GpsStatus.GPS_EVENT_SATELLITE_STATUS) {
-            int maxSatellites = status.getMaxSatellites();
-            Iterator<GpsSatellite> it = status.getSatellites().iterator();
-            int count = 0;
-            while (it.hasNext() && count <= maxSatellites) {
-                GpsSatellite s = it.next();
-                numSatelliteList.add(s);
-                count++;
-            }
-            gpsSatelliteCount = numSatelliteList.size();
-        }
-        return gpsSatelliteCount;
-    }
-
     private double getCurrentBrightness() {
         ContentResolver contentResolver = mContext.getContentResolver();
         final int mMinBrightness = mPowerManager.getMinimumScreenBrightnessSetting();
@@ -588,13 +369,6 @@ public class SettingsFunctionTool {
             return 0.0;
         }
         return (value - min) / (max - min);
-    }
-
-
-    private void setLockPatternEnabled(String systemSettingKey, boolean enabled) {
-        //推荐使用
-        ContentResolver contentResolver = mContext.getContentResolver();
-        android.provider.Settings.Secure.putInt(contentResolver, systemSettingKey, enabled ? 1 : 0);
     }
 
     public boolean getFmStatus() {
@@ -681,7 +455,6 @@ public class SettingsFunctionTool {
             }
         }
     }
-
 
     public void setFmValue(int value) {
         Writer fmTuneTouch = null;

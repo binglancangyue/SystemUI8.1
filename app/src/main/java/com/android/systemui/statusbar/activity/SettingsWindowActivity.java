@@ -144,6 +144,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void setWindowSize() {
         Window window = getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
+        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         //获取手机屏幕的高度
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -353,21 +354,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         btnDvrBT.setOnClickListener(this);
         btnDvrSystemSettings.setOnClickListener(this);
         btnDvrBT.setVisibility(View.GONE);
-/*
-        //获取手机屏幕的高度
-        DisplayMetrics metric = new DisplayMetrics();
-        mHomeActivity.getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int widthPixels = (int) (metric.widthPixels * 0.75f);
-        int heightPixels = (int) (metric.heightPixels * 0.6f);
-
-        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setWidth(widthPixels);
-        popupWindow.setHeight(heightPixels);
-
-        popupWindow.setBackgroundDrawable(new ColorDrawable(-000000));
-        popupWindow.setAnimationStyle(R.style.SettingsTranslateAnim);*/
 
         cleanLeftButton();
         llBtnWireless.setSelected(true);
@@ -998,21 +984,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                 message.arg1 = 8;
                 break;
         }
-//        if (type == CustomValue.TYPE_WIFI_STATE) {//wifi
-//            message.arg1 = 2;
-//        }
-//        if (type == CustomValue.TYPE_BT) {//bt
-//            message.arg1 = 4;
-//        }
-//        if (type == CustomValue.TYPE_FM) {//fm
-//            message.arg1 = 5;
-//        }
-//        if (type == CustomValue.TYPE_WIFI_AP) {//wifi ap
-//            message.arg1 = 6;
-//        }
-//        if (type == CustomValue.TYPE_MOBILE) {//mobile network
-//            message.arg1 = 7;
-//        }
 
         message.obj = state;
         if (mHandler != null) {
