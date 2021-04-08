@@ -144,7 +144,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     private void setWindowSize() {
         Window window = getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         //获取手机屏幕的高度
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);

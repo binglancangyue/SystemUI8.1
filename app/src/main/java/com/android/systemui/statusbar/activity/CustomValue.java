@@ -36,7 +36,7 @@ public class CustomValue {
 
     /***平台***/
     public static final boolean SCREEN_3 = false;//kd002 3寸屏  不需要语音识别
-    public static final boolean SCREEN_3_BX = false;//比心3寸屏
+    public static final boolean SCREEN_3_BX = true;//比心3寸屏
     public static final boolean SCREEN_3IN_KD003 = false;//3寸屏 多了个后摄像头按钮
     public static final boolean SCREEN_439IN = false;//4.39寸屏
     public static final boolean IS_966 = false;//9.66寸 车镜
@@ -48,14 +48,14 @@ public class CustomValue {
     public static final boolean NOT_DVR = false;//7in 英文版 无DVR
 
     /**
-     * ICON_TYPE: 导航栏图标样式
+     * ICON_TYPE:导航栏图标样式
      * 0:3in_kd002  1:3in_kd003  2:7in  3:9.66in  4:bx3in
      * <p>
-     * STATUS_BAR_ICON_TYPE: 状态栏图标样式
+     * STATUS_BAR_ICON_TYPE:状态栏图标样式
      * 0:默认(系统原样式) 1:7in
      */
-    public static final int ICON_TYPE = 2;
-    public static final int STATUS_BAR_ICON_TYPE = 0;
+    public static final int ICON_TYPE = 4;
+    public static final int STATUS_BAR_ICON_TYPE = 1;
 
     public static final int[] HOME_ICONS = {
             R.drawable.icon_home_3in, R.drawable.ic_home_3in_kd003,
