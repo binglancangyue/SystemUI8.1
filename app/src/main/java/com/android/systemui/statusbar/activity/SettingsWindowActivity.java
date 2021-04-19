@@ -183,7 +183,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
                     public void run() {
                         mSettingsUtils = new SettingsFunctionTool();
                         wifiUtils = new WifiTool();
-//                        requestPermissionsTool = new RequestPermissionsTool();
                         mSharedPreferencesTool = new SharedPreferencesTool();
                         initPopupWindow();
                         setPopupWindowListener();
@@ -354,21 +353,6 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         btnDvrBT.setOnClickListener(this);
         btnDvrSystemSettings.setOnClickListener(this);
         btnDvrBT.setVisibility(View.GONE);
-/*
-        //获取手机屏幕的高度
-        DisplayMetrics metric = new DisplayMetrics();
-        mHomeActivity.getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int widthPixels = (int) (metric.widthPixels * 0.75f);
-        int heightPixels = (int) (metric.heightPixels * 0.6f);
-
-        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setWidth(widthPixels);
-        popupWindow.setHeight(heightPixels);
-
-        popupWindow.setBackgroundDrawable(new ColorDrawable(-000000));
-        popupWindow.setAnimationStyle(R.style.SettingsTranslateAnim);*/
 
         cleanLeftButton();
         llBtnWireless.setSelected(true);
@@ -910,7 +894,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
      * @param value 屏幕亮度值
      */
     private void updateBrightnessByProgress(int value) {
-        String progressValue = String.valueOf(value);
+//        String progressValue = String.valueOf(value);
 //        tvBrightnessValue.setText(progressValue);
 //        seekBarBrightness.setProgress(value);
         mSettingsUtils.progressChangeToBrightness(value);
@@ -1084,11 +1068,10 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
     }
 
     private static class InnerHandler extends Handler {
-        private final WeakReference<SettingsWindowActivity> activityWeakReference;
-        private SettingsWindowActivity mPopupWindow;
+        private final SettingsWindowActivity mPopupWindow;
 
         private InnerHandler(SettingsWindowActivity popupWindow) {
-            this.activityWeakReference = new WeakReference<>(popupWindow);
+            WeakReference<SettingsWindowActivity> activityWeakReference = new WeakReference<>(popupWindow);
             mPopupWindow = activityWeakReference.get();
         }
 
@@ -1171,29 +1154,7 @@ public class SettingsWindowActivity extends Activity implements View.OnClickList
         }
     };
 
-    /**
-     * 注册监听GPS状态变化
-     */
-    private void registerGPSContentObserver() {
-        Log.d(TAG, "registerGPSContentObserver: ");
-        getContentResolver().registerContentObserver(
-                Settings.Secure.getUriFor(Settings.System.LOCATION_PROVIDERS_ALLOWED),
-                false, mGpsContentObserver);
-    }
-
-    private final ContentObserver mGpsContentObserver = new ContentObserver(null) {
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-            boolean enabled = mSettingsUtils.isGpsOpen();
-            Log.d(TAG, "gps onChange: " + enabled);
-        }
-    };
-
     private void unRegisterContentObserver() {
-        if (mGpsContentObserver != null) {
-            getContentResolver().unregisterContentObserver(mGpsContentObserver);
-        }
         if (mBrightnessObserver != null) {
             getContentResolver().unregisterContentObserver(mBrightnessObserver);
         }
